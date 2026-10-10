@@ -22,17 +22,24 @@ import * as THREE from "three"; import { OrbitControls } from "three/addons/cont
 const raw = Uint8Array.from(atob(document.getElementById("pts").textContent.trim()), c => c.charCodeAt(0));
 const dv = new DataView(raw.buffer), n = raw.byteLength / 16;
 const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), flg = new Float32Array(n);
-let cx = 0, cz = 0, removed = 0, added = 0;
+let x0 = Infinity, x1 = -Infinity, z0 = Infinity, z1 = -Infinity, removed = 0, added = 0;
 for (let i = 0; i < n; i++) { const o = i * 16, x = dv.getFloat32(o, true), y = dv.getFloat32(o + 4, true), z = dv.getFloat32(o + 8, true);
-  pos[i*3] = x; pos[i*3+1] = z; pos[i*3+2] = -y; cx += x; cz += -y;
+  pos[i*3] = x; pos[i*3+1] = z; pos[i*3+2] = -y; x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, -y); z1 = Math.max(z1, -y);
   col[i*3] = dv.getUint8(o+12)/255; col[i*3+1] = dv.getUint8(o+13)/255; col[i*3+2] = dv.getUint8(o+14)/255; flg[i] = dv.getUint8(o+15);
   if (flg[i] === 1) removed++; if (flg[i] === 2) added++; }
-cx /= n; cz /= n;
+const cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;  // bounding-box center, not the point average
 const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("c"), antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 const scene = new THREE.Scene(); scene.background = new THREE.Color(0x05070a);
-const camera = new THREE.PerspectiveCamera(50, 1, 0.05, 200); camera.position.set(cx - 9, 11, cz + 12);
-const controls = new OrbitControls(camera, renderer.domElement); controls.target.set(cx, 0.6, cz); controls.enableDamping = true;
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.05, 200);
+function fitCamera() {
+  const fv = THREE.MathUtils.degToRad(camera.fov), fh = 2 * Math.atan(Math.tan(fv / 2) * camera.aspect);
+  const r = 0.5 * Math.hypot(x1 - x0, z1 - z0, 3.6), dist = (r / Math.sin(Math.min(fv, fh) / 2)) * 0.9;
+  const d = new THREE.Vector3(-0.42, 0.66, 0.62).normalize();
+  camera.position.set(cx + d.x * dist, 1.2 + d.y * dist, cz + d.z * dist);
+}
+fitCamera();
+const controls = new OrbitControls(camera, renderer.domElement); controls.target.set(cx, 1.2, cz); controls.enableDamping = true;
 const geo = new THREE.BufferGeometry();
 geo.setAttribute("position", new THREE.BufferAttribute(pos, 3)); geo.setAttribute("color", new THREE.BufferAttribute(col, 3)); geo.setAttribute("flag", new THREE.BufferAttribute(flg, 1));
 const mat = new THREE.ShaderMaterial({ transparent: true,
