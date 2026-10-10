@@ -33,7 +33,6 @@
   <label><input type="checkbox" id="tCallouts">Floating callouts</label>
   <label><input type="checkbox" id="tWalls" checked>Walls</label>
   <label><input type="checkbox" id="tZones" checked>Zone floor colors</label>
-  <label><input type="checkbox" id="tSpin">Auto-rotate</label>
 </div>
 <div id="legend" class="panel"></div>
 <div id="tip" class="panel"></div>
@@ -642,7 +641,6 @@ document.getElementById("tSigns").onchange = ev => signs.forEach(s => (s.visible
 document.getElementById("tCallouts").onchange = ev => callouts.forEach(s => (s.visible = ev.target.checked));
 document.getElementById("tWalls").onchange = ev => (walls.visible = ev.target.checked);
 document.getElementById("tZones").onchange = ev => scene.traverse(o => { if (o.userData.zoneFloor) o.visible = ev.target.checked; });
-document.getElementById("tSpin").onchange = ev => (controls.autoRotate = ev.target.checked);
 
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById("tip");
 canvas.addEventListener("pointermove", ev => {

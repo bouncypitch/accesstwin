@@ -13,7 +13,7 @@ open -na "Google Chrome" --args --new-window \
   "file://$SITE/scan.html" \
   "file://$SITE/media/twin_design_a.html#build" \
   "file://$SITE/media/twin_design_a.html#agents" \
-  "https://marble.worldlabs.ai/world/b27aa033-6df7-4464-9ca1-1122f1719a1c" \
+  "file://$SITE/world.html" \
   "file://$SITE/media/twin_design_a.html#fix" \
   "file://$SITE/index.html#ch11"
 
