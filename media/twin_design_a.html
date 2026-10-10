@@ -1773,7 +1773,1813 @@
   }
 }</script>
 <script id="tour" type="application/json">null</script>
-<script id="specB" type="application/json">null</script>
+<script id="specB" type="application/json">{
+  "name": "Design B: robotics lab in the hackathon venue",
+  "outline": [
+    [
+      0.0098,
+      11.3586
+    ],
+    [
+      18.3863,
+      11.3586
+    ],
+    [
+      18.3863,
+      10.4438
+    ],
+    [
+      17.3915,
+      10.4438
+    ],
+    [
+      17.3915,
+      9.8566
+    ],
+    [
+      18.3341,
+      9.8566
+    ],
+    [
+      18.3341,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      9.8692
+    ],
+    [
+      0.0098,
+      10.7581
+    ]
+  ],
+  "ceiling_height": 3.651,
+  "doors": [
+    {
+      "id": "D1",
+      "position": [
+        0.0,
+        7.3764
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.333,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "entrance",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.77 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D2",
+      "position": [
+        0.0,
+        1.8094
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.09,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "1.14 m opening; clear width estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D3",
+      "position": [
+        18.3341,
+        2.5081
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.402,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.90 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D4",
+      "position": [
+        18.3341,
+        7.3704
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.468,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 3.04 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D5",
+      "position": [
+        0.0,
+        3.2008
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.643,
+      "opening_force_lbf": 5.0,
+      "hardware": "none",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "open doorway; width from LiDAR"
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "lockers",
+      "kind": "storage",
+      "label": "Day lockers",
+      "center": [
+        0.225,
+        4.85
+      ],
+      "size": [
+        1.5,
+        0.45
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "Day lockers",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "lockers",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "ppe",
+      "kind": "storage",
+      "label": "PPE station (glasses, hearing, coats)",
+      "center": [
+        0.2,
+        6.2
+      ],
+      "size": [
+        1.0,
+        0.4
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "PPE station",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "ppe_rack",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "restroom",
+      "kind": "partition",
+      "label": "Accessible restroom",
+      "center": [
+        1.2,
+        10.15
+      ],
+      "size": [
+        2.3,
+        2.4
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Accessible restroom",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.372,
+        "tactile": true,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "restroom",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "kitchen",
+      "kind": "equipment",
+      "label": "Kitchenette (sink, dishwasher)",
+      "center": [
+        3.75,
+        11.030000000000001
+      ],
+      "size": [
+        2.4,
+        0.65
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.91,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "SINK",
+          "kind": "control_panel",
+          "position": [
+            3.75,
+            11.030000000000001
+          ],
+          "height": 0.86,
+          "approach": "forward",
+          "obstruction_depth": 0.6,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Kitchenette",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "kitchen_counter",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "fridge",
+      "kind": "equipment",
+      "label": "Refrigerator",
+      "center": [
+        5.45,
+        10.98
+      ],
+      "size": [
+        0.8,
+        0.75
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FRIDGE",
+          "kind": "handle",
+          "position": [
+            5.45,
+            10.98
+          ],
+          "height": 1.1,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Refrigerator",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "fridge",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "microwave",
+      "kind": "equipment",
+      "label": "Microwave",
+      "center": [
+        6.3,
+        11.105
+      ],
+      "size": [
+        0.6,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.2,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "MW",
+          "kind": "control_panel",
+          "position": [
+            6.3,
+            11.105
+          ],
+          "height": 1.15,
+          "approach": "forward",
+          "obstruction_depth": 0.3,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Microwave",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "microwave",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "dining1",
+      "kind": "table",
+      "label": "Dining table (6 seats)",
+      "center": [
+        3.511,
+        9.311
+      ],
+      "size": [
+        1.8,
+        0.9
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 1.5,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Dining table",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "dining_table",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "dining2",
+      "kind": "table",
+      "label": "Dining table (4 seats, accessible end)",
+      "center": [
+        4.506,
+        8.3
+      ],
+      "size": [
+        1.2,
+        0.9
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 0.9,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Dining table",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "dining_table",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "battery",
+      "kind": "cabinet",
+      "label": "Lithium battery cabinet (charging)",
+      "center": [
+        0.3,
+        0.7
+      ],
+      "size": [
+        1.2,
+        0.6
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "BATT",
+          "kind": "handle",
+          "position": [
+            0.3,
+            0.7
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "storage",
+      "sign": {
+        "text": "Lithium battery cabinet",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "battery_cabinet",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd1",
+      "kind": "workbench",
+      "label": "ESD bench 1",
+      "center": [
+        3.2,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 1",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd2",
+      "kind": "workbench",
+      "label": "ESD bench 2",
+      "center": [
+        5.1,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 2",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd3",
+      "kind": "workbench",
+      "label": "ESD bench 3 (height-adjustable)",
+      "center": [
+        7.0,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.86,
+      "work_surface_height": 0.81,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "accessible_station": true,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 3",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd4",
+      "kind": "workbench",
+      "label": "ESD bench 4",
+      "center": [
+        8.9,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 4",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "solder",
+      "kind": "workbench",
+      "label": "Soldering station (fume extraction)",
+      "center": [
+        10.6,
+        0.375
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FUME",
+          "kind": "switch",
+          "position": [
+            10.6,
+            0.375
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.6,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "electronics",
+      "sign": {
+        "text": "Soldering station",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "solder_station",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "components",
+      "kind": "storage",
+      "label": "ESD component drawers",
+      "center": [
+        12.1,
+        0.25
+      ],
+      "size": [
+        1.2,
+        0.5
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.5,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD component drawers",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "drawers",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "laser",
+      "kind": "equipment",
+      "label": "Laser cutter",
+      "center": [
+        13.6,
+        0.5
+      ],
+      "size": [
+        1.4,
+        1.0
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.1,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "LASER",
+          "kind": "control_panel",
+          "position": [
+            13.6,
+            0.5
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Laser cutter",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "laser_cutter",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "printers",
+      "kind": "equipment",
+      "label": "3D printer bank (HEPA + carbon)",
+      "center": [
+        15.7,
+        0.4
+      ],
+      "size": [
+        2.4,
+        0.8
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.9,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "fab",
+      "sign": {
+        "text": "3D printer bank",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "printer_bank",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cnc",
+      "kind": "equipment",
+      "label": "Benchtop CNC mill",
+      "center": [
+        17.65,
+        0.45
+      ],
+      "size": [
+        1.2,
+        0.9
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.6,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "CNC",
+          "kind": "e_stop",
+          "position": [
+            17.65,
+            0.45
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Benchtop CNC mill",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "cnc",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "mech",
+      "kind": "workbench",
+      "label": "Mechanical assembly bench",
+      "center": [
+        14.2,
+        2.4
+      ],
+      "size": [
+        2.0,
+        0.8
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "fab",
+      "sign": {
+        "text": "Mechanical assembly bench",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "mech_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "eyewash",
+      "kind": "equipment",
+      "label": "Emergency eyewash",
+      "center": [
+        12.3,
+        2.4
+      ],
+      "size": [
+        0.5,
+        0.4
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "EYE",
+          "kind": "handle",
+          "position": [
+            12.3,
+            2.4
+          ],
+          "height": 0.9,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Emergency eyewash",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "eyewash",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "hil",
+      "kind": "workbench",
+      "label": "HIL test bench (motor dyno)",
+      "center": [
+        10.4,
+        3.3
+      ],
+      "size": [
+        1.8,
+        0.8
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "HIL",
+          "kind": "e_stop",
+          "position": [
+            10.4,
+            3.3
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.5,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "electronics",
+      "sign": {
+        "text": "HIL test bench",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "hil_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cobot1",
+      "kind": "robot_cell",
+      "label": "Cobot cell 1 (UR5e class)",
+      "center": [
+        4.0,
+        3.3
+      ],
+      "size": [
+        1.2,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "ES1",
+          "kind": "e_stop",
+          "position": [
+            5.1,
+            3.3
+          ],
+          "height": 1.067,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "robots",
+      "sign": {
+        "text": "Cobot cell 1",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "cobot_small",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "teach",
+      "kind": "workbench",
+      "label": "Teach-pendant bench",
+      "center": [
+        6.419,
+        3.3
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.9,
+      "work_surface_height": 0.86,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "robots",
+      "sign": {
+        "text": "Teach-pendant bench",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "teach_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "desks",
+      "kind": "table",
+      "label": "Software desks (3 seats)",
+      "center": [
+        3.4,
+        5.6
+      ],
+      "size": [
+        3.6,
+        0.8
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.69,
+        "width": 1.0,
+        "depth": 0.5
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "desks",
+      "sign": {
+        "text": "Software desks",
+        "fg": "#ffffff",
+        "bg": "#22763e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "desk_row",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "arena",
+      "kind": "amr_track",
+      "label": "Test arena (netted, motion capture)",
+      "center": [
+        10.0,
+        6.811
+      ],
+      "size": [
+        6.0,
+        6.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 3.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "arena",
+      "sign": {
+        "text": "Test arena",
+        "fg": "#ffffff",
+        "bg": "#0a0acb",
+        "text_height": 0.15,
+        "mount_height": 2.55,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "arena",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "mocap",
+      "kind": "workstation",
+      "label": "Mocap operator station",
+      "center": [
+        6.4,
+        7.3
+      ],
+      "size": [
+        1.4,
+        0.7
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.75,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.69,
+        "width": 0.8,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "arena",
+      "sign": {
+        "text": "Mocap operator station",
+        "fg": "#ffffff",
+        "bg": "#0a0acb",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "mocap_station",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "shelving",
+      "kind": "shelf",
+      "label": "Parts shelving",
+      "center": [
+        8.0,
+        11.105
+      ],
+      "size": [
+        2.4,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Parts shelving",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "shelving",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "rawstock",
+      "kind": "shelf",
+      "label": "Raw stock rack",
+      "center": [
+        10.2,
+        11.055
+      ],
+      "size": [
+        1.8,
+        0.6
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Raw stock rack",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "raw_stock",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "flammables",
+      "kind": "cabinet",
+      "label": "Flammable liquids cabinet",
+      "center": [
+        11.8,
+        11.105
+      ],
+      "size": [
+        1.1,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.7,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Flammable liquids cabinet",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "flammables",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "repair",
+      "kind": "workbench",
+      "label": "Robot repair bench",
+      "center": [
+        14.486,
+        4.756
+      ],
+      "size": [
+        2.0,
+        0.8
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Robot repair bench",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "repair_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "humanoid_stand",
+      "kind": "equipment",
+      "label": "Humanoid service stand (hoist)",
+      "center": [
+        14.015,
+        7.3
+      ],
+      "size": [
+        1.2,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Humanoid service stand",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "humanoid_stand",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "quad_stand",
+      "kind": "equipment",
+      "label": "Quadruped service stand",
+      "center": [
+        13.806,
+        8.7
+      ],
+      "size": [
+        1.2,
+        0.7
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.7,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Quadruped service stand",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "quad_stand",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "spares",
+      "kind": "cabinet",
+      "label": "Spare actuators and sensors",
+      "center": [
+        15.809,
+        7.0
+      ],
+      "size": [
+        1.2,
+        0.5
+      ],
+      "rotation_deg": -90.0,
+      "height": 1.9,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "SPARE",
+          "kind": "handle",
+          "position": [
+            15.809000000000001,
+            7.0
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Spare actuators and sensors",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "spares",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "parking",
+      "kind": "storage",
+      "label": "Robot parking",
+      "center": [
+        13.85,
+        10.75
+      ],
+      "size": [
+        1.8,
+        1.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.6,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Robot parking",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "robot_parking",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cobot2",
+      "kind": "robot_cell",
+      "label": "Cobot cell 2 (UR10e class)",
+      "center": [
+        17.08,
+        4.92
+      ],
+      "size": [
+        1.5,
+        1.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "ES2",
+          "kind": "e_stop",
+          "position": [
+            15.78,
+            4.92
+          ],
+          "height": 1.07,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "robots",
+      "sign": {
+        "text": "Cobot cell 2",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": 0.75,
+      "screen_height": 0.0,
+      "model": "cobot_large",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "quiet",
+      "kind": "partition",
+      "label": "Quiet room",
+      "center": [
+        16.2,
+        10.200000000000001
+      ],
+      "size": [
+        2.2,
+        2.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "Quiet room",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.3716,
+        "tactile": true,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "quiet_room",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design B"
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "welcome",
+      "label": "Entry, PPE and lockers",
+      "color": "#0057a8"
+    },
+    {
+      "id": "break",
+      "label": "Kitchenette, dining and restroom",
+      "color": "#747406"
+    },
+    {
+      "id": "robots",
+      "label": "Robot cells",
+      "color": "#1b5e53"
+    },
+    {
+      "id": "arena",
+      "label": "Test arena",
+      "color": "#0a0acb"
+    },
+    {
+      "id": "electronics",
+      "label": "Electronics and soldering (ESD)",
+      "color": "#060674"
+    },
+    {
+      "id": "fab",
+      "label": "Fabrication",
+      "color": "#1b315e"
+    },
+    {
+      "id": "maintenance",
+      "label": "Maintenance and repair",
+      "color": "#740606"
+    },
+    {
+      "id": "storage",
+      "label": "Storage",
+      "color": "#077a91"
+    },
+    {
+      "id": "desks",
+      "label": "Software desks",
+      "color": "#22763e"
+    }
+  ],
+  "source": {
+    "kind": "design",
+    "confidence": 1.0,
+    "note": "Layout over the RoomPlan scan of the venue; program from knowledge/robotics_lab.json"
+  }
+}</script>
+<script id="audit" type="application/json">{"agents": [{"id": "wheelchair", "name": "Wheelchair user", "color": "#3b82f6", "criteria": ["36\" clear route from the entrance to every station, e-stop and exit", "60\" turning circle at the accessible station", "Doors: 32\" clear opening, opening force 5 lbf or less", "Controls and e-stops reachable seated: 15-48\" (less over obstructions)", "Work surfaces 28-34\" high with knee clearance"], "failed": 14, "checks": 66, "legs": [{"path": [[0.812, 7.388], [0.841, 7.347], [0.897, 7.266], [0.981, 7.144], [1.094, 6.981], [1.411, 6.864], [1.933, 6.792], [2.659, 6.766], [3.591, 6.784], [4.33, 6.839], [4.877, 6.93], [5.231, 7.056], [5.394, 7.219], [5.516, 7.341], [5.597, 7.422], [5.638, 7.463]], "title": "Route to Kitchenette (sink, dishwasher)", "severity": "major", "detail": "Narrowest point is 17.7\" (0.45 m) between dining2 and mocap.", "citation": "2010 ADA Standards for Accessible Design \u00a7403.5.1", "fix": "Move Dining table (4 seats, accessible end) 19\" (0.49 m) to widen the aisle to 36\".", "element_id": "kitchen", "location": [5.8125, 7.8875]}, {"path": [[5.638, 7.463], [5.572, 7.397], [5.441, 7.266], [5.244, 7.069], [4.981, 6.806], [4.597, 6.609], [4.091, 6.478], [3.463, 6.413], [2.713, 6.413], [2.102, 6.372], [1.63, 6.291], [1.297, 6.169], [1.103, 6.006], [0.933, 5.633], [0.786, 5.048], [0.663, 4.253], [0.562, 3.247], [0.523, 2.472], [0.545, 1.928], [0.628, 1.616], [0.772, 1.534], [0.881, 1.413], [0.956, 1.25], [0.997, 1.047], [1.003, 0.803], [1.033, 0.619], [1.086, 0.494], [1.162, 0.428], [1.263, 0.422], [1.392, 0.464], [1.552, 0.555], [1.741, 0.694], [1.959, 0.881], [2.269, 1.022], [2.669, 1.116], [3.159, 1.163], [3.741, 1.163], [4.228, 1.214], [4.622, 1.317], [4.922, 1.472], [5.128, 1.678], [5.288, 1.888], [5.4, 2.1], [5.466, 2.316], [5.484, 2.534], [5.498, 2.698], [5.508, 2.808], [5.513, 2.863]], "title": "Reach to e-stop ES1 on Cobot cell 1 (UR5e class)", "severity": "blocking", "detail": "Mounted at 54.0\" (1.37 m), side approach.", "citation": "2010 ADA Standards for Accessible Design \u00a7308.3.1", "fix": "Remount ES1 at 42\".", "element_id": "cobot1", "location": [5.1, 3.3]}, {"path": [[5.513, 2.863], [5.513, 2.814], [5.513, 2.717], [5.513, 2.572], [5.513, 2.378], [5.463, 2.175], [5.362, 1.962], [5.213, 1.741], [5.013, 1.509], [5.331, 1.32], [6.169, 1.173], [7.525, 1.069], [9.4, 1.006], [10.842, 0.991], [11.852, 1.022], [12.428, 1.1], [12.572, 1.225], [12.819, 1.306], [13.169, 1.344], [13.622, 1.338], [14.178, 1.288], [14.633, 1.292], [14.986, 1.352], [15.238, 1.466], [15.388, 1.634], [15.497, 1.831], [15.566, 2.056], [15.594, 2.309], [15.581, 2.591], [15.528, 2.816], [15.434, 2.984], [15.3, 3.097], [15.125, 3.153], [15.017, 3.219], [14.977, 3.294], [15.003, 3.378], [15.097, 3.472], [15.167, 3.542], [15.214, 3.589], [15.238, 3.613]], "title": "Route to E-stop ES2 on Cobot cell 2 (UR10e class)", "severity": "blocking", "detail": "Narrowest point is 13.0\" (0.33 m) between repair and cobot2.", "citation": "2010 ADA Standards for Accessible Design \u00a7403.5.1", "fix": "Move Robot repair bench 24\" (0.61 m) to widen the aisle to 36\".", "element_id": "cobot2", "location": [15.662500000000001, 4.0375000000000005]}, {"path": [[15.238, 3.613], [15.211, 3.586], [15.158, 3.533], [15.078, 3.453], [14.972, 3.347], [14.733, 3.256], [14.361, 3.181], [13.856, 3.122], [13.219, 3.078], [12.808, 3.113], [12.623, 3.225], [12.666, 3.416], [12.934, 3.684], [13.139, 3.958], [13.28, 4.236], [13.356, 4.519], [13.369, 4.806], [13.477, 5.1], [13.68, 5.4], [13.978, 5.706], [14.372, 6.019], [14.667, 6.348], [14.864, 6.695], [14.963, 7.059], [14.963, 7.441], [14.963, 7.727], [14.963, 7.917], [14.963, 8.013]], "title": "Route to E-stop ES3 on Industrial arm cell (fenced)", "severity": "blocking", "detail": "Narrowest point is 21.0\" (0.53 m) between industrial and humanoid_stand.", "citation": "2010 ADA Standards for Accessible Design \u00a7403.5.1", "fix": "Move Humanoid service stand (hoist) 16\" (0.41 m) to widen the aisle to 36\".", "element_id": "industrial", "location": [14.8625, 8.1125]}]}, {"id": "low_vision", "name": "Low vision / color-blind", "color": "#a855f7", "criteria": ["Sign contrast 4.5:1 or better between letters and background", "Letter height large enough for the mounting height and viewing distance", "Zone colors stay distinct for red-green color blindness (protanopia, deuteranopia)", "Zones identified by name or pictogram, not color alone", "Room signs have raised characters and braille at 48-60\""], "failed": 29, "checks": 110, "legs": [{"path": [[0.812, 7.388], [0.812, 7.422], [0.812, 7.491], [0.812, 7.594], [0.812, 7.731], [0.812, 7.834], [0.812, 7.903], [0.812, 7.938]], "title": "Tactile room sign: \"Accessible restroom\"", "severity": "major", "detail": "Room signs need raised characters and braille so blind users can find the room.", "citation": "2010 ADA Standards for Accessible Design \u00a7216.2, 703.2-703.4", "fix": "Replace with a tactile + braille sign, baseline at 54\", latch side.", "element_id": "restroom", "location": [1.2, 8.350000000000001]}, {"path": [[0.812, 7.938], [0.838, 7.859], [0.888, 7.703], [0.963, 7.469], [1.062, 7.156], [1.097, 6.622], [1.066, 5.866], [0.969, 4.887], [0.806, 3.688], [0.72, 2.764], [0.711, 2.117], [0.778, 1.747], [0.922, 1.653], [1.033, 1.523], [1.111, 1.358], [1.156, 1.156], [1.169, 0.919], [1.234, 0.786], [1.353, 0.758], [1.525, 0.834], [1.75, 1.016], [1.962, 1.153], [2.162, 1.247], [2.35, 1.297], [2.525, 1.303], [2.656, 1.308], [2.744, 1.311], [2.788, 1.312]], "title": "Letter height: \"ESD bench 1\"", "severity": "major", "detail": "Capitals are 12 mm at 69\" high, read from 1.8 m.", "citation": "2010 ADA Standards for Accessible Design \u00a7703.5.5", "fix": "Enlarge the lettering on \"ESD bench 1\" to at least 16 mm.", "element_id": "esd1", "location": [3.2, 1.35]}, {"path": [[2.788, 1.312], [2.905, 1.312], [3.139, 1.312], [3.491, 1.312], [3.959, 1.312], [4.311, 1.312], [4.545, 1.312], [4.663, 1.312]], "title": "Letter height: \"ESD bench 2\"", "severity": "major", "detail": "Capitals are 12 mm at 69\" high, read from 1.8 m.", "citation": "2010 ADA Standards for Accessible Design \u00a7703.5.5", "fix": "Enlarge the lettering on \"ESD bench 2\" to at least 16 mm.", "element_id": "esd2", "location": [5.1, 1.35]}, {"path": [[4.663, 1.312], [4.761, 1.312], [4.958, 1.312], [5.253, 1.312], [5.647, 1.312], [6.088, 1.472], [6.575, 1.791], [7.109, 2.269], [7.691, 2.906], [8.127, 3.384], [8.417, 3.703], [8.562, 3.863]], "title": "Zone colors Kitchenette, dining and restroom vs Fabrication", "severity": "major", "detail": "#2da44e vs #fb8f44: dE 90 for typical vision but 9 with protanopia. These zones look the same to a color-blind visitor.", "citation": "WCAG 2.2 \u00a71.4.1 Use of Color", "fix": "Change Fabrication to a color that differs in lightness, or add a pattern.", "element_id": null, "location": [8.977272727272727, 6.101363636363637]}, {"path": [[8.562, 3.863], [8.398, 3.695], [8.07, 3.361], [7.578, 2.859], [6.922, 2.191], [6.195, 1.689], [5.398, 1.355], [4.531, 1.188], [3.594, 1.188], [2.82, 1.141], [2.211, 1.047], [1.766, 0.906], [1.484, 0.719], [1.27, 0.644], [1.123, 0.681], [1.044, 0.831], [1.031, 1.094], [0.986, 1.308], [0.908, 1.473], [0.797, 1.591], [0.653, 1.659], [0.57, 1.967], [0.548, 2.514], [0.587, 3.3], [0.688, 4.325], [0.794, 5.125], [0.906, 5.7], [1.025, 6.05], [1.15, 6.175], [1.448, 6.273], [1.92, 6.345], [2.566, 6.391], [3.384, 6.409], [4.073, 6.505], [4.633, 6.677], [5.062, 6.925], [5.363, 7.25], [5.588, 7.562], [5.737, 7.863], [5.812, 8.15], [5.812, 8.425], [5.786, 8.641], [5.733, 8.797], [5.653, 8.894], [5.547, 8.931], [5.563, 9.055], [5.7, 9.264], [5.959, 9.559], [6.341, 9.941], [6.844, 10.227], [7.469, 10.417], [8.216, 10.513], [9.084, 10.513], [9.736, 10.513], [10.17, 10.513], [10.388, 10.513]], "title": "Zones identified by color alone", "severity": "major", "detail": "Floor colors and sign colors are the only cue for which zone you are in (no zone names or pictograms).", "citation": "WCAG 2.2 \u00a71.4.1 Use of Color", "fix": "Add zone names and pictograms to every sign and a floor legend at each entrance.", "element_id": null, "location": [10.82434, 8.39453]}, {"path": [[10.388, 10.513], [10.17, 10.513], [9.736, 10.513], [9.084, 10.513], [8.216, 10.513], [7.469, 10.417], [6.844, 10.227], [6.341, 9.941], [5.959, 9.559], [5.7, 9.264], [5.563, 9.055], [5.547, 8.931], [5.653, 8.894], [5.733, 8.798], [5.786, 8.645], [5.812, 8.434], [5.812, 8.166], [5.716, 7.867], [5.522, 7.539], [5.231, 7.181], [4.844, 6.794], [4.381, 6.503], [3.844, 6.309], [3.231, 6.213], [2.544, 6.213], [1.975, 6.159], [1.525, 6.053], [1.194, 5.894], [0.981, 5.681], [0.794, 5.283], [0.631, 4.698], [0.494, 3.928], [0.381, 2.972], [0.334, 2.245], [0.353, 1.748], [0.438, 1.481], [0.587, 1.444], [0.702, 1.342], [0.78, 1.177], [0.822, 0.947], [0.828, 0.653], [0.872, 0.433], [0.953, 0.286], [1.072, 0.213], [1.228, 0.213], [1.392, 0.259], [1.564, 0.353], [1.744, 0.494], [1.931, 0.681], [2.703, 0.806], [4.059, 0.869], [6.0, 0.869], [8.525, 0.806], [10.473, 0.791], [11.845, 0.822], [12.641, 0.9], [12.859, 1.025], [13.023, 1.119], [13.133, 1.181], [13.188, 1.213]], "title": "Sign contrast: \"Laser cutter\"", "severity": "major", "detail": "#ffffff on #fb8f44 is 2.3:1. Hard to read with low contrast sensitivity.", "citation": "WCAG 2.2 \u00a71.4.3 (and ADA 703.5.1)", "fix": "Reprint \"Laser cutter\" as white on a darker zone color (>= 4.5:1).", "element_id": "laser", "location": [13.6, 1.6]}]}, {"id": "neurodivergent", "name": "Neurodivergent worker", "color": "#14b8a6", "criteria": ["Quiet stations (desks, ESD benches, soldering, dining) at 55 dBA or less from lab equipment", "No continuous robot motion within 2 m of a seat without a screen", "Every station reachable from the entrance in 4 turns or fewer", "One consistent sign system: same colors, layout and letter size", "An enclosed quiet retreat room"], "failed": 20, "checks": 49, "legs": [{"path": [[0.8125, 7.3875]], "title": "Quiet retreat room", "severity": "major", "detail": "There is nowhere to step away from noise, light and robot motion.", "citation": "BSI PAS 6463:2022 Design for the mind: neurodiversity and the built environment", "fix": "Add an enclosed quiet room (about 2.4 x 2.4 m) near the entrance, away from fabrication.", "element_id": null, "location": [1.2, 7.0]}, {"path": [[0.812, 7.388], [0.839, 7.347], [0.892, 7.266], [0.972, 7.144], [1.078, 6.981], [1.195, 6.864], [1.323, 6.792], [1.463, 6.766], [1.613, 6.784], [1.809, 6.883], [2.053, 7.061], [2.344, 7.319], [2.681, 7.656], [2.934, 7.909], [3.103, 8.078], [3.188, 8.162]], "title": "Noise at Dining table (6 seats)", "severity": "minor", "detail": "About 60 dBA while equipment runs; loudest is Test arena (netted, motion capture) (57 dBA here).", "citation": "ANSI/ASA S12.2 room noise criteria; PAS 6463 acoustic zoning", "fix": "Enclose Test arena (netted, motion capture) in an acoustic enclosure (-15 dB), or move it away from Dining table (6 seats).", "element_id": "dining1", "location": [3.6, 8.6]}, {"path": [[3.188, 8.162], [3.105, 8.077], [2.939, 7.905], [2.691, 7.647], [2.359, 7.303], [2.263, 7.045], [2.4, 6.873], [2.772, 6.788], [3.378, 6.788], [3.852, 6.806], [4.192, 6.844], [4.4, 6.9], [4.475, 6.975], [4.531, 7.031], [4.569, 7.069], [4.588, 7.088]], "title": "Robot motion in view at Dining table (4 seats, accessible end)", "severity": "minor", "detail": "Test arena (netted, motion capture) moves 2.0 m from the seat.", "citation": "BSI PAS 6463:2022 Design for the mind: neurodiversity and the built environment", "fix": "Add a 1.5 m visual screen between Dining table (4 seats, accessible end) and Test arena (netted, motion capture), or move the seats.", "element_id": "dining2", "location": [5.0, 7.500000000000001]}, {"path": [[4.588, 7.088], [4.567, 7.067], [4.527, 7.027], [4.466, 6.966], [4.384, 6.884], [4.128, 6.812], [3.697, 6.75], [3.091, 6.697], [2.309, 6.653], [1.688, 6.327], [1.225, 5.717], [0.922, 4.825], [0.778, 3.65], [0.706, 2.745], [0.706, 2.111], [0.778, 1.747], [0.922, 1.653], [1.033, 1.523], [1.111, 1.358], [1.156, 1.156], [1.169, 0.919], [1.239, 0.788], [1.367, 0.762], [1.553, 0.844], [1.797, 1.031], [2.234, 1.172], [2.866, 1.266], [3.691, 1.312], [4.709, 1.312], [5.62, 1.472], [6.423, 1.791], [7.119, 2.269], [7.706, 2.906], [8.147, 3.384], [8.441, 3.703], [8.588, 3.863]], "title": "One consistent sign system", "severity": "minor", "detail": "Signs switch between white-on-color and pastel-on-white in zones: arena, robots; 2 different letter sizes.", "citation": "BSI PAS 6463:2022 Design for the mind: neurodiversity and the built environment", "fix": "Use one sign template: white letters on the zone color, same size and height.", "element_id": null, "location": [9.0, 5.5]}, {"path": [[8.588, 3.863], [8.423, 3.697], [8.095, 3.366], [7.603, 2.869], [6.947, 2.206], [6.613, 1.708], [6.6, 1.373], [6.909, 1.203], [7.541, 1.197], [8.014, 1.192], [8.33, 1.189], [8.488, 1.188]], "title": "Noise at ESD bench 4", "severity": "major", "detail": "About 68 dBA while equipment runs; loudest is HIL test bench (motor dyno) (65 dBA here).", "citation": "ANSI/ASA S12.2 room noise criteria; PAS 6463 acoustic zoning", "fix": "Enclose HIL test bench (motor dyno) in an acoustic enclosure (-15 dB), or move it away from ESD bench 4.", "element_id": "esd4", "location": [8.9, 1.1]}, {"path": [[8.488, 1.188], [8.62, 1.188], [8.886, 1.188], [9.284, 1.188], [9.816, 1.188], [10.214, 1.188], [10.48, 1.188], [10.613, 1.188]], "title": "Wayfinding to Robot parking", "severity": "minor", "detail": "6 turns over 36.6 m from the main entrance.", "citation": "BSI PAS 6463:2022 Design for the mind: neurodiversity and the built environment", "fix": "Give Robot parking a straight sightline from the main aisle, or add a directional sign at each turn.", "element_id": "parking", "location": [11.037500000000001, 1.3125]}]}, {"id": "motion", "name": "Motion clearance", "color": "#f59e0b", "criteria": ["Each arm's full reach stays inside its taped zone", "Fenced cells: 120 mm between the arm's reach and a 20 mm mesh fence", "500 mm crush gap between the arm's reach and walls or furniture", "E-stops can be pressed from outside the arm's reach"], "failed": 5, "checks": 9, "legs": [{"path": [[0.812, 7.388], [0.838, 7.344], [0.888, 7.256], [0.963, 7.125], [1.062, 6.95], [1.097, 6.519], [1.066, 5.831], [0.969, 4.887], [0.806, 3.688], [0.72, 2.764], [0.711, 2.117], [0.778, 1.747], [0.922, 1.653], [1.033, 1.523], [1.111, 1.358], [1.156, 1.156], [1.169, 0.919], [1.239, 0.788], [1.367, 0.762], [1.553, 0.844], [1.797, 1.031], [2.605, 1.156], [3.977, 1.219], [5.913, 1.219], [8.413, 1.156], [10.333, 1.141], [11.673, 1.172], [12.434, 1.25], [12.616, 1.375], [12.895, 1.452], [13.273, 1.48], [13.75, 1.459], [14.325, 1.391], [14.848, 1.461], [15.32, 1.67], [15.741, 2.019], [16.109, 2.506], [16.386, 2.872], [16.57, 3.116], [16.663, 3.238]], "title": "Cobot cell 2 (UR10e class): gap between arm and wall", "severity": "blocking", "detail": "The arm reaches into wall.", "citation": "ISO 13854:2017 Minimum gaps to avoid crushing \u00a7Table 1 (body: 500 mm)", "fix": "Move Cobot cell 2 (UR10e class) so its reach stays 0.5 m clear of walls.", "element_id": "cobot2", "location": [17.08, 4.92]}, {"path": [[16.663, 3.238], [16.6, 3.175], [16.475, 3.05], [16.288, 2.863], [16.038, 2.613], [15.828, 2.488], [15.659, 2.488], [15.531, 2.613], [15.444, 2.863], [15.195, 3.039], [14.786, 3.142], [14.216, 3.172], [13.484, 3.128], [13.0, 3.161], [12.763, 3.27], [12.772, 3.456], [13.028, 3.719], [13.222, 3.992], [13.353, 4.277], [13.422, 4.572], [13.428, 4.878], [13.528, 5.18], [13.722, 5.477], [14.009, 5.769], [14.391, 6.056], [14.678, 6.347], [14.872, 6.641], [14.972, 6.938], [14.978, 7.238], [15.042, 7.473], [15.164, 7.645], [15.344, 7.753], [15.581, 7.797], [15.769, 7.744], [15.906, 7.594], [15.994, 7.347], [16.031, 7.003], [16.083, 6.744], [16.148, 6.569], [16.228, 6.478], [16.322, 6.472], [16.497, 6.572], [16.753, 6.778], [17.091, 7.091], [17.509, 7.509], [17.827, 7.902], [18.042, 8.267], [18.156, 8.606], [18.169, 8.919], [18.178, 9.153], [18.184, 9.309], [18.188, 9.388]], "title": "Industrial arm cell (fenced): arm sweep vs fence", "severity": "blocking", "detail": "Reach 1.40 m from the base; fence is only 100 mm beyond the arm's reach.", "citation": "ISO 13857:2019 Safety distances \u00a7Table 4 (20 mm mesh: 120 mm)", "fix": "Move the fence out to 1.57 m from the base, or limit the arm's joint range in the safety controller.", "element_id": "industrial", "location": [17.95, 9.8]}]}], "pins": [{"agent": "wheelchair", "title": "Route to E-stop ES1 on Cobot cell 1 (UR5e class)", "severity": "blocking", "element_id": "cobot1", "location": [5.5125, 2.5625]}, {"agent": "wheelchair", "title": "Route to E-stop ES2 on Cobot cell 2 (UR10e class)", "severity": "blocking", "element_id": "cobot2", "location": [15.662500000000001, 4.0375000000000005]}, {"agent": "wheelchair", "title": "Route to E-stop ES3 on Industrial arm cell (fenced)", "severity": "blocking", "element_id": "industrial", "location": [14.8625, 8.1125]}, {"agent": "wheelchair", "title": "Route to Exit D4", "severity": "blocking", "element_id": null, "location": [14.9875, 6.7125]}, {"agent": "wheelchair", "title": "Reach to e-stop ES1 on Cobot cell 1 (UR5e class)", "severity": "blocking", "element_id": "cobot1", "location": [5.1, 3.3]}, {"agent": "motion", "title": "Cobot cell 2 (UR10e class): arm sweep vs floor marking", "severity": "blocking", "element_id": "cobot2", "location": [18.38, 4.92]}, {"agent": "motion", "title": "Cobot cell 2 (UR10e class): gap between arm and wall", "severity": "blocking", "element_id": "cobot2", "location": [17.08, 4.92]}, {"agent": "motion", "title": "E-stop ES2 outside the arm's reach", "severity": "blocking", "element_id": "cobot2", "location": [15.779999999999998, 4.92]}, {"agent": "motion", "title": "Industrial arm cell (fenced): arm sweep vs fence", "severity": "blocking", "element_id": "industrial", "location": [17.95, 9.8]}, {"agent": "motion", "title": "Industrial arm cell (fenced): gap between arm and wall", "severity": "blocking", "element_id": "industrial", "location": [16.55, 9.8]}, {"agent": "wheelchair", "title": "Route to Kitchenette (sink, dishwasher)", "severity": "major", "element_id": "kitchen", "location": [5.8125, 7.8875]}, {"agent": "wheelchair", "title": "Route to Refrigerator", "severity": "major", "element_id": "fridge", "location": [5.8125, 7.8875]}, {"agent": "wheelchair", "title": "Route to Microwave", "severity": "major", "element_id": "microwave", "location": [5.8125, 7.8875]}, {"agent": "wheelchair", "title": "Route to Parts shelving", "severity": "major", "element_id": "shelving", "location": [5.8125, 7.8875]}, {"agent": "wheelchair", "title": "Route to Raw stock rack", "severity": "major", "element_id": "rawstock", "location": [5.8125, 7.8875]}, {"agent": "wheelchair", "title": "Route to Flammable liquids cabinet", "severity": "major", "element_id": "flammables", "location": [5.8125, 7.8875]}, {"agent": "wheelchair", "title": "Route to Quadruped service stand", "severity": "major", "element_id": "quad_stand", "location": [14.8625, 8.1125]}, {"agent": "wheelchair", "title": "Route to Spare actuators and sensors", "severity": "major", "element_id": "spares", "location": [14.9875, 6.7125]}, {"agent": "wheelchair", "title": "Route to Robot parking", "severity": "major", "element_id": "parking", "location": [14.8625, 8.1125]}, {"agent": "low_vision", "title": "Tactile room sign: \"Accessible restroom\"", "severity": "major", "element_id": "restroom", "location": [1.2, 8.350000000000001]}, {"agent": "low_vision", "title": "Letter height: \"ESD bench 1\"", "severity": "major", "element_id": "esd1", "location": [3.2, 1.35]}, {"agent": "low_vision", "title": "Letter height: \"ESD bench 2\"", "severity": "major", "element_id": "esd2", "location": [5.1, 1.35]}, {"agent": "low_vision", "title": "Sign contrast: \"Laser cutter\"", "severity": "major", "element_id": "laser", "location": [13.6, 1.6]}, {"agent": "low_vision", "title": "Sign contrast: \"3D printer bank\"", "severity": "major", "element_id": "printers", "location": [15.7, 1.4]}, {"agent": "low_vision", "title": "Sign contrast: \"Benchtop CNC mill\"", "severity": "major", "element_id": "cnc", "location": [17.65, 1.5]}, {"agent": "low_vision", "title": "Sign contrast: \"Mechanical assembly bench\"", "severity": "major", "element_id": "mech", "location": [14.2, 3.4]}, {"agent": "low_vision", "title": "Sign contrast: \"Emergency eyewash\"", "severity": "major", "element_id": "eyewash", "location": [12.3, 3.2]}, {"agent": "low_vision", "title": "Sign contrast: \"Cobot cell 1\"", "severity": "major", "element_id": "cobot1", "location": [4.0, 1.5999999999999996]}, {"agent": "low_vision", "title": "Sign contrast: \"Teach-pendant bench\"", "severity": "major", "element_id": "teach", "location": [7.2749999999999995, 3.3]}, {"agent": "low_vision", "title": "Sign contrast: \"Test arena\"", "severity": "major", "element_id": "arena", "location": [10.0, 3.6999999999999997]}, {"agent": "low_vision", "title": "Sign contrast: \"Mocap operator station\"", "severity": "major", "element_id": "mocap", "location": [5.45, 7.3]}, {"agent": "low_vision", "title": "Sign contrast: \"Cobot cell 2\"", "severity": "major", "element_id": "cobot2", "location": [17.08, 3.07]}, {"agent": "low_vision", "title": "Sign contrast: \"Industrial arm cell\"", "severity": "major", "element_id": "industrial", "location": [16.55, 7.700000000000001]}, {"agent": "low_vision", "title": "Zone colors Kitchenette, dining and restroom vs Fabrication", "severity": "major", "element_id": null, "location": [8.977272727272727, 6.101363636363637]}, {"agent": "low_vision", "title": "Zones identified by color alone", "severity": "major", "element_id": null, "location": [10.82434, 8.39453]}, {"agent": "neurodivergent", "title": "Noise at ESD bench 4", "severity": "major", "element_id": "esd4", "location": [8.9, 1.1]}, {"agent": "neurodivergent", "title": "Noise at Soldering station (fume extraction)", "severity": "major", "element_id": "solder", "location": [10.6, 1.1]}, {"agent": "neurodivergent", "title": "Quiet retreat room", "severity": "major", "element_id": null, "location": [1.2, 7.0]}, {"agent": "low_vision", "title": "Sign contrast: \"Accessible restroom\"", "severity": "minor", "element_id": "restroom", "location": [1.2, 8.350000000000001]}, {"agent": "low_vision", "title": "Sign contrast: \"Kitchenette\"", "severity": "minor", "element_id": "kitchen", "location": [3.75, 10.105]}, {"agent": "low_vision", "title": "Sign contrast: \"Refrigerator\"", "severity": "minor", "element_id": "fridge", "location": [5.45, 10.005]}, {"agent": "low_vision", "title": "Sign contrast: \"Microwave\"", "severity": "minor", "element_id": "microwave", "location": [6.3, 10.255]}, {"agent": "low_vision", "title": "Sign contrast: \"Dining table\"", "severity": "minor", "element_id": "dining1", "location": [3.6, 8.35]}, {"agent": "low_vision", "title": "Sign contrast: \"Dining table\"", "severity": "minor", "element_id": "dining2", "location": [5.0, 7.250000000000001]}, {"agent": "low_vision", "title": "Sign contrast: \"Robot repair bench\"", "severity": "minor", "element_id": "repair", "location": [14.1, 5.0]}, {"agent": "low_vision", "title": "Sign contrast: \"Humanoid service stand\"", "severity": "minor", "element_id": "humanoid_stand", "location": [14.1, 6.1]}, {"agent": "low_vision", "title": "Sign contrast: \"Quadruped service stand\"", "severity": "minor", "element_id": "quad_stand", "location": [15.049999999999999, 8.7]}, {"agent": "low_vision", "title": "Sign contrast: \"Spare actuators and sensors\"", "severity": "minor", "element_id": "spares", "location": [14.700000000000001, 7.0]}, {"agent": "low_vision", "title": "Sign contrast: \"Robot parking\"", "severity": "minor", "element_id": "parking", "location": [13.85, 9.65]}, {"agent": "low_vision", "title": "Zone colors Entry, PPE and lockers vs Electronics and soldering (ESD)", "severity": "minor", "element_id": null, "location": [6.413888888888889, 1.8305555555555557]}, {"agent": "low_vision", "title": "Zone colors Storage vs Software desks", "severity": "minor", "element_id": null, "location": [6.74, 7.912999999999999]}, {"agent": "neurodivergent", "title": "Noise at Dining table (6 seats)", "severity": "minor", "element_id": "dining1", "location": [3.6, 8.6]}, {"agent": "neurodivergent", "title": "Noise at Dining table (4 seats, accessible end)", "severity": "minor", "element_id": "dining2", "location": [5.0, 7.500000000000001]}, {"agent": "neurodivergent", "title": "Noise at ESD bench 1", "severity": "minor", "element_id": "esd1", "location": [3.2, 1.1]}, {"agent": "neurodivergent", "title": "Noise at ESD bench 2", "severity": "minor", "element_id": "esd2", "location": [5.1, 1.1]}, {"agent": "neurodivergent", "title": "Noise at ESD bench 3 (height-adjustable)", "severity": "minor", "element_id": "esd3", "location": [7.0, 1.1]}, {"agent": "neurodivergent", "title": "Noise at Software desks (3 seats)", "severity": "minor", "element_id": "desks", "location": [3.4, 4.85]}, {"agent": "neurodivergent", "title": "Robot motion in view at Dining table (4 seats, accessible end)", "severity": "minor", "element_id": "dining2", "location": [5.0, 7.500000000000001]}, {"agent": "neurodivergent", "title": "Robot motion in view at ESD bench 1", "severity": "minor", "element_id": "esd1", "location": [3.2, 1.1]}, {"agent": "neurodivergent", "title": "Robot motion in view at ESD bench 2", "severity": "minor", "element_id": "esd2", "location": [5.1, 1.1]}, {"agent": "neurodivergent", "title": "Robot motion in view at Software desks (3 seats)", "severity": "minor", "element_id": "desks", "location": [3.4, 4.85]}, {"agent": "neurodivergent", "title": "Wayfinding to Refrigerator", "severity": "minor", "element_id": "fridge", "location": [4.4625, 6.5875]}, {"agent": "neurodivergent", "title": "Wayfinding to Microwave", "severity": "minor", "element_id": "microwave", "location": [4.5125, 6.5875]}, {"agent": "neurodivergent", "title": "Wayfinding to Raw stock rack", "severity": "minor", "element_id": "rawstock", "location": [5.8125, 7.7875000000000005]}, {"agent": "neurodivergent", "title": "Wayfinding to Flammable liquids cabinet", "severity": "minor", "element_id": "flammables", "location": [5.8125, 8.5875]}, {"agent": "neurodivergent", "title": "Wayfinding to Quadruped service stand", "severity": "minor", "element_id": "quad_stand", "location": [10.012500000000001, 1.3125]}, {"agent": "neurodivergent", "title": "Wayfinding to Robot parking", "severity": "minor", "element_id": "parking", "location": [11.037500000000001, 1.3125]}, {"agent": "neurodivergent", "title": "One consistent sign system", "severity": "minor", "element_id": null, "location": [9.0, 5.5]}], "score_a": 70.0, "score_b": 99.3, "b_failed": [["neurodivergent", "Wayfinding to Quadruped service stand"], ["neurodivergent", "Wayfinding to Spare actuators and sensors"], ["neurodivergent", "Wayfinding to Robot parking"]], "changes": [{"agent": "program", "rule_id": "crush-gap", "finding": "Industrial arm cell (fenced): gap between arm and wall", "change": "Dropped the fenced industrial arm cell ('could' priority): a 1.4 m reach needs a 3.8 m clear circle the room cannot give it. Recommended for a separate fenced bay."}, {"agent": "low_vision", "rule_id": "zone-color-cvd", "finding": "Zone colors Kitchenette, dining and restroom vs Fabrication", "change": "Zone palette -> color-blind-safe, darkened for white lettering (#0057a8, #747406, #1b5e53, #0a0acb, #060674, #1b315e, #740606, #077a91, #22763e); every sign gets a zone pictogram and one template (50 mm letters at 63\")"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to E-stop ES1 on Cobot cell 1 (UR5e class)", "change": "Moved Teach-pendant bench by (+0.12, +0.00) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to E-stop ES2 on Cobot cell 2 (UR10e class)", "change": "Moved Robot repair bench by (-0.61, +0.00) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Exit D4", "change": "Moved Humanoid service stand (hoist) by (-0.34, +0.00) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Kitchenette (sink, dishwasher)", "change": "Moved Dining table (4 seats, accessible end) by (-0.49, +0.00) m"}, {"agent": "motion", "rule_id": "crush-gap", "finding": "Cobot cell 2 (UR10e class): gap between arm and wall", "change": "Cobot cell 2 (UR10e class): safety-rated reach limit 0.75 m (ISO 10218 soft axis limiting)"}, {"agent": "wheelchair", "rule_id": "reach-range", "finding": "Reach to e-stop ES1 on Cobot cell 1 (UR5e class)", "change": "Remounted ES1 on Cobot cell 1 (UR5e class) at 42\""}, {"agent": "motion", "rule_id": "sweep-in-zone", "finding": "Cobot cell 2 (UR10e class): arm sweep vs floor marking", "change": "Cobot cell 2 (UR10e class): tape line moved out to 1.25 m from the base"}, {"agent": "low_vision", "rule_id": "tactile-sign", "finding": "Tactile room sign: \"Accessible restroom\"", "change": "Accessible restroom: sign tactile -> True; Accessible restroom: sign mount_height -> 1.372"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Laser cutter\"", "change": "Laser cutter: sign fg -> #ffffff; Laser cutter: sign bg -> #1b315e"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"3D printer bank\"", "change": "3D printer bank (HEPA + carbon): sign fg -> #ffffff; 3D printer bank (HEPA + carbon): sign bg -> #1b315e"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Benchtop CNC mill\"", "change": "Benchtop CNC mill: sign fg -> #ffffff; Benchtop CNC mill: sign bg -> #1b315e"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Mechanical assembly bench\"", "change": "Mechanical assembly bench: sign fg -> #ffffff; Mechanical assembly bench: sign bg -> #1b315e"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Emergency eyewash\"", "change": "Emergency eyewash: sign fg -> #ffffff; Emergency eyewash: sign bg -> #1b315e"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Cobot cell 1\"", "change": "Cobot cell 1 (UR5e class): sign fg -> #ffffff; Cobot cell 1 (UR5e class): sign bg -> #1b5e53"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Teach-pendant bench\"", "change": "Teach-pendant bench: sign fg -> #ffffff; Teach-pendant bench: sign bg -> #1b5e53"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Test arena\"", "change": "Test arena (netted, motion capture): sign fg -> #ffffff; Test arena (netted, motion capture): sign bg -> #0a0acb"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Mocap operator station\"", "change": "Mocap operator station: sign fg -> #ffffff; Mocap operator station: sign bg -> #0a0acb"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Cobot cell 2\"", "change": "Cobot cell 2 (UR10e class): sign fg -> #ffffff; Cobot cell 2 (UR10e class): sign bg -> #1b5e53"}, {"agent": "neurodivergent", "rule_id": "noise-at-quiet-station", "finding": "Noise at ESD bench 4", "change": "HIL test bench (motor dyno): attenuation_db -> 15.0"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Accessible restroom\"", "change": "Accessible restroom: sign fg -> #ffffff; Accessible restroom: sign bg -> #747406"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Kitchenette\"", "change": "Kitchenette (sink, dishwasher): sign fg -> #ffffff; Kitchenette (sink, dishwasher): sign bg -> #747406"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Refrigerator\"", "change": "Refrigerator: sign fg -> #ffffff; Refrigerator: sign bg -> #747406"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Microwave\"", "change": "Microwave: sign fg -> #ffffff; Microwave: sign bg -> #747406"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Dining table\"", "change": "Dining table (6 seats): sign fg -> #ffffff; Dining table (6 seats): sign bg -> #747406"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Dining table\"", "change": "Dining table (4 seats, accessible end): sign fg -> #ffffff; Dining table (4 seats, accessible end): sign bg -> #747406"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Robot repair bench\"", "change": "Robot repair bench: sign fg -> #ffffff; Robot repair bench: sign bg -> #740606"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Humanoid service stand\"", "change": "Humanoid service stand (hoist): sign fg -> #ffffff; Humanoid service stand (hoist): sign bg -> #740606"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Quadruped service stand\"", "change": "Quadruped service stand: sign fg -> #ffffff; Quadruped service stand: sign bg -> #740606"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Spare actuators and sensors\"", "change": "Spare actuators and sensors: sign fg -> #ffffff; Spare actuators and sensors: sign bg -> #740606"}, {"agent": "low_vision", "rule_id": "sign-contrast", "finding": "Sign contrast: \"Robot parking\"", "change": "Robot parking: sign fg -> #ffffff; Robot parking: sign bg -> #740606"}, {"agent": "neurodivergent", "rule_id": "noise-at-quiet-station", "finding": "Noise at Dining table (6 seats)", "change": "Test arena (netted, motion capture): attenuation_db -> 15.0"}, {"agent": "neurodivergent", "rule_id": "visual-motion", "finding": "Robot motion in view at Dining table (4 seats, accessible end)", "change": "Dining table (4 seats, accessible end): screen_height -> 1.5"}, {"agent": "neurodivergent", "rule_id": "visual-motion", "finding": "Robot motion in view at ESD bench 1", "change": "ESD bench 1: screen_height -> 1.5"}, {"agent": "neurodivergent", "rule_id": "visual-motion", "finding": "Robot motion in view at ESD bench 2", "change": "ESD bench 2: screen_height -> 1.5"}, {"agent": "neurodivergent", "rule_id": "visual-motion", "finding": "Robot motion in view at Software desks (3 seats)", "change": "Software desks (3 seats): screen_height -> 1.5"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Exit D4", "change": "Moved Robot repair bench by (+0.00, -0.24) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Kitchenette (sink, dishwasher)", "change": "Moved Dining table (6 seats) by (-0.09, +0.00) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Parts shelving", "change": "Moved Test arena (netted, motion capture) by (+0.00, -0.39) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Quadruped service stand", "change": "Moved Humanoid service stand (hoist) by (+0.26, +0.00) m"}, {"agent": "neurodivergent", "rule_id": "noise-at-quiet-station", "finding": "Noise at Soldering station (fume extraction)", "change": "Mechanical assembly bench: attenuation_db -> 15.0"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Exit D4", "change": "Moved Spare actuators and sensors by (+0.26, +0.00) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Kitchenette (sink, dishwasher)", "change": "Moved Dining table (6 seats) by (+0.00, -0.09) m"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Raw stock rack", "change": "Moved Test arena (netted, motion capture) by (+0.00, -0.10) m"}, {"agent": "neurodivergent", "rule_id": "noise-at-quiet-station", "finding": "Noise at ESD bench 3 (height-adjustable)", "change": "Benchtop CNC mill: attenuation_db -> 15.0"}, {"agent": "neurodivergent", "rule_id": "noise-at-quiet-station", "finding": "Noise at Soldering station (fume extraction)", "change": "Laser cutter: attenuation_db -> 15.0"}, {"agent": "neurodivergent", "rule_id": "noise-at-quiet-station", "finding": "Noise at Software desks (3 seats)", "change": "Cobot cell 1 (UR5e class): attenuation_db -> 15.0"}, {"agent": "neurodivergent", "rule_id": "quiet-retreat", "finding": "Quiet retreat room", "change": "Added a 2.2 x 2.0 m quiet room at (16.2, 10.2), 48 dBA"}, {"agent": "wheelchair", "rule_id": "route-clear-width", "finding": "Route to Robot parking", "change": "Moved Quadruped service stand by (-0.29, +0.00) m"}]}</script>
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -2308,7 +4114,7 @@ if (specB) {
   for (const s of signs.slice(nSigns)) s.userData.designB = true;
 }
 // A delivery AMR runs laps of the main aisle between the desks and the arena.
-{ const rover = amr(scene, 0, 0); const tote = box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
+const rover = amr(scene, 0, 0); { box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
   animated.push({ obj: rover, kind: "route", pts: [[1.8, 4.6], [6.6, 4.6], [6.6, 1.9], [12.6, 1.9], [12.6, 3.3], [6.6, 3.3], [6.6, 4.6]].map(([x, y]) => P(x, y, 0)), speed: 0.6 }); }
 // The per-element zone planes live in their groups; drop the stray clones.
 zoneFloors.clear();
@@ -2417,10 +4223,79 @@ if (!TOUR) {
       fly.t = Math.min(1, fly.t + 0.012); const k = fly.t * fly.t * (3 - 2 * fly.t);
       camera.position.lerpVectors(fly.p0, fly.p1, k); controls.target.lerpVectors(fly.t0, fly.t1, k); if (fly.t >= 1) fly = null;
     }
+    if (build) build.tick(t);
     tick(t); controls.update(); renderer.render(scene, camera);
   });
 } else {
   director(TOUR);
+}
+
+// ---------- build mode (#build): the design agent places the lab zone by zone ----------
+var AUDIT = JSON.parse(document.getElementById("audit")?.textContent || "null");
+var build = null;  // set at the end of this file, once every helper is defined
+function buildMode() {
+  const WHY = {
+    welcome: "At the main entrance, so people put on PPE on the way in.",
+    break: "Kitchen, dining and restroom kept apart from lab hazards (no food in work areas).",
+    electronics: "ESD benches and soldering on the quiet south wall, away from fabrication noise.",
+    fab: "Laser, printers and CNC grouped near exhaust where access can be controlled.",
+    arena: "The netted mocap arena takes the largest clear rectangle in the room.",
+    robots: "Robot cells against walls with power drops, off the main walkway, with safety zones.",
+    maintenance: "Repair bay between the arena and the robot cells, so robots roll straight in.",
+    storage: "Shelving and the flammables cabinet along walls, away from the battery cabinet.",
+    desks: "Software desks in the open floor near the entrance.",
+  };
+  const order = ["welcome", "break", "electronics", "fab", "arena", "robots", "maintenance", "storage", "desks"]
+    .filter(z => (spec.zones || []).some(x => x.id === z));
+  const zinfo = Object.fromEntries((spec.zones || []).map(z => [z.id, z]));
+  const byZone = Object.fromEntries(order.map(z => [z, Object.values(groups).filter(g => g.userData.el.zone === z)]));
+  const PER = 1.6, T0 = 0.4;  // seconds per zone, lead-in
+  let start = null, done = false;
+  const css = document.createElement("style");
+  css.textContent = `#bp{position:fixed;right:16px;top:16px;width:min(380px,calc(100vw - 32px));padding:16px 18px;background:rgba(16,22,30,.92);border:1px solid #30363d;border-radius:12px;color:#e6edf3;font:14px/1.4 Inter,-apple-system,Helvetica,Arial,sans-serif;z-index:6}
+    #bp h2{margin:0 0 4px;font-size:17px} #bp .now{margin:10px 0;padding:10px 12px;border-radius:10px;background:#0d1117;border:1px solid #30363d;min-height:64px}
+    #bp .now b{display:block;font-size:16px;margin-bottom:3px} #bp ol{margin:8px 0 0;padding-left:0;list-style:none} #bp li{display:flex;align-items:center;gap:8px;padding:3px 0;color:#6e7681}
+    #bp li.done{color:#e6edf3} #bp li i{width:12px;height:12px;border-radius:3px;flex:none} #bp li .c{margin-left:auto;font-size:12.5px;color:#8b949e}
+    #bp button{font:inherit;font-weight:650;font-size:15px;width:100%;margin-top:12px;padding:11px;border-radius:9px;border:1px solid #1f6feb;background:#1f6feb;color:#fff;cursor:pointer}`;
+  document.head.append(css);
+  for (const id of ["views", "legend"]) document.getElementById(id).style.display = "none";
+  document.body.insertAdjacentHTML("beforeend", `<div id="bp"><h2>Design agent</h2><div style="color:#8b949e">Laying the robotics-lab program into the scanned room.</div>
+    <div class="now" id="bnow"><b>Empty shell</b><span style="color:#8b949e">${spec.elements.length} stations · ${order.length} zones to place</span></div>
+    <ol id="blist">${order.map(z => `<li data-z="${z}"><i style="background:${zinfo[z].color}"></i>${zinfo[z].label}<span class="c">${byZone[z].length}</span></li>`).join("")}</ol>
+    <button id="bgo">▶ Build the lab</button></div>`);
+  const groupsList = Object.values(groups);
+  function hideAll() { for (const g of groupsList) { g.visible = false; g.scale.set(1, 0.001, 1); } rover.visible = false; }
+  hideAll();
+  controls.autoRotateSpeed = 0.6;
+  document.getElementById("bgo").onclick = () => { hideAll(); start = null; done = false; started = true; controls.autoRotate = true;
+    document.querySelectorAll("#blist li").forEach(li => li.classList.remove("done")); };
+  let started = false;
+  return {
+    tick(t) {
+      if (!started) return;
+      if (start === null) start = t;
+      const e = t - start;
+      order.forEach((z, zi) => {
+        const zs = T0 + zi * PER, items = byZone[z];
+        items.forEach((g, k) => {
+          const t0 = zs + (k / Math.max(1, items.length)) * PER * 0.7, u = Math.min(1, Math.max(0, (e - t0) / 0.5));
+          const eu = u * u * (3 - 2 * u);
+          g.visible = u > 0; g.scale.set(1, Math.max(0.001, eu), 1); g.position.y = (1 - eu) * 1.5;
+        });
+        if (e >= zs && e < zs + PER) {
+          const zz = zinfo[z];
+          document.getElementById("bnow").innerHTML = `<b style="color:${zz.color}">Placing: ${zz.label}</b><span style="color:#c9d1d9">${WHY[z] || ""}</span>`;
+        }
+        if (e >= zs + PER * 0.8) document.querySelector(`#blist li[data-z="${z}"]`).classList.add("done");
+      });
+      const end = T0 + order.length * PER + 0.6;
+      if (e >= end && !done) {
+        done = true; controls.autoRotate = false; rover.visible = true;
+        document.getElementById("bnow").innerHTML = `<b style="color:#3fb950">Design A complete</b><span style="color:#c9d1d9">${spec.elements.length} stations in ${order.length} color-coded zones, a sign at every station. Next: the disability agents audit it.</span>`;
+        document.getElementById("bgo").textContent = "↻ Replay";
+      }
+    },
+  };
 }
 
 // ---------- director: plays a tour.json timeline frame by frame ----------
@@ -2862,6 +4737,212 @@ function director(tour) {
     renderer.setAnimationLoop(() => window.renderAt(((performance.now() - t0) / 1000) % tour.duration));
   }
 }
+
+
+// ---------- shared panel + helpers for the #agents and #fix modes ----------
+function modePanel(title, sub) {
+  const css = document.createElement("style");
+  css.textContent = `#mp{position:fixed;right:16px;top:16px;bottom:16px;width:min(400px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px;padding:16px 18px;background:rgba(16,22,30,.93);border:1px solid #30363d;border-radius:12px;color:#e6edf3;font:14px/1.4 Inter,-apple-system,Helvetica,Arial,sans-serif;z-index:6}
+    #mp h2{margin:0;font-size:17px} #mp .sub{color:#8b949e} #mp .row{display:flex;flex-wrap:wrap;gap:6px}
+    #mp button{font:inherit;font-weight:650;font-size:13.5px;padding:8px 11px;border-radius:8px;border:1px solid #30363d;background:#21262d;color:#e6edf3;cursor:pointer}
+    #mp button.primary{background:#1f6feb;border-color:#1f6feb;width:100%;font-size:15px;padding:11px}
+    #mp .now{padding:10px 12px;border-radius:10px;background:#0d1117;border:1px solid #30363d;min-height:58px}
+    #mp .log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:6px;padding-right:4px}
+    #mp .item{padding:8px 10px;border-radius:8px;background:#0d1117;border:1px solid #21262d;font-size:13px}
+    #mp .item b{display:block;font-size:13.5px} #mp .sev{font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:1px 6px;border-radius:4px;color:#fff;margin-right:6px}
+    #mp .blocking{background:#d1242f} #mp .major{background:#bc4c00} #mp .minor{background:#9a6700}
+    #mp .fix{color:#7ee787} #mp .muted{color:#8b949e} #mp .score{font-size:30px;font-weight:800;letter-spacing:-.02em}`;
+  document.head.append(css);
+  for (const id of ["views", "legend"]) document.getElementById(id).style.display = "none";
+  document.body.insertAdjacentHTML("beforeend", `<div id="mp"><h2>${title}</h2><div class="sub">${sub}</div><div id="mctl"></div><div class="now" id="mnow"></div><div class="log" id="mlog"></div></div>`);
+  return { ctl: document.getElementById("mctl"), now: document.getElementById("mnow"), log: document.getElementById("mlog") };
+}
+const SEVC = { blocking: 0xd1242f, major: 0xe8710a, minor: 0xd4a72c };
+function pin(loc, color, label) {
+  const g = new THREE.Group(); g.position.copy(P(loc[0], loc[1], 0)); scene.add(g);
+  const m = new THREE.MeshBasicMaterial({ color });
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 2.2, 8), m); stem.position.y = 1.1; g.add(stem);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 12), m); head.position.y = 2.3; g.add(head);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.28, 0.36, 32), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.8 }));
+  ring.rotation.x = -Math.PI / 2; ring.position.y = 0.02; g.add(ring);
+  if (label) { const s = signSprite(label, "#ffffff", "#" + new THREE.Color(color).getHexString(), 0.22); s.position.y = 2.75; g.add(s); }
+  g.userData.setColor = c => { m.color.set(c); ring.material.color.set(c); };
+  return g;
+}
+function flash(id, color, on) {
+  const g = groups[id]; if (!g) return;
+  g.traverse(o => {
+    if (!o.isMesh || !o.material?.emissive || o.userData.zoneFloor) return;
+    if (on) { if (!o.userData.mat0) { o.userData.mat0 = o.material; o.material = o.material.clone(); } o.material.emissive.set(color); o.material.emissiveIntensity = 0.6; }
+    else if (o.userData.mat0) { o.material = o.userData.mat0; delete o.userData.mat0; }
+  });
+}
+function agentFigure(color, seated) {
+  const g = new THREE.Group(), m = new THREE.MeshStandardMaterial({ color, roughness: 0.5 }), skin = new THREE.MeshStandardMaterial({ color: 0xc68e6a });
+  if (seated) {
+    for (const z of [-0.3, 0.3]) { const w = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.035, 10, 28), new THREE.MeshStandardMaterial({ color: 0x24292f })); w.position.set(0, 0.3, z); g.add(w); }
+    limb(new THREE.Vector3(0, 0.5, 0), new THREE.Vector3(0, 1.0, 0), 0.17, m, g); sphere(0.13, skin, 0, 1.22, 0, g);
+  } else { limb(new THREE.Vector3(0, 0.1, 0), new THREE.Vector3(0, 1.35, 0), 0.17, m, g); sphere(0.13, skin, 0, 1.6, 0, g); }
+  g.scale.setScalar(1.8); g.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(g); return g;
+}
+function pathLen(p) { let L = 0; for (let i = 1; i < p.length; i++) L += Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); return L; }
+function pathAt(p, d) {
+  let acc = 0;
+  for (let i = 1; i < p.length; i++) {
+    const L = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]);
+    if (acc + L >= d || i === p.length - 1) { const u = L ? Math.min(1, (d - acc) / L) : 0; return [p[i - 1][0] + (p[i][0] - p[i - 1][0]) * u, p[i - 1][1] + (p[i][1] - p[i - 1][1]) * u, Math.atan2(p[i][1] - p[i - 1][1], p[i][0] - p[i - 1][0])]; }
+    acc += L;
+  }
+  return [p[0][0], p[0][1], 0];
+}
+function fitCam() { const [p, t] = views.Overview; camera.position.copy(P(...p)); controls.target.copy(P(...t)); }
+
+// ---------- #agents: each disability agent walks the lab and finds problems ----------
+function agentsMode() {
+  const ui = modePanel("Disability agents", "Each agent walks real routes from the entrance and checks its cited criteria.");
+  const SPEED = 3.2, STOP = 2.2;
+  let run = null, trail = null, fig = null;
+  const pins = [];
+  ui.ctl.innerHTML = `<div class="row">${AUDIT.agents.map((a, i) => `<button data-i="${i}" style="border-color:${a.color}"><span style="color:${a.color}">●</span> ${a.name}</button>`).join("")}<button data-i="all">▶ All agents</button></div>`;
+  ui.now.innerHTML = `<span class="muted">Pick an agent to watch it walk the lab.</span>`;
+  function clear() { for (const p of pins) scene.remove(p); pins.length = 0; if (trail) scene.remove(trail); if (fig) scene.remove(fig); trail = fig = null; ui.log.innerHTML = ""; }
+  function startAgent(list) {
+    clear();
+    const a = AUDIT.agents[list[0]];
+    fig = agentFigure(a.color, a.id === "wheelchair");
+    { const tag = signSprite(a.name, "#ffffff", a.color, 0.18); tag.position.y = 1.55; fig.add(tag); }
+    const pts = [];
+    const tg = new THREE.BufferGeometry(); trail = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: a.color })); scene.add(trail);
+    ui.now.innerHTML = `<b style="color:${a.color}">${a.name}</b><div class="muted">Checks: ${a.criteria.map(c => c.split(":")[0]).join(" · ")}</div>`;
+    run = { list, a, leg: 0, d: 0, phase: "walk", t: 0, pts, tg };
+  }
+  ui.ctl.querySelectorAll("button").forEach(b => b.onclick = () => {
+    const v = b.dataset.i; startAgent(v === "all" ? AUDIT.agents.map((_, i) => i) : [Number(v)]);
+  });
+  let last = null;
+  return {
+    tick(t) {
+      const dt = last === null ? 0 : Math.min(0.12, t - last); last = t;
+      if (!run) return;
+      const { a } = run, leg = a.legs[run.leg];
+      if (!leg) {
+        if (run.phase !== "end") {
+          run.phase = "end";
+          ui.log.insertAdjacentHTML("afterbegin", `<div class="item" style="border-color:${a.color}"><b>${a.name}: ${a.failed} problems in ${a.checks} checks</b><span class="muted">Showing the ${a.legs.length} most severe.</span></div>`);
+          const next = run.list.slice(1);
+          if (next.length) setTimeout(() => startAgent(next), 1500);
+        }
+        return;
+      }
+      if (run.phase === "walk") {
+        run.d += SPEED * dt;
+        const L = pathLen(leg.path);
+        const [x, y, h] = pathAt(leg.path, Math.min(run.d, L));
+        fig.position.copy(P(x, y, 0)); fig.rotation.y = h;
+        run.pts.push(P(x, y, 0.05)); if (run.pts.length > 1) run.tg.setFromPoints(run.pts);
+        
+        if (run.d >= L) {
+          run.phase = "stop"; run.t = 0;
+          const k = run.leg + 1;
+          pins.push(pin(leg.location, SEVC[leg.severity], String(k)));
+          if (leg.element_id) flash(leg.element_id, 0xff2d2d, true);
+          ui.now.innerHTML = `<b style="color:${a.color}">${a.name} · finding ${k} of ${a.legs.length}</b><div><span class="sev ${leg.severity}">${leg.severity.toUpperCase()}</span>${leg.title}</div>`;
+          ui.log.insertAdjacentHTML("afterbegin", `<div class="item"><b><span class="sev ${leg.severity}">${k}</span>${leg.title}</b>${leg.detail}<div class="muted">${leg.citation}</div>${leg.fix ? `<div class="fix">Fix: ${leg.fix}</div>` : ""}</div>`);
+        }
+      } else if (run.phase === "stop") {
+        run.t += dt;
+        if (run.t >= STOP) { if (leg.element_id) flash(leg.element_id, 0, false); run.leg++; run.d = 0; run.phase = "walk"; }
+      }
+    },
+  };
+}
+
+// ---------- #fix: the remediation agent changes the design, driven by the findings ----------
+function fixMode() {
+  const ui = modePanel("Remediation agent", "Fixes the design from the agents' findings, checks each change, and re-audits.");
+  const B = specB ? Object.fromEntries(specB.elements.map(e => [e.id, e])) : {};
+  const bFailed = new Set((AUDIT.b_failed || []).map(([a, t]) => a + "|" + t));
+  const pinObjs = AUDIT.pins.map(p => ({ ...p, obj: pin(p.location, SEVC[p.severity]), fixed: false }));
+  const resolve = test => { for (const p of pinObjs) if (!p.fixed && test(p) && !bFailed.has(p.agent + "|" + p.title)) { p.fixed = true; p.obj.userData.setColor(0x2da44e); } };
+  const labelOf = id => (groups[id]?.userData.el.label || id).split(" (")[0];
+  // Build the step list from the real change log and the A -> B geometry.
+  const steps = [];
+  if (groups.industrial && !B.industrial) steps.push({ text: "Industrial arm moved to its own fenced bay (crush gap can't be met here)", id: "industrial", kind: "remove" });
+  for (const [id, g] of Object.entries(groups)) {
+    const b = B[id]; if (!b) continue;
+    const to = P(b.center[0], b.center[1], 0);
+    if (to.distanceTo(g.position) > 0.04) steps.push({ text: `Moved ${labelOf(id)} ${(to.distanceTo(g.position)).toFixed(2)} m to open a 36″ aisle`, id, kind: "move", to, rot: THREE.MathUtils.degToRad(b.rotation_deg) });
+  }
+  const human = c => c.change
+    .replace(/: attenuation_db -> 15\.0/, ": acoustic enclosure, −15 dB").replace(/: screen_height -> 1\.5/, ": 1.5 m privacy screen")
+    .replace(/sign text_height -> 0\.05/, "sign letters enlarged to 50 mm").replace(/sign tactile -> True.*/, "tactile + braille room sign");
+  for (const c of AUDIT.changes || []) {
+    if (/^Moved |sign fg|sign bg|^Dropped|Zone palette|quiet room/.test(c.change)) continue;
+    const id = Object.keys(groups).find(k => c.change.startsWith(groups[k].userData.el.label) || c.change.includes(" on " + groups[k].userData.el.label) || c.change.includes(groups[k].userData.el.label + ":"));
+    steps.push({ text: human(c), id, kind: "flash", agent: c.agent });
+  }
+  steps.push({ text: "Color-blind-safe palette; zone names and symbols on every sign", kind: "palette" });
+  if (Object.keys(B).some(k => !groups[k])) steps.push({ text: "Added a quiet room for stepping away from noise and motion", kind: "add" });
+  const sa = AUDIT.score_a, sb = AUDIT.score_b ?? sa;
+  ui.ctl.innerHTML = `<div style="display:flex;align-items:baseline;gap:10px"><span class="score" id="msc">${sa.toFixed(0)}%</span><span class="muted" id="mpins"></span></div><button class="primary" id="mgo">▶ Apply the agents' fixes</button>`;
+  const upd = () => { const open = pinObjs.filter(p => !p.fixed).length; document.getElementById("mpins").textContent = `${open} open problems · ${pinObjs.length - open} fixed`; };
+  upd();
+  ui.now.innerHTML = `<b>Design A</b><div class="muted">${pinObjs.length} problems pinned by the four agents. ${steps.length} fixes queued.</div>`;
+  let run = null, last = null;
+  const home = Object.fromEntries(Object.entries(groups).map(([id, g]) => [id, { p: g.position.clone(), r: g.rotation.y }]));
+  document.getElementById("mgo").onclick = () => {
+    for (const [id, g] of Object.entries(groups)) { g.position.copy(home[id].p); g.rotation.y = home[id].r; g.scale.setScalar(1); g.visible = true; }
+    for (const g of Object.values(groupsB)) g.visible = false;
+    for (const p of pinObjs) { p.fixed = false; p.obj.userData.setColor(SEVC[p.severity]); }
+    ui.log.innerHTML = ""; run = { i: 0, t: 0 }; fitCam(); controls.autoRotate = true; controls.autoRotateSpeed = 0.4;
+  };
+  return {
+    tick(t) {
+      const dt = last === null ? 0 : Math.min(0.05, t - last); last = t;
+      if (!run) return;
+      const st = steps[run.i];
+      if (!st) {
+        if (!run.done) {
+          run.done = true; controls.autoRotate = false; resolve(() => true); upd();
+          document.getElementById("msc").textContent = sb.toFixed(0) + "%";
+          ui.now.innerHTML = `<b style="color:#3fb950">Design B</b><div class="muted">Score ${sa.toFixed(0)}% → ${sb.toFixed(0)}%. ${pinObjs.filter(p => !p.fixed).length} minor issues left, none blocking.</div>`;
+          document.getElementById("mgo").textContent = "↻ Replay";
+        }
+        return;
+      }
+      const DUR = st.kind === "move" ? 1.1 : st.kind === "palette" || st.kind === "add" ? 1.6 : 0.8;
+      if (run.t === 0) {
+        ui.now.innerHTML = `<b>Fix ${run.i + 1} of ${steps.length}</b><div>${st.text}</div>`;
+        ui.log.insertAdjacentHTML("afterbegin", `<div class="item"><b class="fix">✓ ${st.text}</b></div>`);
+        if (st.id) flash(st.id, 0x2da44e, true);
+        if (st.kind === "move") st.from = groups[st.id].position.clone(), st.r0 = groups[st.id].rotation.y;
+      }
+      run.t += dt;
+      const u = Math.min(1, run.t / DUR), e = u * u * (3 - 2 * u);
+      if (st.kind === "move") { const g = groups[st.id]; g.position.lerpVectors(st.from, st.to, e); g.rotation.y = st.r0 + (st.rot - st.r0) * e; }
+      if (st.kind === "remove") groups[st.id].scale.setScalar(Math.max(0.001, 1 - e));
+      if (st.kind === "palette" && u >= 0.5 && !st.swapped) {
+        st.swapped = true;
+        for (const [id, g] of Object.entries(groups)) { g.visible = false; flash(id, 0, false); }
+        for (const g of Object.values(groupsB)) g.visible = true;
+        for (const k of Object.keys(groupsB)) if (!groups[k]) groupsB[k].visible = false;  // the quiet room comes next
+      }
+      if (st.kind === "add") for (const k of Object.keys(groupsB)) if (!groups[k]) { const g = groupsB[k]; g.visible = true; g.scale.set(1, Math.max(0.001, e), 1); }
+      if (u >= 1) {
+        if (st.id && st.kind !== "remove") flash(st.id, 0, false);
+        if (st.kind === "remove") groups[st.id].visible = false;
+        resolve(p => (st.id && p.element_id === st.id) || (st.kind === "palette" && p.agent === "low_vision") || (st.kind === "add" && p.title.startsWith("Quiet")));
+        upd();
+        document.getElementById("msc").textContent = (sa + (sb - sa) * ((run.i + 1) / steps.length)).toFixed(0) + "%";
+        run.i++; run.t = 0;
+      }
+    },
+  };
+}
+
+build = !TOUR && /build/.test(location.hash) ? buildMode()
+  : !TOUR && AUDIT && /agents/.test(location.hash) ? agentsMode()
+  : !TOUR && AUDIT && /fix/.test(location.hash) ? fixMode() : null;
 
 window.__twin = { scene, camera, controls, P, views, renderer };
 </script>
