@@ -7,3 +7,5 @@ ios/build/
 xcuserdata/
 capture/
 .env
+demo/assets/**/*.rrd
+demo/assets/**/*.ply

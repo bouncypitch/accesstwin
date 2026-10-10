@@ -1,0 +1,154 @@
+{
+  "name": "Scanned room (empty shell)",
+  "outline": [
+    [
+      0.0098,
+      11.3586
+    ],
+    [
+      18.3863,
+      11.3586
+    ],
+    [
+      18.3863,
+      10.4438
+    ],
+    [
+      17.3915,
+      10.4438
+    ],
+    [
+      17.3915,
+      9.8566
+    ],
+    [
+      18.3341,
+      9.8566
+    ],
+    [
+      18.3341,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      9.8692
+    ],
+    [
+      0.0098,
+      10.7581
+    ]
+  ],
+  "ceiling_height": 3.651,
+  "doors": [
+    {
+      "id": "D1",
+      "position": [
+        0.0,
+        7.3764
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.333,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "entrance",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.77 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D2",
+      "position": [
+        0.0,
+        1.8094
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.09,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "1.14 m opening; clear width estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D3",
+      "position": [
+        18.3341,
+        2.5081
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.402,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.90 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D4",
+      "position": [
+        18.3341,
+        7.3704
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.468,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 3.04 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D5",
+      "position": [
+        0.0,
+        3.2008
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.643,
+      "opening_force_lbf": 5.0,
+      "hardware": "none",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "open doorway; width from LiDAR"
+      }
+    }
+  ],
+  "elements": [],
+  "source": {
+    "kind": "lidar",
+    "confidence": 0.9,
+    "note": "Apple RoomPlan, 15 walls, 34 objects scanned"
+  }
+}

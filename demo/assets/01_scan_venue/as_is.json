@@ -1,0 +1,1005 @@
+{
+  "name": "Scanned room (as-is)",
+  "outline": [
+    [
+      0.0098,
+      11.3586
+    ],
+    [
+      18.3863,
+      11.3586
+    ],
+    [
+      18.3863,
+      10.4438
+    ],
+    [
+      17.3915,
+      10.4438
+    ],
+    [
+      17.3915,
+      9.8566
+    ],
+    [
+      18.3341,
+      9.8566
+    ],
+    [
+      18.3341,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      9.8692
+    ],
+    [
+      0.0098,
+      10.7581
+    ]
+  ],
+  "ceiling_height": 3.651,
+  "doors": [
+    {
+      "id": "D1",
+      "position": [
+        0.0,
+        7.3764
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.333,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "entrance",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.77 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D2",
+      "position": [
+        0.0,
+        1.8094
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.09,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "1.14 m opening; clear width estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D3",
+      "position": [
+        18.3341,
+        2.5081
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.402,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.90 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D4",
+      "position": [
+        18.3341,
+        7.3704
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.468,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 3.04 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D5",
+      "position": [
+        0.0,
+        3.2008
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.643,
+      "opening_force_lbf": 5.0,
+      "hardware": "none",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "open doorway; width from LiDAR"
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "refrigerator1",
+      "kind": "equipment",
+      "label": "Existing refrigerator 1",
+      "center": [
+        17.8289,
+        10.8016
+      ],
+      "size": [
+        0.716,
+        0.857
+      ],
+      "rotation_deg": -90.0,
+      "height": 1.941,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan refrigerator, confidence low"
+      }
+    },
+    {
+      "id": "table1",
+      "kind": "table",
+      "label": "Existing table 1",
+      "center": [
+        5.871,
+        0.3065
+      ],
+      "size": [
+        1.493,
+        0.613
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.823,
+      "work_surface_height": 0.823,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence low"
+      }
+    },
+    {
+      "id": "chair1",
+      "kind": "seating",
+      "label": "Existing chair 1",
+      "center": [
+        14.5697,
+        2.1289
+      ],
+      "size": [
+        0.52,
+        0.608
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.919,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair2",
+      "kind": "seating",
+      "label": "Existing chair 2",
+      "center": [
+        11.3333,
+        2.0304
+      ],
+      "size": [
+        0.476,
+        0.533
+      ],
+      "rotation_deg": 179.23,
+      "height": 0.865,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair3",
+      "kind": "seating",
+      "label": "Existing chair 3",
+      "center": [
+        12.6299,
+        2.4456
+      ],
+      "size": [
+        0.458,
+        0.511
+      ],
+      "rotation_deg": -175.13,
+      "height": 0.851,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair4",
+      "kind": "seating",
+      "label": "Existing chair 4",
+      "center": [
+        12.58,
+        3.3343
+      ],
+      "size": [
+        0.476,
+        0.535
+      ],
+      "rotation_deg": -2.47,
+      "height": 0.953,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair5",
+      "kind": "seating",
+      "label": "Existing chair 5",
+      "center": [
+        9.1819,
+        4.8677
+      ],
+      "size": [
+        0.503,
+        0.555
+      ],
+      "rotation_deg": -74.13,
+      "height": 0.872,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "storage1",
+      "kind": "storage",
+      "label": "Existing storage 1",
+      "center": [
+        10.8551,
+        9.076
+      ],
+      "size": [
+        0.557,
+        0.519
+      ],
+      "rotation_deg": -0.0,
+      "height": 1.333,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan storage, confidence low"
+      }
+    },
+    {
+      "id": "table2",
+      "kind": "table",
+      "label": "Existing table 2",
+      "center": [
+        2.4824,
+        0.3135
+      ],
+      "size": [
+        1.172,
+        0.627
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.854,
+      "work_surface_height": 0.854,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence low"
+      }
+    },
+    {
+      "id": "chair6",
+      "kind": "seating",
+      "label": "Existing chair 6",
+      "center": [
+        12.8736,
+        8.6045
+      ],
+      "size": [
+        0.518,
+        0.578
+      ],
+      "rotation_deg": -175.24,
+      "height": 0.884,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair7",
+      "kind": "seating",
+      "label": "Existing chair 7",
+      "center": [
+        16.57,
+        3.9442
+      ],
+      "size": [
+        0.5,
+        0.57
+      ],
+      "rotation_deg": -132.73,
+      "height": 0.852,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair8",
+      "kind": "seating",
+      "label": "Existing chair 8",
+      "center": [
+        14.5697,
+        3.0574
+      ],
+      "size": [
+        0.52,
+        0.608
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.919,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair9",
+      "kind": "seating",
+      "label": "Existing chair 9",
+      "center": [
+        11.8816,
+        5.1195
+      ],
+      "size": [
+        0.511,
+        0.542
+      ],
+      "rotation_deg": -174.75,
+      "height": 0.838,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair10",
+      "kind": "seating",
+      "label": "Existing chair 10",
+      "center": [
+        13.9669,
+        2.5932
+      ],
+      "size": [
+        0.52,
+        0.608
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.919,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair11",
+      "kind": "seating",
+      "label": "Existing chair 11",
+      "center": [
+        5.6184,
+        6.3153
+      ],
+      "size": [
+        0.478,
+        0.512
+      ],
+      "rotation_deg": 169.85,
+      "height": 0.868,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair12",
+      "kind": "seating",
+      "label": "Existing chair 12",
+      "center": [
+        7.4779,
+        4.8078
+      ],
+      "size": [
+        0.593,
+        0.636
+      ],
+      "rotation_deg": 177.15,
+      "height": 0.859,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair13",
+      "kind": "seating",
+      "label": "Existing chair 13",
+      "center": [
+        10.9922,
+        1.1184
+      ],
+      "size": [
+        0.453,
+        0.469
+      ],
+      "rotation_deg": -4.16,
+      "height": 0.772,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "storage2",
+      "kind": "storage",
+      "label": "Existing storage 2",
+      "center": [
+        18.0989,
+        5.0398
+      ],
+      "size": [
+        1.128,
+        0.47
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.908,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan storage, confidence low"
+      }
+    },
+    {
+      "id": "table3",
+      "kind": "table",
+      "label": "Existing table 3",
+      "center": [
+        15.7727,
+        0.3083
+      ],
+      "size": [
+        0.765,
+        0.617
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.93,
+      "work_surface_height": 0.93,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence high"
+      }
+    },
+    {
+      "id": "table4",
+      "kind": "table",
+      "label": "Existing table 4",
+      "center": [
+        1.0436,
+        0.339
+      ],
+      "size": [
+        1.806,
+        0.678
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.785,
+      "work_surface_height": 0.785,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence high"
+      }
+    },
+    {
+      "id": "chair14",
+      "kind": "seating",
+      "label": "Existing chair 14",
+      "center": [
+        1.0436,
+        0.6032
+      ],
+      "size": [
+        0.463,
+        0.499
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.864,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair15",
+      "kind": "seating",
+      "label": "Existing chair 15",
+      "center": [
+        7.9633,
+        6.6629
+      ],
+      "size": [
+        0.439,
+        0.425
+      ],
+      "rotation_deg": -100.38,
+      "height": 0.795,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair16",
+      "kind": "seating",
+      "label": "Existing chair 16",
+      "center": [
+        7.9849,
+        5.583
+      ],
+      "size": [
+        0.582,
+        0.581
+      ],
+      "rotation_deg": 12.2,
+      "height": 0.798,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "table5",
+      "kind": "table",
+      "label": "Existing table 5",
+      "center": [
+        14.5697,
+        2.5932
+      ],
+      "size": [
+        1.388,
+        1.111
+      ],
+      "rotation_deg": -0.0,
+      "height": 0.748,
+      "work_surface_height": 0.748,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence high"
+      }
+    },
+    {
+      "id": "chair17",
+      "kind": "seating",
+      "label": "Existing chair 17",
+      "center": [
+        6.9222,
+        6.0308
+      ],
+      "size": [
+        0.523,
+        0.486
+      ],
+      "rotation_deg": 178.93,
+      "height": 0.819,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair18",
+      "kind": "seating",
+      "label": "Existing chair 18",
+      "center": [
+        13.3396,
+        5.4309
+      ],
+      "size": [
+        0.478,
+        0.543
+      ],
+      "rotation_deg": -49.65,
+      "height": 0.789,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair19",
+      "kind": "seating",
+      "label": "Existing chair 19",
+      "center": [
+        15.1726,
+        2.5932
+      ],
+      "size": [
+        0.52,
+        0.608
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.919,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "table6",
+      "kind": "table",
+      "label": "Existing table 6",
+      "center": [
+        17.991,
+        9.2125
+      ],
+      "size": [
+        1.011,
+        0.567
+      ],
+      "rotation_deg": -90.0,
+      "height": 1.019,
+      "work_surface_height": 1.019,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence high"
+      }
+    },
+    {
+      "id": "table7",
+      "kind": "table",
+      "label": "Existing table 7",
+      "center": [
+        14.0895,
+        0.3168
+      ],
+      "size": [
+        1.892,
+        0.634
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.927,
+      "work_surface_height": 0.927,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan table, confidence high"
+      }
+    },
+    {
+      "id": "chair20",
+      "kind": "seating",
+      "label": "Existing chair 20",
+      "center": [
+        12.0637,
+        2.4101
+      ],
+      "size": [
+        0.483,
+        0.55
+      ],
+      "rotation_deg": 179.43,
+      "height": 0.816,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair21",
+      "kind": "seating",
+      "label": "Existing chair 21",
+      "center": [
+        10.9946,
+        5.9154
+      ],
+      "size": [
+        0.53,
+        0.546
+      ],
+      "rotation_deg": -174.04,
+      "height": 0.852,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair22",
+      "kind": "seating",
+      "label": "Existing chair 22",
+      "center": [
+        0.3959,
+        9.1088
+      ],
+      "size": [
+        0.584,
+        0.693
+      ],
+      "rotation_deg": 14.13,
+      "height": 1.348,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair23",
+      "kind": "seating",
+      "label": "Existing chair 23",
+      "center": [
+        10.3252,
+        5.1653
+      ],
+      "size": [
+        0.565,
+        0.553
+      ],
+      "rotation_deg": 179.61,
+      "height": 0.83,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    },
+    {
+      "id": "chair24",
+      "kind": "seating",
+      "label": "Existing chair 24",
+      "center": [
+        14.5449,
+        0.9539
+      ],
+      "size": [
+        0.498,
+        0.521
+      ],
+      "rotation_deg": -87.02,
+      "height": 0.81,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "RoomPlan chair, confidence low"
+      }
+    }
+  ],
+  "source": {
+    "kind": "lidar",
+    "confidence": 0.9,
+    "note": "Apple RoomPlan, 15 walls, 34 objects scanned"
+  }
+}
