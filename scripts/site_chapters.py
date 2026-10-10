@@ -111,6 +111,8 @@ def page(c: dict) -> str:
               'oninput="this.parentNode.style.setProperty(\'--p\', this.value + \'%\')"></div>'
               f'<div class="ba-label"><span>◀ Design A · {fa} problems</span><span>Design B · {fb} minor ▶</span></div>')
     extra = {
+        "The RGB-D scan": '<p><a class="btn" href="scan.html" target="_blank">Explore the scan in 3D</a></p>',
+        "Remove people and tables": '<p><a class="btn ghost" href="scan.html" target="_blank">Try it: remove people and tables live</a></p>',
         "Research the lab": '<details><summary>The lab program</summary><div class="tablewrap"><table><tr><th>Zone</th>'
                             '<th style="text-align:right">m²</th><th>Priority</th><th>Equipment</th><th>Requirements</th></tr>'
                             + c["program_rows"]() + "</table></div></details>",
