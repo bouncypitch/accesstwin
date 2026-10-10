@@ -78,9 +78,9 @@ for d, label in (("out/05_world/venue", "The real venue, emptied (people and fur
     w = Path(d) / "world.json"
     if w.exists():
         worlds.append((label, json.loads(w.read_text()).get("world_marble_url"), copy(f"{d}/marble_thumb.jpg", f"{Path(d).name}_thumb.jpg")))
-for s, _, _ in pairs:
-    if s.get("world"):
-        worlds.append((f"Finding: {s['finding']['title']}", s["world"].get("marble_url"), None))
+for s, _, photo in pairs:
+    if s.get("world"):  # the photoreal frame the world was generated from doubles as its thumbnail
+        worlds.append((f"Finding: {s['finding']['title']}", s["world"].get("marble_url"), photo))
 
 
 def score_rows() -> str:

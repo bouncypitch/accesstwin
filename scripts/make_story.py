@@ -35,7 +35,7 @@ def env(key: str) -> str | None:
 
 
 EL_KEY = env("ELEVENLABS_API_KEY")
-EL_VOICE = "21m00Tcm4TlvDq8ikWAM"  # "Rachel": warm, clear narration voice
+EL_VOICE = "EXAVITQu4vr4xnSDxMaL"  # "Sarah": warm, natural narrator (default voice, works on the free API tier)
 
 
 def speak(text: str, dest: Path) -> float:
