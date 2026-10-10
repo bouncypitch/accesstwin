@@ -30,6 +30,7 @@
 <div id="views" class="panel"></div>
 <div id="toggles" class="panel">
   <label><input type="checkbox" id="tSigns" checked>Station signs</label>
+  <label><input type="checkbox" id="tCallouts">Floating callouts</label>
   <label><input type="checkbox" id="tWalls" checked>Walls</label>
   <label><input type="checkbox" id="tZones" checked>Zone floor colors</label>
   <label><input type="checkbox" id="tSpin">Auto-rotate</label>
@@ -151,7 +152,7 @@ const walls = new THREE.Group(); scene.add(walls);
 const wallMat = new THREE.MeshStandardMaterial({ color: 0xe9e6df, roughness: 0.9 });
 const capMat = new THREE.MeshStandardMaterial({ color: 0x3b4048, roughness: 0.6 });
 const WALL_H = 2.6, T = 0.15;
-const fadeWalls = [];
+const fadeWalls = [], exitSigns = [];
 const ring = [...spec.outline, spec.outline[0]];
 const ccw = spec.outline.reduce((a, p, i) => { const q = spec.outline[(i + 1) % spec.outline.length]; return a + (p[0] * q[1] - q[0] * p[1]); }, 0) > 0;
 for (let i = 0; i < ring.length - 1; i++) {
@@ -169,7 +170,9 @@ for (let i = 0; i < ring.length - 1; i++) {
   pieces.push([s, len, WALL_H]);
   for (const [t0, t1, h, d] of pieces) {
     if (t1 - t0 < 0.01) continue;
-    const mx = ax + ux * (t0 + t1) / 2, my = ay + uy * (t0 + t1) / 2, ang = Math.atan2(uy, ux);
+    // Shift the wall outward by half its thickness so its inner face sits on the scanned wall line.
+    const ox = (ccw ? uy : -uy) * T / 2, oy = (ccw ? -ux : ux) * T / 2;
+    const mx = ax + ux * (t0 + t1) / 2 + ox, my = ay + uy * (t0 + t1) / 2 + oy, ang = Math.atan2(uy, ux);
     if (h) {
       const m = new THREE.Mesh(new THREE.BoxGeometry(t1 - t0, h, T), wallMat.clone());
       m.material.transparent = true;
@@ -188,8 +191,7 @@ for (let i = 0; i < ring.length - 1; i++) {
         box(w - 0.1, 2.08, 0.045, mat("door", 0x8d6e4f, { roughness: 0.55 }), (w - 0.1) / 2, 0.02, 0, leaf);
         leaf.rotation.y = -0.9 * Math.sign(d.inward[0] * uy - d.inward[1] * ux || 1);
       }
-      const exit = signSprite(d.role === "entrance" ? "MAIN ENTRANCE" : "EXIT", "#ffffff", d.role === "entrance" ? "#1a7f37" : "#c62828", 0.16);
-      exit.position.set(0, 2.33, 0.12 * (d.inward[0] * -uy + d.inward[1] * ux >= 0 ? -1 : 1)); frame.add(exit); signs.push(exit);
+      exitSigns.push([frame, d]);
     }
   }
 }
@@ -303,7 +305,7 @@ function cabinet(g, w, d, h, color, label) {
   box(w, h, d, mat("cab" + color, color, { metalness: 0.25, roughness: 0.4 }), 0, 0, 0, g);
   box(0.02, 0.25, 0.03, steel(), 0.04, h * 0.5, d / 2 + 0.01, g); box(0.02, 0.25, 0.03, steel(), -0.04, h * 0.5, d / 2 + 0.01, g);
   box(0.005, h - 0.08, 0.005, dark(), 0, 0.04, d / 2 + 0.003, g);
-  if (label) { const s = signSprite(label, "#111", "#ffffff", 0.09); s.position.set(0, h * 0.78, d / 2 + 0.02); g.add(s); }
+  if (label) { const s = plaque(label, "#111111", "#ffffff", 0.035); s.position.set(0, h * 0.62, d / 2 + 0.006); g.add(s); }
 }
 
 function cage(g, w, d, h) {
@@ -402,7 +404,72 @@ function deskRow(g, w, d, chairs = 3, monitors = true) {
   }
 }
 
+// ---------- physical signs: plaques, name tags, tent cards, post signs ----------
+const callouts = [];
+const WALL_BACKED = new Set(["esd_bench", "solder_station", "kitchen_counter", "shelving", "raw_stock", "laser_cutter", "printer_bank",
+  "cnc", "drawers", "lockers", "ppe_rack", "battery_cabinet", "flammables", "fridge", "microwave"]);
+const BENCHES = new Set(["hil_bench", "repair_bench", "mech_bench", "teach_bench"]);
+const TABLES = new Set(["dining_table", "desk_row", "mocap_station"]);
+// A sign at true scale: capH is the cap height of the letters in meters (spec Sign.text_height).
+function plaque(text, fg, bg, capH, doubleSided = false) {
+  const fs = 96, c = document.createElement("canvas"), x = c.getContext("2d");
+  x.font = `700 ${fs}px Inter, Helvetica, Arial, sans-serif`;
+  c.width = Math.ceil(x.measureText(text).width) + fs; c.height = Math.round(fs * 1.55);
+  x.font = `700 ${fs}px Inter, Helvetica, Arial, sans-serif`;
+  x.fillStyle = bg; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = fg; x.textBaseline = "middle"; x.fillText(text, fs / 2, c.height / 2 + fs * 0.04);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  const k = capH / (0.72 * fs), pw = c.width * k, ph = c.height * k;
+  const g = new THREE.Group(); g.userData.size = [pw, ph];
+  box(pw + 0.012, ph + 0.012, 0.008, mat("acrylicEdge", 0x2b2f36, { roughness: 0.3 }), 0, -(ph + 0.012) / 2, 0, g);
+  const face = new THREE.MeshStandardMaterial({ map: t, roughness: 0.35, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.25 });
+  const f = new THREE.Mesh(new THREE.PlaneGeometry(pw, ph), face); f.position.z = 0.0045; g.add(f);
+  if (doubleSided) { const b = f.clone(); b.rotation.y = Math.PI; b.position.z = -0.0045; g.add(b); }
+  return g;
+}
+function placeSign(g, e, m, w, d, h, top) {
+  const s = e.sign, two = !WALL_BACKED.has(m);
+  const p = plaque(s.text, s.fg, s.bg, s.text_height, two), [pw, ph] = p.userData.size;
+  const yc = s.mount_height + ph / 2 - 0.15 * ph; // mount_height is the baseline of the letters
+  if (m === "arena") {
+    // Banner hanging from the truss, on the south and west faces.
+    p.position.set(0, yc, d / 2 + 0.08); g.add(p);
+    const p2 = plaque(s.text, s.fg, s.bg, s.text_height, true); p2.position.set(-w / 2 - 0.08, yc, 0); p2.rotation.y = -Math.PI / 2; g.add(p2); signs.push(p2);
+  } else if (m === "industrial_cage") {
+    p.position.set(-w / 2 - e.safeguard_margin - 0.04, yc, -0.9); p.rotation.y = -Math.PI / 2; g.add(p); // on the fence beside the gate
+  } else if (m === "cobot_small" || m === "cobot_large") {
+    const px = w / 2 + e.safeguard_margin, pz = d / 2 + e.safeguard_margin;
+    cyl(0.025, 0.025, yc + ph / 2, yellow(), px - pw / 2 - 0.05, 0, pz, g);
+    p.position.set(px - pw / 2 - 0.05, yc + ph / 2 - 0.01, pz + 0.03); g.add(p);
+  } else if (m === "restroom") {
+    p.position.set(w / 2 - 1.0 - pw / 2 - 0.1, yc, d / 2 + 0.005); g.add(p); // on the wall, latch side of the door
+  } else if (TABLES.has(m)) {
+    // Acrylic tent card standing on the table top, readable from both sides.
+    p.position.set(w / 2 - pw / 2 - 0.08, top + ph + 0.02, 0); g.add(p);
+    box(Math.min(pw, 0.3), 0.012, 0.06, mat("acrylic", 0xdde6ee, { transparent: true, opacity: 0.6 }), w / 2 - pw / 2 - 0.08, top, 0, g);
+  } else if (h >= s.mount_height - 0.05) {
+    // Tall unit: plastic name tag on its front face near the top.
+    p.position.set(0, h - 0.06, d / 2 + 0.006); g.add(p);
+  } else if (WALL_BACKED.has(m)) {
+    p.position.set(0, yc, -d / 2 + 0.006); g.add(p); // wall plaque above the station
+  } else if (BENCHES.has(m)) {
+    // Bracket sign rising off the bench riser.
+    for (const sx of [-1, 1]) box(0.02, yc - top - 0.62, 0.02, steel(), sx * pw * 0.4, top + 0.7, -d / 2 + 0.03, g);
+    p.position.set(0, yc + ph / 2 - 0.01, -d / 2 + 0.03); g.add(p);
+  } else {
+    // Freestanding post sign at the front corner.
+    const px = Math.min(w / 2, 0.8), pz = d / 2 + 0.25;
+    cyl(0.02, 0.02, yc + 0.01, dark(), px, 0, pz, g); cyl(0.15, 0.15, 0.02, dark(), px, 0, pz, g);
+    p.position.set(px, yc + ph / 2, pz + 0.025); g.add(p);
+  }
+  signs.push(p);
+}
+
 // ---------- build every element ----------
+for (const [frame, d] of exitSigns) {
+  const ex = plaque(d.role === "entrance" ? "MAIN ENTRANCE" : "EXIT", "#ffffff", d.role === "entrance" ? "#1a7f37" : "#c62828", 0.1, true);
+  ex.position.set(0, 2.42, 0); frame.add(ex); signs.push(ex);
+}
 const ZC = Object.fromEntries((spec.zones || []).map(z => [z.id, z.color]));
 const zoneFloors = new THREE.Group(); scene.add(zoneFloors);
 const pickables = [];
@@ -471,7 +538,7 @@ for (const e of spec.elements) {
       box(w, 0.3, d, mat("hepa", 0xd0d7de), 0, 1.55, 0, g); break;
     }
     case "cnc": box(w, 0.75, d, mat("cabinets", 0x4b5563), 0, 0, 0, g); box(w, 0.85, d, mat("cncbody", 0xe6e6e6, { metalness: 0.3 }), 0, 0.75, 0, g); box(w * 0.6, 0.5, 0.01, glass(), -0.1, 0.9, d / 2 + 0.005, g); cyl(0.04, 0.04, 0.03, red(), w / 2 - 0.15, 1.2, d / 2, g).rotation.x = Math.PI / 2; break;
-    case "eyewash": cyl(0.05, 0.08, 0.85, green(), 0, 0, 0, g); cyl(0.15, 0.1, 0.08, mat("bowl", 0xf5c400), 0, 0.85, 0, g); { const s = signSprite("EYEWASH", "#fff", "#1a7f37", 0.12); s.position.set(0, 2.1, 0); g.add(s); cyl(0.02, 0.02, 2.0, green(), 0, 0, -0.15, g); } break;
+    case "eyewash": cyl(0.05, 0.08, 0.85, green(), 0, 0, 0, g); cyl(0.15, 0.1, 0.08, mat("bowl", 0xf5c400), 0, 0.85, 0, g); { const s = plaque("EYEWASH", "#ffffff", "#1a7f37", 0.06, true); s.position.set(0, 2.2, -0.12); g.add(s); signs.push(s); cyl(0.02, 0.02, 2.05, green(), 0, 0, -0.15, g); } break;
     case "humanoid_stand": {
       for (const sx of [-1, 1]) { box(0.08, h, 0.08, mat("hoist", 0x2f6fb0, { metalness: 0.4 }), sx * w / 2, 0, 0, g); box(0.08, 0.08, d, mat("hoist", 0x2f6fb0), sx * w / 2, 0, 0, g); }
       box(w + 0.08, 0.1, 0.1, mat("hoist", 0x2f6fb0), 0, h, 0, g); box(0.18, 0.18, 0.18, yellow(), 0, h - 0.25, 0, g); cyl(0.008, 0.008, 0.6, black(), 0, h - 0.85, 0, g);
@@ -487,13 +554,9 @@ for (const e of spec.elements) {
       new THREE.MeshBasicMaterial({ color: ZC[e.zone], transparent: true, opacity: 0.28, depthWrite: false }));
     z.rotation.x = -Math.PI / 2; z.position.y = 0.003; g.add(z); zoneFloors.add(z.clone()); z.userData.zoneFloor = true;
   }
-  if (e.sign) {
-    const s = signSprite(e.sign.text, e.sign.fg, e.sign.bg, Math.max(0.16, e.sign.text_height * 4.5));
-    const backed = ["esd_bench", "solder_station", "kitchen_counter", "shelving", "raw_stock", "laser_cutter", "printer_bank", "cnc", "drawers", "lockers", "ppe_rack", "battery_cabinet", "flammables", "fridge", "microwave"].includes(m);
-    s.position.set(0, Math.max(e.sign.mount_height, h + 0.25) + 0.1, backed ? -d / 2 + 0.05 : 0);
-    if (m === "arena") s.position.y = h + 0.55;
-    g.add(s); signs.push(s);
-  }
+  if (e.sign) placeSign(g, e, m, w, d, h, top);
+  // Optional floating callout (off by default; the physical signs are the real labels).
+  { const c = signSprite(e.label.split(" (")[0], "#ffffff", "rgba(13,17,23,.85)", 0.2); c.position.set(0, Math.max(h, 1.2) + 0.45, 0); c.visible = false; g.add(c); callouts.push(c); }
   g.traverse(o => { if (o.isMesh) { o.userData.owner = g; pickables.push(o); } });
 }
 // A delivery AMR runs laps of the main aisle between the desks and the arena.
@@ -508,8 +571,9 @@ for (const z of spec.zones || []) legend.insertAdjacentHTML("beforeend", `<span>
 const views = {
   "Overview": [[W / 2 - 9, -6, 17], [W / 2, D / 2, 0]],
   "Test arena": [[6.5, 1.5, 4.2], [10, 7.3, 1]],
-  "Robot cells": [[12.3, 3.2, 3.2], [16.5, 7.5, 0.8]],
-  "Electronics": [[7.5, 4.6, 2.3], [7, 0.3, 0.9]],
+  "Robot cells": [[13.4, 3.4, 3.8], [16.4, 8.2, 1.0]],
+  "Electronics": [[8.8, 3.6, 2.9], [5.0, 0.2, 1.3]],
+  "Fabrication": [[11.3, 1.9, 2.3], [16.2, 0.4, 1.0]],
   "Kitchen & restroom": [[6.2, 6.0, 2.6], [2.5, 10.2, 0.8]],
   "Top-down plan": [[W / 2, D / 2 - 0.01, 24], [W / 2, D / 2, 0]],
 };
@@ -518,8 +582,10 @@ for (const [name, [pos, tgt]] of Object.entries(views)) {
   const b = document.createElement("button"); b.textContent = name; document.getElementById("views").append(b);
   b.onclick = () => { fly = { p0: camera.position.clone(), t0: controls.target.clone(), p1: P(...pos), t1: P(...tgt), t: 0 }; };
 }
-camera.position.copy(P(...views.Overview[0])); controls.target.copy(P(...views.Overview[1]));
+const v0 = views[decodeURIComponent(location.hash.replace("#view=", ""))] || views.Overview;
+camera.position.copy(P(...v0[0])); controls.target.copy(P(...v0[1]));
 document.getElementById("tSigns").onchange = ev => signs.forEach(s => (s.visible = ev.target.checked));
+document.getElementById("tCallouts").onchange = ev => callouts.forEach(s => (s.visible = ev.target.checked));
 document.getElementById("tWalls").onchange = ev => (walls.visible = ev.target.checked);
 document.getElementById("tZones").onchange = ev => scene.traverse(o => { if (o.userData.zoneFloor) o.visible = ev.target.checked; });
 document.getElementById("tSpin").onchange = ev => (controls.autoRotate = ev.target.checked);

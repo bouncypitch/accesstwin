@@ -243,7 +243,7 @@
         "fg": "#ffffff",
         "bg": "#2da44e",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.5,
         "tactile": false,
         "pictogram": false
       },
@@ -1200,8 +1200,8 @@
         "text": "Test arena",
         "fg": "#fff1a8",
         "bg": "#ffffff",
-        "text_height": 0.05,
-        "mount_height": 1.8,
+        "text_height": 0.15,
+        "mount_height": 2.55,
         "tactile": false,
         "pictogram": false
       },

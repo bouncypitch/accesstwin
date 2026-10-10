@@ -65,7 +65,8 @@ c, r = wall(4.85, "west", (1.5, 0.45)); E.append(el("lockers", "storage", "Day l
 c, r = wall(6.2, "west", (1.0, 0.4)); E.append(el("ppe", "storage", "PPE station (glasses, hearing, coats)", c, (1.0, 0.4), r, "welcome", "ppe_rack", height=1.8))
 
 # --- Break zone (NW): restroom, kitchenette along the north wall, dining ---
-E.append(el("restroom", "partition", "Accessible restroom", (1.2, 10.15), (2.3, 2.4), 0, "break", "restroom", height=2.4))
+E.append(el("restroom", "partition", "Accessible restroom", (1.2, 10.15), (2.3, 2.4), 0, "break", "restroom", height=2.4,
+            sign_kw={"mount_height": 1.5}))  # seeded: no raised characters or braille (ADA 703.2-703.4)
 c, r = wall(3.75, "north", (2.4, 0.65))
 E.append(el("kitchen", "equipment", "Kitchenette (sink, dishwasher)", c, (2.4, 0.65), r, "break", "kitchen_counter", height=0.91,
             parts=[OperablePart(id="SINK", kind="control_panel", position=front(c, r, 0.0), height=0.86, obstruction_depth=0.6)]))
@@ -134,7 +135,7 @@ E.append(el("desks", "table", "Software desks (3 seats)", (3.4, 5.6), (3.6, 0.8)
 
 # --- Test arena: 6 x 6 m netted mocap volume, center of the room ---
 E.append(el("arena", "amr_track", "Test arena (netted, motion capture)", (10.0, 7.3), (6.0, 6.0), 0, "arena", "arena",
-            style="pastel", height=3.0))
+            style="pastel", height=3.0, sign_kw={"text_height": 0.15, "mount_height": 2.55}))  # banner on the truss
 E.append(el("mocap", "workstation", "Mocap operator station", (6.4, 7.3), (1.4, 0.7), -90, "arena", "mocap_station",
             style="pastel", height=0.75, work_surface_height=0.74,
             knee_clearance=KneeClearance(height=0.69, width=0.8, depth=0.48)))
