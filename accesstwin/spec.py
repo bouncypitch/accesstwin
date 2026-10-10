@@ -42,6 +42,18 @@ class KneeClearance(BaseModel):
     depth: float
 
 
+class Sign(BaseModel):
+    """A station label. Colors are hex; sizes in meters. Vision agents check contrast, size and color-only coding."""
+
+    text: str
+    fg: str = "#ffffff"
+    bg: str = "#1f2328"
+    text_height: float = 0.05  # cap height of the characters
+    mount_height: float = 1.8  # baseline of the lowest characters above the floor
+    tactile: bool = False  # raised characters and braille (ADA 703.2, 703.3)
+    pictogram: bool = False
+
+
 class Element(BaseModel):
     """Furniture or equipment with a rectangular footprint."""
 
@@ -60,6 +72,9 @@ class Element(BaseModel):
     accessible_station: bool = False  # designated as the station a wheelchair user would use
     safeguard_margin: float = 0.0  # robot cells: no-go buffer around the footprint while running
     parts: list[OperablePart] = Field(default_factory=list)
+    zone: str | None = None
+    sign: Sign | None = None
+    model: str | None = None  # 3D viewer hint (e.g. "cobot", "cage", "esd_bench"); never used by the checks
     source: Source = Field(default_factory=Source)
 
     def footprint(self) -> Polygon:
@@ -94,12 +109,19 @@ class Door(BaseModel):
         return (self.position[0] + self.inward[0] * depth, self.position[1] + self.inward[1] * depth)
 
 
+class Zone(BaseModel):
+    id: str
+    label: str
+    color: str  # wayfinding color used on floor tape and signs
+
+
 class Space(BaseModel):
     name: str
     outline: list[Vec2]
     ceiling_height: float = 3.0
     doors: list[Door] = Field(default_factory=list)
     elements: list[Element] = Field(default_factory=list)
+    zones: list[Zone] = Field(default_factory=list)
     source: Source = Field(default_factory=Source)
 
     def floor(self) -> Polygon:

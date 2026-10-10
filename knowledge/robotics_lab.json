@@ -7,223 +7,1250 @@
     "Numbers marked basis=standard come from the cited standard; basis=guideline are university EHS design guidelines; basis=practice are common practice."
   ],
   "sources": {
-    "penn": {"title": "Design Guidelines for Makerspaces, Robotics Laboratories and Student/Research Shops (Penn EHRS, rev. 12/2020)", "url": "https://ehrs.upenn.edu/sites/default/files/2020-12/Design%20Guidleines%20for%20Makerspaces%20Robotics%20Labs%20and%20Student%20Shops.pdf"},
-    "iso10218": {"title": "ISO 10218-2:2025 Robotics - Safety requirements - Part 2: Industrial robot applications and robot cells", "url": "https://www.iso.org/standard/73934.html"},
-    "iso10218_faq": {"title": "A3: Updated ISO 10218 FAQ", "url": "https://www.automate.org/robotics/blogs/updated-iso-10218-faq"},
-    "iso13854": {"title": "ISO 13854:2017 Safety of machinery - Minimum gaps to avoid crushing of parts of the human body", "url": "https://www.iso.org/standard/66459.html"},
-    "esd": {"title": "ANSI/ESD S20.20-2021 summary: ESD workbench guide", "url": "https://www.onepointesolutions.com/blog/esd-workbench-guide/"},
-    "umd_batt": {"title": "UMD Brin Drone Lab: battery safety", "url": "https://facilities.robotics.umd.edu/dronelab/safety/batteries.html"},
-    "uci_batt": {"title": "UC Irvine EHS: Lithium-ion batteries in research", "url": "https://ehs.uci.edu/safety/_pdf/reference-guides/lithium-Ion-batteries-research-applications.pdf"},
-    "port_batt": {"title": "University of Portsmouth: lithium battery guidance (UOP-HS-G-01)", "url": "https://guidelines.docstore.port.ac.uk/UOP-HS-G-01.pdf"},
-    "asu_drone": {"title": "American School & University: Designing drone and robotics facilities", "url": "https://www.asumag.com/facilities/science-laboratory-research-facilities/article/55399904/designing-for-unlimited-possibilities-drone-and-robotics-facilities"},
-    "s4l": {"title": "Spaces4Learning: Designing Robotics Labs", "url": "https://spaces4learning.com/articles/2020/01/01/robotics-labs.aspx"},
-    "umd_drone": {"title": "UMD Brin Drone Lab facility (430 ft2 netted, 15 ft high)", "url": "https://facilities.robotics.umd.edu/droneLab.html"},
-    "unsw_flight": {"title": "UNSW Indoor Robotics Flight Test Facility (10 x 10 x 4 m netted)", "url": "https://www.unsw.edu.au/canberra/our-research/our-facilities/robotics-flight-test-facility"},
-    "mocap": {"title": "SDU motion capture lab / OptiTrack volume sizing (12 cameras for ~6 x 6 m)", "url": "https://www.sdu.dk/en/forskning/sduuascenter/aboutsduuascenter/sdu-flight-lab/motioncapturelab"},
-    "ada": {"title": "2010 ADA Standards for Accessible Design", "url": "https://www.access-board.gov/ada/"},
-    "z358": {"title": "ANSI/ISEA Z358.1 Emergency eyewash and shower equipment (as applied in Penn EHRS 14.0)", "url": "https://ehrs.upenn.edu/sites/default/files/2020-12/Design%20Guidleines%20for%20Makerspaces%20Robotics%20Labs%20and%20Student%20Shops.pdf"}
+    "penn": {
+      "title": "Design Guidelines for Makerspaces, Robotics Laboratories and Student/Research Shops (Penn EHRS, rev. 12/2020)",
+      "url": "https://ehrs.upenn.edu/sites/default/files/2020-12/Design%20Guidleines%20for%20Makerspaces%20Robotics%20Labs%20and%20Student%20Shops.pdf"
+    },
+    "iso10218": {
+      "title": "ISO 10218-2:2025 Robotics - Safety requirements - Part 2: Industrial robot applications and robot cells",
+      "url": "https://www.iso.org/standard/73934.html"
+    },
+    "iso10218_faq": {
+      "title": "A3: Updated ISO 10218 FAQ",
+      "url": "https://www.automate.org/robotics/blogs/updated-iso-10218-faq"
+    },
+    "iso13854": {
+      "title": "ISO 13854:2017 Safety of machinery - Minimum gaps to avoid crushing of parts of the human body",
+      "url": "https://www.iso.org/standard/66459.html"
+    },
+    "esd": {
+      "title": "ANSI/ESD S20.20-2021 summary: ESD workbench guide",
+      "url": "https://www.onepointesolutions.com/blog/esd-workbench-guide/"
+    },
+    "umd_batt": {
+      "title": "UMD Brin Drone Lab: battery safety",
+      "url": "https://facilities.robotics.umd.edu/dronelab/safety/batteries.html"
+    },
+    "uci_batt": {
+      "title": "UC Irvine EHS: Lithium-ion batteries in research",
+      "url": "https://ehs.uci.edu/safety/_pdf/reference-guides/lithium-Ion-batteries-research-applications.pdf"
+    },
+    "port_batt": {
+      "title": "University of Portsmouth: lithium battery guidance (UOP-HS-G-01)",
+      "url": "https://guidelines.docstore.port.ac.uk/UOP-HS-G-01.pdf"
+    },
+    "asu_drone": {
+      "title": "American School & University: Designing drone and robotics facilities",
+      "url": "https://www.asumag.com/facilities/science-laboratory-research-facilities/article/55399904/designing-for-unlimited-possibilities-drone-and-robotics-facilities"
+    },
+    "s4l": {
+      "title": "Spaces4Learning: Designing Robotics Labs",
+      "url": "https://spaces4learning.com/articles/2020/01/01/robotics-labs.aspx"
+    },
+    "umd_drone": {
+      "title": "UMD Brin Drone Lab facility (430 ft2 netted, 15 ft high)",
+      "url": "https://facilities.robotics.umd.edu/droneLab.html"
+    },
+    "unsw_flight": {
+      "title": "UNSW Indoor Robotics Flight Test Facility (10 x 10 x 4 m netted)",
+      "url": "https://www.unsw.edu.au/canberra/our-research/our-facilities/robotics-flight-test-facility"
+    },
+    "mocap": {
+      "title": "SDU motion capture lab / OptiTrack volume sizing (12 cameras for ~6 x 6 m)",
+      "url": "https://www.sdu.dk/en/forskning/sduuascenter/aboutsduuascenter/sdu-flight-lab/motioncapturelab"
+    },
+    "ada": {
+      "title": "2010 ADA Standards for Accessible Design",
+      "url": "https://www.access-board.gov/ada/"
+    },
+    "z358": {
+      "title": "ANSI/ISEA Z358.1 Emergency eyewash and shower equipment (as applied in Penn EHRS 14.0)",
+      "url": "https://ehrs.upenn.edu/sites/default/files/2020-12/Design%20Guidleines%20for%20Makerspaces%20Robotics%20Labs%20and%20Student%20Shops.pdf"
+    },
+    "axelent_dist": {
+      "title": "Axelent white paper: safety distances per ISO 13857 (robot fence height example)",
+      "url": "https://www.axelent.co.uk/media/isiiuoe4/white_paper_aw_168_safety_distance_gb.pdf"
+    },
+    "troax_guide": {
+      "title": "Troax Safety Guide: machine guarding per ISO 14120 / ISO 13857",
+      "url": "https://www.troax.com/app/uploads/Brochure-Safety-Guide_EN.pdf"
+    },
+    "controleng_fence": {
+      "title": "Control Engineering: five safety fencing benefits and considerations",
+      "url": "https://www.controleng.com/articles/five-safety-fencing-benefits-and-considerations"
+    },
+    "yale_solder": {
+      "title": "Yale EHS: soldering safety (fume extraction requirements)",
+      "url": "https://ehs.yale.edu/resource/download/2240"
+    },
+    "rpi_solder": {
+      "title": "Rensselaer EHS: soldering safety guidelines",
+      "url": "https://ehs.rpi.edu/lab-research-shop-safety/soldering-safety-guidelines"
+    },
+    "berkeley_solder": {
+      "title": "UC Berkeley EHS: lessons learned, soldering exposure",
+      "url": "https://ehs.berkeley.edu/news/lessons-learned-soldering-exposure"
+    },
+    "uoft_solder": {
+      "title": "University of Toronto EHS: soldering guidelines",
+      "url": "https://ehs.utoronto.ca/wp-content/uploads/2018/12/Soldering-Guidelines-20181206.pdf"
+    },
+    "hlw_lab": {
+      "title": "HLW: robotics lab fit-out (repair/assembly, testing, storage and charging zones; Minitaur and Vision 60 quadrupeds)",
+      "url": "https://hlw.design/project/robotics-lab/"
+    },
+    "fir_lab": {
+      "title": "University of Naples FIR Lab: ANYmal quadruped, Unitree H1 humanoid, 3D printers and CNC",
+      "url": "https://prisma.dieti.unina.it/index.php/facilities/fir-lab"
+    },
+    "staging_patent": {
+      "title": "US patent 12282312: robot staging area management (maintenance / payload station, robot storage)",
+      "url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12282312"
+    },
+    "ubtech_swap": {
+      "title": "A3: UBTech Walker S2 humanoid swaps its own batteries",
+      "url": "https://www.automate.org/robotics/industry-insights/ubtechs-new-humanoid-robot-swaps-out-its-own-batteries/anc"
+    }
   },
   "robot_types": [
-    {"id": "cobot_small", "label": "Collaborative arm, ~0.85 m reach (e.g. UR5e, Franka FR3)", "reach_m": 0.85, "payload_kg": 5, "safeguarding": "collaborative operation per risk assessment; pedestal or bench mount"},
-    {"id": "cobot_large", "label": "Collaborative arm, ~1.3 m reach (e.g. UR10e)", "reach_m": 1.3, "payload_kg": 12.5, "safeguarding": "collaborative operation per risk assessment"},
-    {"id": "industrial_arm", "label": "Industrial arm (non-collaborative)", "reach_m": 1.4, "payload_kg": 10, "safeguarding": "perimeter fence with interlocked gate; must be inside a safeguarded space"},
-    {"id": "amr", "label": "Autonomous mobile robot (e.g. TurtleBot 4, MiR250)", "footprint_m": [0.8, 0.58], "safeguarding": "test in the arena; charging dock"},
-    {"id": "mobile_manipulator", "label": "Mobile manipulator (AMR + arm)", "footprint_m": [0.9, 0.65], "safeguarding": "arena"},
-    {"id": "quadruped", "label": "Quadruped (e.g. Unitree Go2, Boston Dynamics Spot)", "footprint_m": [1.1, 0.5], "safeguarding": "arena with padded perimeter"},
-    {"id": "humanoid", "label": "Humanoid (e.g. Unitree G1, ~1.3 m tall)", "footprint_m": [0.6, 0.5], "safeguarding": "overhead gantry with fall-arrest tether in the arena"},
-    {"id": "drone", "label": "Small indoor drones (e.g. Crazyflie, sub-250 g quadrotors)", "safeguarding": "netted flight volume; no flight outside the net"}
+    {
+      "id": "cobot_small",
+      "label": "Collaborative arm, ~0.85 m reach (e.g. UR5e, Franka FR3)",
+      "reach_m": 0.85,
+      "payload_kg": 5,
+      "safeguarding": "collaborative operation per risk assessment; pedestal or bench mount"
+    },
+    {
+      "id": "cobot_large",
+      "label": "Collaborative arm, ~1.3 m reach (e.g. UR10e)",
+      "reach_m": 1.3,
+      "payload_kg": 12.5,
+      "safeguarding": "collaborative operation per risk assessment"
+    },
+    {
+      "id": "industrial_arm",
+      "label": "Industrial arm (non-collaborative)",
+      "reach_m": 1.4,
+      "payload_kg": 10,
+      "safeguarding": "perimeter fence with interlocked gate; must be inside a safeguarded space"
+    },
+    {
+      "id": "amr",
+      "label": "Autonomous mobile robot (e.g. TurtleBot 4, MiR250)",
+      "footprint_m": [
+        0.8,
+        0.58
+      ],
+      "safeguarding": "test in the arena; charging dock"
+    },
+    {
+      "id": "mobile_manipulator",
+      "label": "Mobile manipulator (AMR + arm)",
+      "footprint_m": [
+        0.9,
+        0.65
+      ],
+      "safeguarding": "arena"
+    },
+    {
+      "id": "quadruped",
+      "label": "Quadruped (e.g. Unitree Go2, Boston Dynamics Spot)",
+      "footprint_m": [
+        1.1,
+        0.5
+      ],
+      "safeguarding": "arena with padded perimeter"
+    },
+    {
+      "id": "humanoid",
+      "label": "Humanoid (e.g. Unitree G1, ~1.3 m tall)",
+      "footprint_m": [
+        0.6,
+        0.5
+      ],
+      "safeguarding": "overhead gantry with fall-arrest tether in the arena"
+    },
+    {
+      "id": "drone",
+      "label": "Small indoor drones (e.g. Crazyflie, sub-250 g quadrotors)",
+      "safeguarding": "netted flight volume; no flight outside the net"
+    }
   ],
   "zones": [
     {
-      "id": "entry", "label": "Entry, PPE and lockers", "priority": "must", "area_m2": 7,
+      "id": "entry",
+      "label": "Entry, PPE and lockers",
+      "priority": "must",
+      "area_m2": 7,
       "placement": "at the main entrance, so people put on PPE on the way in and take it off on the way out",
       "equipment": [
-        {"id": "lockers", "label": "Day-use lockers", "kind": "storage", "size": [1.8, 0.45], "height": 1.8},
-        {"id": "ppe_rack", "label": "PPE station (glasses, face shields, hearing protection, lab coats)", "kind": "storage", "size": [1.2, 0.4], "height": 1.8}
+        {
+          "id": "lockers",
+          "label": "Day-use lockers",
+          "kind": "storage",
+          "size": [
+            1.8,
+            0.45
+          ],
+          "height": 1.8
+        },
+        {
+          "id": "ppe_rack",
+          "label": "PPE station (glasses, face shields, hearing protection, lab coats)",
+          "kind": "storage",
+          "size": [
+            1.2,
+            0.4
+          ],
+          "height": 1.8
+        }
       ],
       "requirements": [
-        {"text": "Locate PPE storage near the entrance so users don and doff on the way in and out.", "source": "penn", "section": "5.6.1.5", "basis": "guideline"},
-        {"text": "Provide day-use and long-term lockers for personal belongings; especially important near machinery and robots.", "source": "penn", "section": "5.6.1.1", "basis": "guideline"},
-        {"text": "Access control (badge/RFID) limiting entry to trained users.", "source": "penn", "section": "6.1.1", "basis": "guideline"}
+        {
+          "text": "Locate PPE storage near the entrance so users don and doff on the way in and out.",
+          "source": "penn",
+          "section": "5.6.1.5",
+          "basis": "guideline"
+        },
+        {
+          "text": "Provide day-use and long-term lockers for personal belongings; especially important near machinery and robots.",
+          "source": "penn",
+          "section": "5.6.1.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "Access control (badge/RFID) limiting entry to trained users.",
+          "source": "penn",
+          "section": "6.1.1",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "cobot_cells", "label": "Collaborative arm cells", "priority": "must", "area_m2": 20,
+      "id": "cobot_cells",
+      "label": "Collaborative arm cells",
+      "priority": "must",
+      "area_m2": 20,
       "placement": "against a wall with overhead power drop; away from the main circulation spine",
       "equipment": [
-        {"id": "cobot_cell_1", "label": "Cobot cell 1 (0.85 m reach)", "kind": "robot_cell", "robot": "cobot_small", "size": [1.2, 1.2], "height": 2.0, "safeguard_margin": 0.5, "parts": [{"kind": "e_stop", "height": 1.07, "approach": "side"}]},
-        {"id": "cobot_cell_2", "label": "Cobot cell 2 (1.3 m reach)", "kind": "robot_cell", "robot": "cobot_large", "size": [1.5, 1.5], "height": 2.0, "safeguard_margin": 0.5, "parts": [{"kind": "e_stop", "height": 1.07, "approach": "side"}]},
-        {"id": "cobot_teach_bench", "label": "Programming / teach-pendant bench", "kind": "workbench", "size": [1.5, 0.75], "height": 0.9, "work_surface_height": 0.86}
+        {
+          "id": "cobot_cell_1",
+          "label": "Cobot cell 1 (0.85 m reach)",
+          "kind": "robot_cell",
+          "robot": "cobot_small",
+          "size": [
+            1.2,
+            1.2
+          ],
+          "height": 2.0,
+          "safeguard_margin": 0.5,
+          "parts": [
+            {
+              "kind": "e_stop",
+              "height": 1.07,
+              "approach": "side"
+            }
+          ]
+        },
+        {
+          "id": "cobot_cell_2",
+          "label": "Cobot cell 2 (1.3 m reach)",
+          "kind": "robot_cell",
+          "robot": "cobot_large",
+          "size": [
+            1.5,
+            1.5
+          ],
+          "height": 2.0,
+          "safeguard_margin": 0.5,
+          "parts": [
+            {
+              "kind": "e_stop",
+              "height": 1.07,
+              "approach": "side"
+            }
+          ]
+        },
+        {
+          "id": "cobot_teach_bench",
+          "label": "Programming / teach-pendant bench",
+          "kind": "workbench",
+          "size": [
+            1.5,
+            0.75
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.86
+        }
       ],
       "requirements": [
-        {"text": "Select collaborative robots where humans and robots share space; industrial robots need more safety infrastructure and space.", "source": "penn", "section": "8.1", "basis": "guideline"},
-        {"text": "A documented safeguarding and risk-reduction assessment by a qualified robot safety assessor/integrator, done during initial design.", "source": "penn", "section": "8.2.1", "basis": "guideline"},
-        {"text": "Comply with ANSI/A3 R15 series and ISO 10218-2:2025, which defines safeguarded spaces that may change with the application.", "source": "iso10218_faq", "section": "ISO 10218-2:2025", "basis": "standard"},
-        {"text": "Keep at least 500 mm between the robot's maximum space and walls, columns or furniture so a body cannot be crushed.", "source": "iso13854", "section": "Table 1 (body)", "basis": "standard", "value_m": 0.5},
-        {"text": "Every robot must be lockable in a zero-energy state (lockout/tagout).", "source": "penn", "section": "8.5.1", "basis": "guideline"},
-        {"text": "Guards must also contain debris from end effectors and failed tooling.", "source": "penn", "section": "8.4.1", "basis": "guideline"},
-        {"text": "Emergency stop reachable from a seated position: 15-48 in above floor with clear floor space.", "source": "ada", "section": "308", "basis": "standard"}
+        {
+          "text": "Select collaborative robots where humans and robots share space; industrial robots need more safety infrastructure and space.",
+          "source": "penn",
+          "section": "8.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "A documented safeguarding and risk-reduction assessment by a qualified robot safety assessor/integrator, done during initial design.",
+          "source": "penn",
+          "section": "8.2.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "Comply with ANSI/A3 R15 series and ISO 10218-2:2025, which defines safeguarded spaces that may change with the application.",
+          "source": "iso10218_faq",
+          "section": "ISO 10218-2:2025",
+          "basis": "standard"
+        },
+        {
+          "text": "Keep at least 500 mm between the robot's maximum space and walls, columns or furniture so a body cannot be crushed.",
+          "source": "iso13854",
+          "section": "Table 1 (body)",
+          "basis": "standard",
+          "value_m": 0.5
+        },
+        {
+          "text": "Every robot must be lockable in a zero-energy state (lockout/tagout).",
+          "source": "penn",
+          "section": "8.5.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "Guards must also contain debris from end effectors and failed tooling.",
+          "source": "penn",
+          "section": "8.4.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "Emergency stop reachable from a seated position: 15-48 in above floor with clear floor space.",
+          "source": "ada",
+          "section": "308",
+          "basis": "standard"
+        }
       ]
     },
     {
-      "id": "industrial_cell", "label": "Fenced industrial arm cell", "priority": "could", "area_m2": 14,
+      "id": "industrial_cell",
+      "label": "Fenced industrial arm cell",
+      "priority": "should",
+      "area_m2": 14,
       "placement": "corner location with controlled access; fence gate interlocked",
       "equipment": [
-        {"id": "industrial_cell_1", "label": "Industrial arm cell (fenced)", "kind": "robot_cell", "robot": "industrial_arm", "size": [1.6, 1.6], "height": 2.2, "safeguard_margin": 0.9, "parts": [{"kind": "e_stop", "height": 1.07, "approach": "side"}, {"kind": "control_panel", "height": 1.1, "approach": "forward"}]}
+        {
+          "id": "industrial_cell_1",
+          "label": "Industrial arm cell (fenced)",
+          "kind": "robot_cell",
+          "robot": "industrial_arm",
+          "size": [
+            1.6,
+            1.6
+          ],
+          "height": 2.2,
+          "safeguard_margin": 0.9,
+          "parts": [
+            {
+              "kind": "e_stop",
+              "height": 1.07,
+              "approach": "side"
+            },
+            {
+              "kind": "control_panel",
+              "height": 1.1,
+              "approach": "forward"
+            }
+          ],
+          "fence_height_m": 2.0
+        }
       ],
       "requirements": [
-        {"text": "Industrial robots must be contained within a safeguarded space (perimeter fencing) to prevent contact with people.", "source": "penn", "section": "3.13", "basis": "guideline"},
-        {"text": "Security fencing is the main difference between demonstration and full-size industrial robot labs.", "source": "s4l", "section": "", "basis": "guideline"}
+        {
+          "text": "Industrial robots must be contained within a safeguarded space (perimeter fencing) to prevent contact with people.",
+          "source": "penn",
+          "section": "3.13",
+          "basis": "guideline"
+        },
+        {
+          "text": "Security fencing is the main difference between demonstration and full-size industrial robot labs.",
+          "source": "s4l",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Perimeter fence at least 1,400 mm high; lower guards need extra measures (light curtain or laser scanner).",
+          "source": "troax_guide",
+          "section": "ISO 13857",
+          "basis": "standard",
+          "value_m": 1.4
+        },
+        {
+          "text": "For a ~1.6 m tall robot with the nearest hazard 600 mm from the fence, the fence should be at least 2,000 mm high.",
+          "source": "axelent_dist",
+          "section": "ISO 13857 Table 1",
+          "basis": "standard",
+          "value_m": 2.0
+        },
+        {
+          "text": "Mesh opening sets the minimum fence-to-hazard distance (e.g. 20 mm slots need at least 120 mm).",
+          "source": "controleng_fence",
+          "section": "ISO 13857 Table 4",
+          "basis": "standard",
+          "value_m": 0.12
+        },
+        {
+          "text": "Guards designed per ISO 14120; interlocked access gate with lockout so the cell cannot restart with a person inside.",
+          "source": "troax_guide",
+          "section": "ISO 14120, ISO 14119",
+          "basis": "standard"
+        }
       ]
     },
     {
-      "id": "arena", "label": "Netted test arena with motion capture (AMRs, quadrupeds, humanoid, drones)", "priority": "must", "area_m2": 36,
+      "id": "arena",
+      "label": "Netted test arena with motion capture (AMRs, quadrupeds, humanoid, drones)",
+      "priority": "must",
+      "area_m2": 36,
       "placement": "largest clear rectangle in the room, away from benches; ceiling-mounted cameras need line of sight",
       "equipment": [
-        {"id": "arena_floor", "label": "Test arena 6 x 6 m (netted, mocap)", "kind": "amr_track", "size": [6.0, 6.0], "height": 3.0},
-        {"id": "humanoid_gantry", "label": "Humanoid gantry with fall-arrest tether", "kind": "equipment", "size": [2.0, 2.0], "height": 2.6, "inside": "arena_floor"},
-        {"id": "mocap_ctrl", "label": "Mocap / operator station", "kind": "workstation", "size": [1.4, 0.7], "height": 0.75, "work_surface_height": 0.74}
+        {
+          "id": "arena_floor",
+          "label": "Test arena 6 x 6 m (netted, mocap)",
+          "kind": "amr_track",
+          "size": [
+            6.0,
+            6.0
+          ],
+          "height": 3.0
+        },
+        {
+          "id": "humanoid_gantry",
+          "label": "Humanoid gantry with fall-arrest tether",
+          "kind": "equipment",
+          "size": [
+            2.0,
+            2.0
+          ],
+          "height": 2.6,
+          "inside": "arena_floor"
+        },
+        {
+          "id": "mocap_ctrl",
+          "label": "Mocap / operator station",
+          "kind": "workstation",
+          "size": [
+            1.4,
+            0.7
+          ],
+          "height": 0.75,
+          "work_surface_height": 0.74
+        }
       ],
       "requirements": [
-        {"text": "About 12 OptiTrack-class cameras cover a ~6 x 6 m capture volume.", "source": "mocap", "section": "", "basis": "practice", "value_m": 6.0},
-        {"text": "Netting, impact-resistant materials, protected cameras with direct line of sight, glare-free adjustable lighting and blackout capability.", "source": "asu_drone", "section": "", "basis": "guideline"},
-        {"text": "Indoor netted flight volumes in university labs range from ~40 m2 x 4.5 m (UMD) to 10 x 10 x 4 m (UNSW); a 6 x 6 x 3 m cage suits sub-250 g drones.", "source": "umd_drone", "section": "", "basis": "practice"},
-        {"text": "Dedicated robot walking and flight testing labs are standard zones in modern robotics facilities.", "source": "s4l", "section": "", "basis": "guideline"}
+        {
+          "text": "About 12 OptiTrack-class cameras cover a ~6 x 6 m capture volume.",
+          "source": "mocap",
+          "section": "",
+          "basis": "practice",
+          "value_m": 6.0
+        },
+        {
+          "text": "Netting, impact-resistant materials, protected cameras with direct line of sight, glare-free adjustable lighting and blackout capability.",
+          "source": "asu_drone",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Indoor netted flight volumes in university labs range from ~40 m2 x 4.5 m (UMD) to 10 x 10 x 4 m (UNSW); a 6 x 6 x 3 m cage suits sub-250 g drones.",
+          "source": "umd_drone",
+          "section": "",
+          "basis": "practice"
+        },
+        {
+          "text": "Dedicated robot walking and flight testing labs are standard zones in modern robotics facilities.",
+          "source": "s4l",
+          "section": "",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "electronics", "label": "Electronics benches (ESD protected area)", "priority": "must", "area_m2": 20,
+      "id": "electronics",
+      "label": "Electronics benches (ESD protected area)",
+      "priority": "must",
+      "area_m2": 20,
       "placement": "quiet side of the room, away from fabrication noise and dust",
       "equipment": [
-        {"id": "esd_bench_1", "label": "ESD bench 1 (scope, PSU, soldering)", "kind": "workbench", "size": [1.8, 0.75], "height": 0.9, "work_surface_height": 0.9},
-        {"id": "esd_bench_2", "label": "ESD bench 2", "kind": "workbench", "size": [1.8, 0.75], "height": 0.9, "work_surface_height": 0.9},
-        {"id": "esd_bench_3", "label": "ESD bench 3 (height-adjustable, accessible)", "kind": "workbench", "size": [1.8, 0.75], "height": 0.86, "work_surface_height": 0.81, "accessible_station": true},
-        {"id": "esd_bench_4", "label": "ESD bench 4", "kind": "workbench", "size": [1.8, 0.75], "height": 0.9, "work_surface_height": 0.9},
-        {"id": "component_storage", "label": "ESD-safe component drawers", "kind": "storage", "size": [1.2, 0.5], "height": 1.5}
+        {
+          "id": "esd_bench_1",
+          "label": "ESD bench 1 (scope, PSU, soldering)",
+          "kind": "workbench",
+          "size": [
+            1.8,
+            0.75
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9
+        },
+        {
+          "id": "esd_bench_2",
+          "label": "ESD bench 2",
+          "kind": "workbench",
+          "size": [
+            1.8,
+            0.75
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9
+        },
+        {
+          "id": "esd_bench_3",
+          "label": "ESD bench 3 (height-adjustable, accessible)",
+          "kind": "workbench",
+          "size": [
+            1.8,
+            0.75
+          ],
+          "height": 0.86,
+          "work_surface_height": 0.81,
+          "accessible_station": true
+        },
+        {
+          "id": "esd_bench_4",
+          "label": "ESD bench 4",
+          "kind": "workbench",
+          "size": [
+            1.8,
+            0.75
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9
+        },
+        {
+          "id": "component_storage",
+          "label": "ESD-safe component drawers",
+          "kind": "storage",
+          "size": [
+            1.2,
+            0.5
+          ],
+          "height": 1.5
+        },
+        {
+          "id": "solder_station",
+          "label": "Soldering station (HEPA + carbon fume extractor arm)",
+          "kind": "workbench",
+          "size": [
+            1.5,
+            0.75
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9,
+          "parts": [
+            {
+              "kind": "switch",
+              "height": 1.0,
+              "approach": "forward",
+              "obstruction_depth": 0.6
+            }
+          ]
+        }
       ],
       "requirements": [
-        {"text": "Handle sensitive parts only inside an ESD Protected Area with clearly identified boundaries.", "source": "esd", "section": "ANSI/ESD S20.20-2021 6", "basis": "standard"},
-        {"text": "All conductive items on a bench share one ground; dissipative work surface or mat.", "source": "esd", "section": "", "basis": "standard"},
-        {"text": "Fume extraction for rosin-flux soldering, placed close to the work; extraction arms conductive and grounded.", "source": "esd", "section": "HSE guidance", "basis": "guideline"},
-        {"text": "Non-combustible tables and shelving where heat-generating equipment (soldering, hot wire) is used.", "source": "penn", "section": "5.2.1.4", "basis": "guideline"}
+        {
+          "text": "Handle sensitive parts only inside an ESD Protected Area with clearly identified boundaries.",
+          "source": "esd",
+          "section": "ANSI/ESD S20.20-2021 6",
+          "basis": "standard"
+        },
+        {
+          "text": "All conductive items on a bench share one ground; dissipative work surface or mat.",
+          "source": "esd",
+          "section": "",
+          "basis": "standard"
+        },
+        {
+          "text": "Fume extraction for rosin-flux soldering, placed close to the work; extraction arms conductive and grounded.",
+          "source": "esd",
+          "section": "HSE guidance",
+          "basis": "guideline"
+        },
+        {
+          "text": "Non-combustible tables and shelving where heat-generating equipment (soldering, hot wire) is used.",
+          "source": "penn",
+          "section": "5.2.1.4",
+          "basis": "guideline"
+        },
+        {
+          "text": "Localized fume extraction is required while soldering; a hard-ducted hood is best, otherwise a portable snorkel unit.",
+          "source": "rpi_solder",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Portable fume extractors need both HEPA (particulate) and activated-carbon (flux vapor) stages; replace filters on schedule.",
+          "source": "yale_solder",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Position extraction so fumes are pulled away from, not through, the worker's breathing zone; prefer lead-free solder.",
+          "source": "uoft_solder",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Incident: extended soldering on an open bench caused exposure; corrective action made local extraction mandatory.",
+          "source": "berkeley_solder",
+          "section": "",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "fabrication", "label": "Fabrication: 3D printers, laser cutter, benchtop CNC, hand tools", "priority": "must", "area_m2": 24,
+      "id": "fabrication",
+      "label": "Fabrication: 3D printers, laser cutter, benchtop CNC, hand tools",
+      "priority": "must",
+      "area_m2": 24,
       "placement": "controlled-access area near exhaust; segregated from areas that do not need PPE; noisy equipment isolated",
       "equipment": [
-        {"id": "printer_enclosure", "label": "Enclosed 3D printer bank (HEPA + carbon)", "kind": "equipment", "size": [2.4, 0.8], "height": 1.9},
-        {"id": "laser_cutter", "label": "Laser cutter with exhaust", "kind": "equipment", "size": [1.4, 1.0], "height": 1.1, "parts": [{"kind": "control_panel", "height": 1.0, "approach": "forward"}]},
-        {"id": "cnc_mill", "label": "Benchtop CNC mill in enclosure", "kind": "equipment", "size": [1.2, 0.9], "height": 1.6, "parts": [{"kind": "e_stop", "height": 1.0, "approach": "forward"}]},
-        {"id": "mech_bench", "label": "Mechanical assembly bench (vise, drill press)", "kind": "workbench", "size": [2.0, 0.8], "height": 0.9, "work_surface_height": 0.9},
-        {"id": "tool_wall", "label": "Tool wall / pegboard", "kind": "storage", "size": [2.0, 0.3], "height": 2.0}
+        {
+          "id": "printer_enclosure",
+          "label": "Enclosed 3D printer bank (HEPA + carbon)",
+          "kind": "equipment",
+          "size": [
+            2.4,
+            0.8
+          ],
+          "height": 1.9
+        },
+        {
+          "id": "laser_cutter",
+          "label": "Laser cutter with exhaust",
+          "kind": "equipment",
+          "size": [
+            1.4,
+            1.0
+          ],
+          "height": 1.1,
+          "parts": [
+            {
+              "kind": "control_panel",
+              "height": 1.0,
+              "approach": "forward"
+            }
+          ]
+        },
+        {
+          "id": "cnc_mill",
+          "label": "Benchtop CNC mill in enclosure",
+          "kind": "equipment",
+          "size": [
+            1.2,
+            0.9
+          ],
+          "height": 1.6,
+          "parts": [
+            {
+              "kind": "e_stop",
+              "height": 1.0,
+              "approach": "forward"
+            }
+          ]
+        },
+        {
+          "id": "mech_bench",
+          "label": "Mechanical assembly bench (vise, drill press)",
+          "kind": "workbench",
+          "size": [
+            2.0,
+            0.8
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9
+        },
+        {
+          "id": "tool_wall",
+          "label": "Tool wall / pegboard",
+          "kind": "storage",
+          "size": [
+            2.0,
+            0.3
+          ],
+          "height": 2.0
+        }
       ],
       "requirements": [
-        {"text": "Without enclosures: at least 4 ACH for one 3D printer, 6 ACH for several; no recirculation to offices/classrooms.", "source": "penn", "section": "7.4.1", "basis": "guideline", "value": "4-6 ACH"},
-        {"text": "Or use noncombustible enclosures connected to exhaust or HEPA + carbon filtration.", "source": "penn", "section": "7.4.2", "basis": "guideline"},
-        {"text": "Laser cutters only in well-ventilated spaces, typically at least 6 ACH; exterior exhaust preferred.", "source": "penn", "section": "9.1-9.2", "basis": "guideline", "value": "6 ACH"},
-        {"text": "Fire-resistant waste containers (FM 6921 / UL 1315 / UL 242) near laser cutters.", "source": "penn", "section": "9.5", "basis": "guideline"},
-        {"text": "Put high-hazard machines (CNC, laser cutters) where access can be controlled.", "source": "penn", "section": "5.3.1.1", "basis": "guideline"},
-        {"text": "Separate PPE-required areas from areas that do not need PPE; isolate noisy equipment.", "source": "penn", "section": "5.3.1.3-5.3.1.4", "basis": "guideline"},
-        {"text": "Lockout/tagout energy isolation for each machine.", "source": "penn", "section": "10.1", "basis": "guideline"},
-        {"text": "No carpet; easily cleanable, slip-resistant floors where cutting fluids are used.", "source": "penn", "section": "5.2.1.1, 10.2", "basis": "guideline"}
+        {
+          "text": "Without enclosures: at least 4 ACH for one 3D printer, 6 ACH for several; no recirculation to offices/classrooms.",
+          "source": "penn",
+          "section": "7.4.1",
+          "basis": "guideline",
+          "value": "4-6 ACH"
+        },
+        {
+          "text": "Or use noncombustible enclosures connected to exhaust or HEPA + carbon filtration.",
+          "source": "penn",
+          "section": "7.4.2",
+          "basis": "guideline"
+        },
+        {
+          "text": "Laser cutters only in well-ventilated spaces, typically at least 6 ACH; exterior exhaust preferred.",
+          "source": "penn",
+          "section": "9.1-9.2",
+          "basis": "guideline",
+          "value": "6 ACH"
+        },
+        {
+          "text": "Fire-resistant waste containers (FM 6921 / UL 1315 / UL 242) near laser cutters.",
+          "source": "penn",
+          "section": "9.5",
+          "basis": "guideline"
+        },
+        {
+          "text": "Put high-hazard machines (CNC, laser cutters) where access can be controlled.",
+          "source": "penn",
+          "section": "5.3.1.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "Separate PPE-required areas from areas that do not need PPE; isolate noisy equipment.",
+          "source": "penn",
+          "section": "5.3.1.3-5.3.1.4",
+          "basis": "guideline"
+        },
+        {
+          "text": "Lockout/tagout energy isolation for each machine.",
+          "source": "penn",
+          "section": "10.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "No carpet; easily cleanable, slip-resistant floors where cutting fluids are used.",
+          "source": "penn",
+          "section": "5.2.1.1, 10.2",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "battery", "label": "Battery charging and storage", "priority": "must", "area_m2": 4,
+      "id": "battery",
+      "label": "Battery charging and storage",
+      "priority": "must",
+      "area_m2": 4,
       "placement": "near an exit, away from flammable storage and egress paths; in view of occupied benches so charging is supervised",
       "equipment": [
-        {"id": "battery_cabinet", "label": "Vented fire-rated lithium battery cabinet (with charging)", "kind": "cabinet", "size": [1.2, 0.6], "height": 1.8, "parts": [{"kind": "handle", "height": 1.0, "approach": "forward"}]},
-        {"id": "amr_docks", "label": "AMR / quadruped charging docks", "kind": "equipment", "size": [2.0, 0.6], "height": 0.4}
+        {
+          "id": "battery_cabinet",
+          "label": "Vented fire-rated lithium battery cabinet (with charging)",
+          "kind": "cabinet",
+          "size": [
+            1.2,
+            0.6
+          ],
+          "height": 1.8,
+          "parts": [
+            {
+              "kind": "handle",
+              "height": 1.0,
+              "approach": "forward"
+            }
+          ]
+        },
+        {
+          "id": "amr_docks",
+          "label": "AMR / quadruped charging docks",
+          "kind": "equipment",
+          "size": [
+            2.0,
+            0.6
+          ],
+          "height": 0.4
+        }
       ],
       "requirements": [
-        {"text": "Charge LiPo batteries only inside a fire-resistant container; store charged packs in a flammable-storage cabinet in a LiPo bag/box.", "source": "umd_batt", "section": "", "basis": "guideline"},
-        {"text": "Dedicated vented fire-rated cabinet; packs not touching; dry, room temperature, away from heat.", "source": "uci_batt", "section": "", "basis": "guideline"},
-        {"text": "Never charge unattended or overnight; dedicated charging rooms need smoke detection and 30-minute fire separation.", "source": "port_batt", "section": "", "basis": "guideline"},
-        {"text": "Store LiPo at 3.7-3.8 V per cell for storage longer than 14 days.", "source": "umd_batt", "section": "", "basis": "guideline"},
-        {"text": "Fire and Emergency Services review of battery charging systems.", "source": "penn", "section": "4.4.3", "basis": "guideline"}
+        {
+          "text": "Charge LiPo batteries only inside a fire-resistant container; store charged packs in a flammable-storage cabinet in a LiPo bag/box.",
+          "source": "umd_batt",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Dedicated vented fire-rated cabinet; packs not touching; dry, room temperature, away from heat.",
+          "source": "uci_batt",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Never charge unattended or overnight; dedicated charging rooms need smoke detection and 30-minute fire separation.",
+          "source": "port_batt",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Store LiPo at 3.7-3.8 V per cell for storage longer than 14 days.",
+          "source": "umd_batt",
+          "section": "",
+          "basis": "guideline"
+        },
+        {
+          "text": "Fire and Emergency Services review of battery charging systems.",
+          "source": "penn",
+          "section": "4.4.3",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "storage", "label": "Storage: parts, raw stock, finished work, chemicals", "priority": "must", "area_m2": 10,
+      "id": "storage",
+      "label": "Storage: parts, raw stock, finished work, chemicals",
+      "priority": "must",
+      "area_m2": 10,
       "placement": "along walls; chemical cabinet away from battery cabinet and hot work",
       "equipment": [
-        {"id": "parts_shelving", "label": "Parts shelving", "kind": "shelf", "size": [2.4, 0.5], "height": 2.0},
-        {"id": "raw_stock", "label": "Raw stock rack (sheet, extrusion)", "kind": "shelf", "size": [1.8, 0.6], "height": 2.0},
-        {"id": "flammables", "label": "Flammable liquids cabinet", "kind": "cabinet", "size": [1.1, 0.5], "height": 1.7},
-        {"id": "robot_parking", "label": "Robot parking / staging", "kind": "storage", "size": [2.0, 1.0], "height": 1.0}
+        {
+          "id": "parts_shelving",
+          "label": "Parts shelving",
+          "kind": "shelf",
+          "size": [
+            2.4,
+            0.5
+          ],
+          "height": 2.0
+        },
+        {
+          "id": "raw_stock",
+          "label": "Raw stock rack (sheet, extrusion)",
+          "kind": "shelf",
+          "size": [
+            1.8,
+            0.6
+          ],
+          "height": 2.0
+        },
+        {
+          "id": "flammables",
+          "label": "Flammable liquids cabinet",
+          "kind": "cabinet",
+          "size": [
+            1.1,
+            0.5
+          ],
+          "height": 1.7
+        },
+        {
+          "id": "robot_parking",
+          "label": "Robot parking / staging",
+          "kind": "storage",
+          "size": [
+            2.0,
+            1.0
+          ],
+          "height": 1.0
+        }
       ],
       "requirements": [
-        {"text": "Lack of storage is the most common end-user regret; plan for raw materials, chemicals, finished products and PPE.", "source": "penn", "section": "5.6.1", "basis": "guideline"},
-        {"text": "Separate cabinets per chemical class with secondary containment; no drain disposal.", "source": "penn", "section": "5.6.1.3, 7.5", "basis": "guideline"}
+        {
+          "text": "Lack of storage is the most common end-user regret; plan for raw materials, chemicals, finished products and PPE.",
+          "source": "penn",
+          "section": "5.6.1",
+          "basis": "guideline"
+        },
+        {
+          "text": "Separate cabinets per chemical class with secondary containment; no drain disposal.",
+          "source": "penn",
+          "section": "5.6.1.3, 7.5",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "test_bench", "label": "Hardware-in-the-loop / test benches", "priority": "should", "area_m2": 6,
+      "id": "test_bench",
+      "label": "Hardware-in-the-loop / test benches",
+      "priority": "should",
+      "area_m2": 6,
       "placement": "between the electronics zone and the arena",
       "equipment": [
-        {"id": "hil_bench", "label": "HIL test bench (motor dyno, power analyzer)", "kind": "workbench", "size": [1.8, 0.8], "height": 0.9, "work_surface_height": 0.9, "parts": [{"kind": "e_stop", "height": 1.0, "approach": "forward", "obstruction_depth": 0.5}]}
+        {
+          "id": "hil_bench",
+          "label": "HIL test bench (motor dyno, power analyzer)",
+          "kind": "workbench",
+          "size": [
+            1.8,
+            0.8
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9,
+          "parts": [
+            {
+              "kind": "e_stop",
+              "height": 1.0,
+              "approach": "forward",
+              "obstruction_depth": 0.5
+            }
+          ]
+        }
       ],
       "requirements": [
-        {"text": "Electronics and software development labs sit alongside walking and flight test labs.", "source": "s4l", "section": "", "basis": "guideline"}
+        {
+          "text": "Electronics and software development labs sit alongside walking and flight test labs.",
+          "source": "s4l",
+          "section": "",
+          "basis": "guideline"
+        }
       ]
     },
     {
-      "id": "desks", "label": "Software / desk area", "priority": "should", "area_m2": 16,
+      "id": "desks",
+      "label": "Software / desk area",
+      "priority": "should",
+      "area_m2": 16,
       "placement": "near windows or daylight; quiet side",
       "equipment": [
-        {"id": "desk_row_1", "label": "Desk row (3 seats)", "kind": "table", "size": [3.6, 0.8], "height": 0.74, "work_surface_height": 0.74},
-        {"id": "desk_row_2", "label": "Desk row (3 seats)", "kind": "table", "size": [3.6, 0.8], "height": 0.74, "work_surface_height": 0.74}
+        {
+          "id": "desk_row_1",
+          "label": "Desk row (3 seats)",
+          "kind": "table",
+          "size": [
+            3.6,
+            0.8
+          ],
+          "height": 0.74,
+          "work_surface_height": 0.74
+        },
+        {
+          "id": "desk_row_2",
+          "label": "Desk row (3 seats)",
+          "kind": "table",
+          "size": [
+            3.6,
+            0.8
+          ],
+          "height": 0.74,
+          "work_surface_height": 0.74
+        }
       ],
       "requirements": []
     },
     {
-      "id": "kitchenette", "label": "Kitchenette (refrigerator, sink, dishwasher, microwave)", "priority": "must", "area_m2": 9,
+      "id": "maintenance",
+      "label": "Robot maintenance and repair bay",
+      "area_m2": 10,
+      "priority": "must",
+      "placement": "between storage and the arena so robots roll straight in from testing; near spare parts and the battery cabinet",
+      "requirements": [
+        {
+          "text": "Dedicated zones for robot repair and assembly, testing, storage and charging are standard in legged-robot labs.",
+          "source": "hlw_lab",
+          "section": "",
+          "basis": "practice"
+        },
+        {
+          "text": "A maintenance / payload station with tools, replacement parts and modular payloads; separate robot storage stations when not in use.",
+          "source": "staging_patent",
+          "section": "",
+          "basis": "practice"
+        },
+        {
+          "text": "Joint and gearbox servicing (lubrication) needs a cleanable bench and containment for oils.",
+          "source": "staging_patent",
+          "section": "",
+          "basis": "practice"
+        },
+        {
+          "text": "Humanoid packs are large (Unitree H1: 15 Ah, 0.864 kWh) and some robots hot-swap packs, so keep swap stock in the battery cabinet next door.",
+          "source": "fir_lab",
+          "section": "",
+          "basis": "practice"
+        }
+      ],
+      "equipment": [
+        {
+          "id": "repair_bench",
+          "label": "Repair bench (ESD mat, vise, torque tools)",
+          "kind": "workbench",
+          "size": [
+            2.0,
+            0.8
+          ],
+          "height": 0.9,
+          "work_surface_height": 0.9
+        },
+        {
+          "id": "humanoid_stand",
+          "label": "Humanoid maintenance stand with hoist",
+          "kind": "equipment",
+          "size": [
+            1.2,
+            1.2
+          ],
+          "height": 2.4
+        },
+        {
+          "id": "quadruped_stand",
+          "label": "Quadruped service stand",
+          "kind": "equipment",
+          "size": [
+            1.2,
+            0.7
+          ],
+          "height": 0.7
+        },
+        {
+          "id": "spares_cabinet",
+          "label": "Spare actuators, sensors and payloads",
+          "kind": "cabinet",
+          "size": [
+            1.2,
+            0.5
+          ],
+          "height": 1.9,
+          "parts": [
+            {
+              "kind": "handle",
+              "height": 1.0,
+              "approach": "forward"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kitchenette",
+      "label": "Kitchenette (refrigerator, sink, dishwasher, microwave)",
+      "priority": "must",
+      "area_m2": 9,
       "placement": "physically separated from lab hazards (no food in work areas), next to the break area and restroom plumbing",
       "equipment": [
-        {"id": "kitchen_counter", "label": "Kitchen counter with sink and dishwasher", "kind": "equipment", "size": [2.4, 0.65], "height": 0.91, "parts": [{"kind": "control_panel", "height": 0.86, "approach": "forward", "obstruction_depth": 0.6}]},
-        {"id": "fridge", "label": "Refrigerator", "kind": "equipment", "size": [0.8, 0.75], "height": 1.8, "parts": [{"kind": "handle", "height": 1.1, "approach": "side"}]},
-        {"id": "microwave", "label": "Microwave (counter-height)", "kind": "equipment", "size": [0.6, 0.5], "height": 1.2, "parts": [{"kind": "control_panel", "height": 1.15, "approach": "forward", "obstruction_depth": 0.3}]}
+        {
+          "id": "kitchen_counter",
+          "label": "Kitchen counter with sink and dishwasher",
+          "kind": "equipment",
+          "size": [
+            2.4,
+            0.65
+          ],
+          "height": 0.91,
+          "parts": [
+            {
+              "kind": "control_panel",
+              "height": 0.86,
+              "approach": "forward",
+              "obstruction_depth": 0.6
+            }
+          ]
+        },
+        {
+          "id": "fridge",
+          "label": "Refrigerator",
+          "kind": "equipment",
+          "size": [
+            0.8,
+            0.75
+          ],
+          "height": 1.8,
+          "parts": [
+            {
+              "kind": "handle",
+              "height": 1.1,
+              "approach": "side"
+            }
+          ]
+        },
+        {
+          "id": "microwave",
+          "label": "Microwave (counter-height)",
+          "kind": "equipment",
+          "size": [
+            0.6,
+            0.5
+          ],
+          "height": 1.2,
+          "parts": [
+            {
+              "kind": "control_panel",
+              "height": 1.15,
+              "approach": "forward",
+              "obstruction_depth": 0.3
+            }
+          ]
+        }
       ],
       "requirements": [
-        {"text": "Kitchen clearance: 40 in between opposing counters/appliances (60 in in U-shaped kitchens).", "source": "ada", "section": "804.2", "basis": "standard", "value_m": 1.016},
-        {"text": "Sink counter 34 in max with knee clearance (or parallel approach).", "source": "ada", "section": "606, 804.4", "basis": "standard"},
-        {"text": "Clear floor space at each appliance; refrigerator/freezer and microwave controls within reach ranges.", "source": "ada", "section": "804.6, 308", "basis": "standard"}
+        {
+          "text": "Kitchen clearance: 40 in between opposing counters/appliances (60 in in U-shaped kitchens).",
+          "source": "ada",
+          "section": "804.2",
+          "basis": "standard",
+          "value_m": 1.016
+        },
+        {
+          "text": "Sink counter 34 in max with knee clearance (or parallel approach).",
+          "source": "ada",
+          "section": "606, 804.4",
+          "basis": "standard"
+        },
+        {
+          "text": "Clear floor space at each appliance; refrigerator/freezer and microwave controls within reach ranges.",
+          "source": "ada",
+          "section": "804.6, 308",
+          "basis": "standard"
+        }
       ]
     },
     {
-      "id": "restroom", "label": "Accessible single-user restroom", "priority": "must", "area_m2": 5.5,
+      "id": "restroom",
+      "label": "Accessible single-user restroom",
+      "priority": "must",
+      "area_m2": 5.5,
       "placement": "enclosed room off the break area; door swings must not block the 60 in turning space",
       "equipment": [
-        {"id": "restroom_room", "label": "Restroom enclosure (2.3 x 2.4 m)", "kind": "partition", "size": [2.3, 2.4], "height": 2.4},
-        {"id": "eyewash", "label": "Emergency eyewash (ANSI Z358.1)", "kind": "equipment", "size": [0.5, 0.4], "height": 1.0, "parts": [{"kind": "handle", "height": 0.9, "approach": "forward"}]}
+        {
+          "id": "restroom_room",
+          "label": "Restroom enclosure (2.3 x 2.4 m)",
+          "kind": "partition",
+          "size": [
+            2.3,
+            2.4
+          ],
+          "height": 2.4
+        },
+        {
+          "id": "eyewash",
+          "label": "Emergency eyewash (ANSI Z358.1)",
+          "kind": "equipment",
+          "size": [
+            0.5,
+            0.4
+          ],
+          "height": 1.0,
+          "parts": [
+            {
+              "kind": "handle",
+              "height": 0.9,
+              "approach": "forward"
+            }
+          ]
+        }
       ],
       "requirements": [
-        {"text": "60 in turning space; water closet centerline 16-18 in from side wall; seat 17-19 in; grab bars 33-36 in high.", "source": "ada", "section": "603, 604", "basis": "standard"},
-        {"text": "Lavatory rim 34 in max with knee clearance below.", "source": "ada", "section": "606.3", "basis": "standard"},
-        {"text": "Eyewash within 10 seconds' travel of every task that uses chemicals; hands-free after activation; signed.", "source": "z358", "section": "Penn 14.5-14.6", "basis": "standard"}
+        {
+          "text": "60 in turning space; water closet centerline 16-18 in from side wall; seat 17-19 in; grab bars 33-36 in high.",
+          "source": "ada",
+          "section": "603, 604",
+          "basis": "standard"
+        },
+        {
+          "text": "Lavatory rim 34 in max with knee clearance below.",
+          "source": "ada",
+          "section": "606.3",
+          "basis": "standard"
+        },
+        {
+          "text": "Eyewash within 10 seconds' travel of every task that uses chemicals; hands-free after activation; signed.",
+          "source": "z358",
+          "section": "Penn 14.5-14.6",
+          "basis": "standard"
+        }
       ]
     },
     {
-      "id": "dining", "label": "Dining / break area", "priority": "must", "area_m2": 14,
+      "id": "dining",
+      "label": "Dining / break area",
+      "priority": "must",
+      "area_m2": 14,
       "placement": "next to the kitchenette, outside the PPE zone",
       "equipment": [
-        {"id": "dining_table_1", "label": "Dining table (6 seats)", "kind": "table", "size": [1.8, 0.9], "height": 0.74, "work_surface_height": 0.74, "knee_clearance": {"height": 0.70, "width": 1.5, "depth": 0.48}},
-        {"id": "dining_table_2", "label": "Dining table (4 seats, accessible end)", "kind": "table", "size": [1.2, 0.9], "height": 0.74, "work_surface_height": 0.74, "knee_clearance": {"height": 0.70, "width": 0.9, "depth": 0.48}}
+        {
+          "id": "dining_table_1",
+          "label": "Dining table (6 seats)",
+          "kind": "table",
+          "size": [
+            1.8,
+            0.9
+          ],
+          "height": 0.74,
+          "work_surface_height": 0.74,
+          "knee_clearance": {
+            "height": 0.7,
+            "width": 1.5,
+            "depth": 0.48
+          }
+        },
+        {
+          "id": "dining_table_2",
+          "label": "Dining table (4 seats, accessible end)",
+          "kind": "table",
+          "size": [
+            1.2,
+            0.9
+          ],
+          "height": 0.74,
+          "work_surface_height": 0.74,
+          "knee_clearance": {
+            "height": 0.7,
+            "width": 0.9,
+            "depth": 0.48
+          }
+        }
       ],
       "requirements": [
-        {"text": "Dining surfaces 28-34 in high with knee clearance; at least 5% of seating accessible.", "source": "ada", "section": "226.1, 902", "basis": "standard"}
+        {
+          "text": "Dining surfaces 28-34 in high with knee clearance; at least 5% of seating accessible.",
+          "source": "ada",
+          "section": "226.1, 902",
+          "basis": "standard"
+        }
       ]
     }
   ],
   "building_services": [
-    {"text": "Ceiling bus duct with movable disconnects for power drops; power and compressed air from the ceiling so robots can be reconfigured.", "source": "s4l", "section": "", "basis": "guideline"},
-    {"text": "Wall and ceiling cord reels labeled with rated amps, instead of extension cords.", "source": "penn", "section": "5.4.1", "basis": "guideline"},
-    {"text": "All equipment NRTL listed (UL/ETL); check imported 3D printers.", "source": "penn", "section": "5.4.2, 7.1", "basis": "guideline"},
-    {"text": "GFCI/AFCI receptacles evaluated, required near water (kitchenette, restroom, eyewash).", "source": "penn", "section": "5.4.3", "basis": "guideline"},
-    {"text": "36 in (3 ft) clearance in front of electrical panels.", "source": "penn", "section": "5.3.1.5", "basis": "guideline", "value_m": 0.914},
-    {"text": "No carpet in work areas; slip-resistant, cleanable floors; non-upholstered furniture.", "source": "penn", "section": "5.2", "basis": "guideline"},
-    {"text": "Acoustic review for compressors, CNC and dust collection; consider adjacent spaces.", "source": "penn", "section": "5.5.1", "basis": "guideline"},
-    {"text": "Fire extinguisher type and placement reviewed by Fire and Emergency Services.", "source": "penn", "section": "4.4.6", "basis": "guideline"}
+    {
+      "text": "Ceiling bus duct with movable disconnects for power drops; power and compressed air from the ceiling so robots can be reconfigured.",
+      "source": "s4l",
+      "section": "",
+      "basis": "guideline"
+    },
+    {
+      "text": "Wall and ceiling cord reels labeled with rated amps, instead of extension cords.",
+      "source": "penn",
+      "section": "5.4.1",
+      "basis": "guideline"
+    },
+    {
+      "text": "All equipment NRTL listed (UL/ETL); check imported 3D printers.",
+      "source": "penn",
+      "section": "5.4.2, 7.1",
+      "basis": "guideline"
+    },
+    {
+      "text": "GFCI/AFCI receptacles evaluated, required near water (kitchenette, restroom, eyewash).",
+      "source": "penn",
+      "section": "5.4.3",
+      "basis": "guideline"
+    },
+    {
+      "text": "36 in (3 ft) clearance in front of electrical panels.",
+      "source": "penn",
+      "section": "5.3.1.5",
+      "basis": "guideline",
+      "value_m": 0.914
+    },
+    {
+      "text": "No carpet in work areas; slip-resistant, cleanable floors; non-upholstered furniture.",
+      "source": "penn",
+      "section": "5.2",
+      "basis": "guideline"
+    },
+    {
+      "text": "Acoustic review for compressors, CNC and dust collection; consider adjacent spaces.",
+      "source": "penn",
+      "section": "5.5.1",
+      "basis": "guideline"
+    },
+    {
+      "text": "Fire extinguisher type and placement reviewed by Fire and Emergency Services.",
+      "source": "penn",
+      "section": "4.4.6",
+      "basis": "guideline"
+    }
   ]
 }

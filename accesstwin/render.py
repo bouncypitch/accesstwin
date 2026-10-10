@@ -46,7 +46,9 @@ def svg(space: Space, findings: list[Finding] | None = None, width_px: int = 120
         if e.safeguard_margin:
             out.append(poly(e.obstacle().exterior.coords, fill="#f4c7a1", fill_opacity=0.35, stroke="#c4561a",
                             stroke_width=1.5, stroke_dasharray="6 4"))
-        out.append(poly(e.footprint().exterior.coords, fill=FILL.get(e.kind, "#dddddd"), stroke="#57606a", stroke_width=1.2))
+        zc = next((z.color for z in space.zones if z.id == e.zone), None)
+        out.append(poly(e.footprint().exterior.coords, fill=FILL.get(e.kind, "#dddddd"),
+                        stroke=zc or "#57606a", stroke_width=3 if zc else 1.2))
         c = e.footprint().centroid
         if e.size[0] * sx > 60:
             out.append(f'<text x="{X(c.x):.1f}" y="{Y(c.y) + 4:.1f}" font-size="11" text-anchor="middle" fill="#1f2328">'
@@ -80,6 +82,17 @@ def svg(space: Space, findings: list[Finding] | None = None, width_px: int = 120
         out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="11" fill="{color}" stroke="#fff" stroke-width="2.5">'
                    f'<title>{escape(f.title)}: {escape(f.detail)}</title></circle>')
         out.append(f'<text x="{x:.1f}" y="{y + 4:.1f}" font-size="12" font-weight="700" text-anchor="middle" fill="#fff">!</text>')
+
+    # Zone legend
+    for i, z in enumerate(space.zones):
+        lx = 24 + (i % 5) * (width_px - 48) / 5
+        ly = h_px + 18 + (i // 5) * 24
+        out.append(f'<rect x="{lx:.0f}" y="{ly - 11:.0f}" width="14" height="14" rx="3" fill="{z.color}"/>'
+                   f'<text x="{lx + 20:.0f}" y="{ly:.0f}" font-size="13" fill="#1f2328">{escape(z.label)}</text>')
+    if space.zones:
+        rows = (len(space.zones) + 4) // 5
+        out[0] = out[0].replace(f'viewBox="0 0 {width_px} {h_px:.0f}"', f'viewBox="0 0 {width_px} {h_px + rows * 24 + 12:.0f}"')
+        out[1] = out[1]
 
     # Scale bar
     bx, by = 24, h_px - 20
