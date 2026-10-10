@@ -40,12 +40,14 @@
 
 <script type="importmap">
 { "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+  "@sparkjsdev/spark": "https://cdn.jsdelivr.net/npm/@sparkjsdev/spark@2.2.0/dist/spark.module.js"
 } }
 </script>
 <script id="spec" type="application/json">/*SPEC*/</script>
 <script id="tour" type="application/json">/*TOUR*/</script>
+<script id="specB" type="application/json">/*SPECB*/</script>
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -473,11 +475,11 @@ for (const [frame, d] of exitSigns) {
 }
 const ZC = Object.fromEntries((spec.zones || []).map(z => [z.id, z.color]));
 const zoneFloors = new THREE.Group(); scene.add(zoneFloors);
-const pickables = [], groups = {};
-for (const e of spec.elements) {
+const pickables = [], groups = {}, groupsB = {};
+function buildElement(e, ZC, registry = groups) {
   const [w, d] = e.size, h = e.height, top = e.work_surface_height ?? h;
   const g = new THREE.Group(); g.position.copy(P(e.center[0], e.center[1], 0)); g.rotation.y = THREE.MathUtils.degToRad(e.rotation_deg); scene.add(g);
-  g.userData.el = e; groups[e.id] = g;
+  g.userData.el = e; registry[e.id] = g;
   const m = e.model || e.kind;
   switch (m) {
     case "esd_bench": bench(g, w, d, top, "esd"); benchKit(g, w, d, top, ["scope", "psu"]); chair(g, 0, d / 2 + 0.35, 0); break;
@@ -546,6 +548,15 @@ for (const e of spec.elements) {
       const hu = humanoid(g, 0.95); hu.position.set(0, 0.1, 0); animated.push({ obj: hu, kind: "sway" }); break;
     }
     case "quad_stand": box(w, 0.35, d * 0.6, mat("stand", 0x2f6fb0, { metalness: 0.4 }), 0, 0, 0, g); quadruped(g).position.set(0, 0.35, 0); break;
+    case "quiet_room": {
+      const pm = mat("quietwall", 0xcfd8e3, { roughness: 0.8 });
+      box(w, h, 0.1, pm, 0, 0, -d / 2 + 0.05, g); box(0.1, h, d, pm, -w / 2 + 0.05, 0, 0, g); box(0.1, h, d, pm, w / 2 - 0.05, 0, 0, g);
+      box(w - 1.0, h, 0.1, pm, -0.5, 0, d / 2 - 0.05, g);
+      box(w - 0.2, 0.02, d - 0.2, mat("quietrug", 0x6b8f71, { roughness: 1 }), 0, 0, 0, g);
+      box(0.8, 0.4, 0.8, mat("beanbag", 0x4a6fa5, { roughness: 1 }), -w / 4, 0, -d / 5, g); box(0.5, 0.45, 0.5, mat("pouf", 0xa3b18a), w / 5, 0, -d / 4, g);
+      cyl(0.02, 0.02, 1.4, dark(), w / 2 - 0.3, 0, -d / 2 + 0.3, g); sphere(0.14, mat("lamp", 0xfff1c9, { emissive: 0xffe0a0, emissiveIntensity: 0.8 }), w / 2 - 0.3, 1.45, -d / 2 + 0.3, g);
+      break;
+    }
     case "robot_parking": { floorTape(g, w, d); amr(g, -w / 4, 0); quadruped(g).position.set(w / 4, 0, 0); break; }
     default: box(w, h, d, mat("default", 0x8b949e), 0, 0, 0, g);
   }
@@ -559,6 +570,16 @@ for (const e of spec.elements) {
   // Optional floating callout (off by default; the physical signs are the real labels).
   { const c = signSprite(e.label.split(" (")[0], "#ffffff", "rgba(13,17,23,.85)", 0.2); c.position.set(0, Math.max(h, 1.2) + 0.45, 0); c.visible = false; g.add(c); callouts.push(c); }
   g.traverse(o => { if (o.isMesh) { o.userData.owner = g; pickables.push(o); } });
+  return g;
+}
+for (const e of spec.elements) buildElement(e, ZC);
+// Design B (for the A -> B morph in the story video): a full second set, hidden until the morph swaps to it.
+const specB = JSON.parse(document.getElementById("specB").textContent || "null");
+if (specB) {
+  const ZCB = Object.fromEntries((specB.zones || []).map(z => [z.id, z.color]));
+  const nSigns = signs.length;
+  for (const e of specB.elements) buildElement(e, ZCB, groupsB).visible = false;
+  for (const s of signs.slice(nSigns)) s.userData.designB = true;
 }
 // A delivery AMR runs laps of the main aisle between the desks and the arena.
 { const rover = amr(scene, 0, 0); const tote = box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);

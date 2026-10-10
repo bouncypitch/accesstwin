@@ -17,6 +17,7 @@ from scipy import ndimage
 from accesstwin.roomplan import plan_frame
 from accesstwin.rgbd import _floor_height
 from accesstwin.spec import Space
+from shapely.geometry import Point
 
 ASSETS = Path("demo/assets")
 OUT = Path("out/05_world/venue")
@@ -87,7 +88,23 @@ ji = (ni + rng.integers(-6, 7, ni.shape)).clip(0, gw - 1); jj = (nj + rng.intege
 jitter_ok = known[ji, jj]
 src_i = np.where(jitter_ok, ji, ni); src_j = np.where(jitter_ok, jj, nj)
 filled = np.where(known[..., None], tex, tex[src_i, src_j])
-filled = np.array(Image.fromarray(filled.astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.6)), float)
+# Clean carpet: find the best-covered 1.2 m square of real carpet (fully scanned, no furniture shadow), make it
+# seamless by mirroring, and tile it across the whole floor. No blotches from hole filling.
+P_CELLS = int(1.2 / cell)
+cov = ndimage.uniform_filter(known.astype(float), P_CELLS)
+lum = tex.mean(-1)
+var = ndimage.uniform_filter(lum ** 2, P_CELLS) - ndimage.uniform_filter(lum, P_CELLS) ** 2  # low = no dark shadows
+score = cov - 0.002 * var
+half = P_CELLS // 2
+score[:half] = score[-half:] = -1; score[:, :half] = score[:, -half:] = -1
+ci, cj = np.unravel_index(np.argmax(score), score.shape)
+patch = tex[ci - half: ci + half, cj - half: cj + half]
+tile = np.concatenate([patch, patch[::-1]], 0)
+tile = np.concatenate([tile, tile[:, ::-1]], 1)  # mirrored 2x2: seamless
+reps = (gw // tile.shape[0] + 1, gh // tile.shape[1] + 1)
+filled = np.tile(tile, (reps[0], reps[1], 1))[:gw, :gh]
+filled = filled * (tex[known].mean(0) / filled.reshape(-1, 3).mean(0))  # keep the room's average carpet color
+print(f"carpet patch at {minx + ci * cell:.1f}, {miny + cj * cell:.1f} m, coverage {cov[ci, cj]:.0%}")
 gx, gy = np.meshgrid(np.arange(gw), np.arange(gh), indexing="ij")
 fu, fv = minx + (gx.ravel() + 0.5) * cell, miny + (gy.ravel() + 0.5) * cell
 inside = shapely.contains(space.floor(), shapely.points(np.stack([fu, fv], 1)))
@@ -131,6 +148,19 @@ for i, sgm in enumerate(segs):
     if not rows_known.all():
         _, (a, b) = ndimage.distance_transform_edt(~known, return_indices=True)
         fill[:, ~rows_known] = texw[a, b][:, ~rows_known]
+    # Furniture pushed against the wall leaves bands below ~1.2 m: rebuild that band from clean wall just above it,
+    # with a baseboard strip, except across door openings.
+    door_cols = np.zeros(nu, bool)
+    for dr in space.doors:
+        if sgm.distance(Point(dr.position)) < 0.2:
+            t0 = sgm.project(Point(dr.position))
+            a, b = int((t0 - dr.clear_width / 2 - 0.1) / wc), int((t0 + dr.clear_width / 2 + 0.1) / wc)
+            door_cols[max(a, 0):min(b, nu)] = True
+    r_lo, r_hi, r_base = int(1.25 / wc), int(1.6 / wc), int(0.12 / wc)
+    clean_wall = np.median(fill[:, r_lo:r_hi], axis=1)  # per column
+    base = np.median(fill[~door_cols, 1:r_base].reshape(-1, 3), 0) if (~door_cols).any() else clean_wall.mean(0)
+    for r in range(0, int(1.25 / wc)):
+        fill[~door_cols, r] = base if r < r_base else clean_wall[~door_cols]
     fill = np.array(Image.fromarray(fill.astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8)), float)
     gu, gv = np.meshgrid(np.arange(nu), np.arange(nh), indexing="ij")
     tt = (gu.ravel() + 0.5) * wc
@@ -172,3 +202,23 @@ asis = np.stack([uv[:, 0], uv[:, 1], h], 1)
 pano(np.concatenate([asis, ceil_pts]), np.concatenate([cols, ceil_cols]).astype(np.uint8), eye).save(OUT / "pano_asis.jpg", quality=92)
 Image.fromarray(np.transpose(filled.astype(np.uint8), (1, 0, 2))[::-1]).save(OUT / "floor_refilled.jpg", quality=90)
 print(f"wrote {OUT}/pano_empty.jpg, pano_asis.jpg, floor_refilled.jpg (eye at {eye[0]:.1f}, {eye[1]:.1f})")
+
+# Story asset: the as-scanned cloud with a per-point flag (0 kept surface, 1 removed: people/furniture/clutter,
+# 2 added: re-tiled carpet), downsampled for the browser. float32 x,y,z (plan meters) + uint8 r,g,b,flag.
+rng2 = np.random.default_rng(1)
+asis_pts = np.stack([uv[:, 0], uv[:, 1], h], 1)
+kept = keep_wall | keep_floor | keep_ceil
+flag = np.where(kept, 0, 1).astype(np.uint8)
+inside_room = (d > -0.15) & (h > -0.05) & (h < H + 0.05)
+sel = np.where(inside_room)[0]
+sel = sel[rng2.random(len(sel)) < 380_000 / max(len(sel), 1)]
+add_sel = rng2.random(len(floor_pts)) < 0.35
+P3 = np.concatenate([asis_pts[sel], floor_pts[add_sel] + [0, 0, 0.004]]).astype(np.float32)
+C3 = np.concatenate([cols[sel], floor_cols[add_sel].clip(0, 255)]).astype(np.uint8)
+F3 = np.concatenate([flag[sel], np.full(add_sel.sum(), 2, np.uint8)])
+buf = np.zeros(len(P3), dtype=[("x", "<f4"), ("y", "<f4"), ("z", "<f4"), ("r", "u1"), ("g", "u1"), ("b", "u1"), ("f", "u1")])
+buf["x"], buf["y"], buf["z"] = P3.T
+buf["r"], buf["g"], buf["b"] = C3.T
+buf["f"] = F3
+(OUT / "scan_points.bin").write_bytes(buf.tobytes())
+print(f"wrote {OUT}/scan_points.bin: {len(buf):,} points ({(F3 == 1).sum():,} removed, {(F3 == 2).sum():,} carpet refill)")

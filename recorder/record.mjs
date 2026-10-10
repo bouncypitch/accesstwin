@@ -2,8 +2,9 @@
 //   node recorder/record.mjs out/04_tour/explainer [--fps 30] [--size 1920x1080] [--from 0 --to 20]
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
-import { readFileSync, existsSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { readFileSync, existsSync, createReadStream } from "node:fs";
+import { resolve, join, extname } from "node:path";
+import { createServer } from "node:http";
 
 const args = process.argv.slice(2);
 const dir = resolve(args[0]);
@@ -31,8 +32,18 @@ const browser = await chromium.launch({ channel: "chrome", headless: true,
   args: ["--use-angle=metal", "--ignore-gpu-blocklist", "--enable-gpu-rasterization", "--disable-background-timer-throttling"] });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 page.on("pageerror", e => console.error("page error:", e.message));
-await page.goto("file://" + join(dir, "tour.html") + "?record=1");
+// Serve the tour folder over HTTP: splat files cannot be fetched from file:// pages.
+const TYPES = { ".html": "text/html", ".json": "application/json", ".spz": "application/octet-stream", ".jpg": "image/jpeg", ".png": "image/png" };
+const server = createServer((req, res) => {
+  const f = join(dir, decodeURIComponent(req.url.split("?")[0]));
+  if (!f.startsWith(dir) || !existsSync(f)) { res.writeHead(404); return res.end(); }
+  res.writeHead(200, { "Content-Type": TYPES[extname(f)] || "application/octet-stream" });
+  createReadStream(f).pipe(res);
+}).listen(0);
+const port = server.address().port;
+await page.goto(`http://127.0.0.1:${port}/tour.html?record=1`);
 await page.waitForFunction(() => typeof window.renderAt === "function", null, { timeout: 60000 });
+await page.evaluate(() => window.splatsReady);
 await page.evaluate(() => document.fonts.ready);
 
 const n = Math.round((to - from) * fps), t0 = Date.now();
@@ -45,4 +56,5 @@ for (let f = 0; f < n; f++) {
 ff.stdin.end();
 await new Promise(r => ff.on("close", r));
 await browser.close();
+server.close();
 console.log(`\nwrote ${out} (${n} frames in ${((Date.now() - t0) / 1000).toFixed(0)} s)`);

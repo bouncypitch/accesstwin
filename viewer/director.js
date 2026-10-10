@@ -232,6 +232,155 @@ function director(tour) {
   let lastHTML = "";
   function overlay(html) { if (html !== lastHTML) { ov.innerHTML = html; lastHTML = html; } }
 
+  // Photoreal worlds (World Labs Marble splats), one per finding ---------------------------------
+  const worldStops = tour.segments.filter(s => s.world);
+  const procedural = scene.children.slice();  // everything built so far is the procedural twin
+  const splatGroups = {};
+  let pointsObj = null;
+  window.splatsReady = (async () => {
+    if (!worldStops.length) return;
+    const { SplatMesh, SparkRenderer } = await import("@sparkjsdev/spark");
+    scene.add(new SparkRenderer({ renderer }));
+    await Promise.all(worldStops.map(async s => {
+      const w = s.world, g = new THREE.Group();
+      const eye = P(...s.hero.eye), tgt = P(...s.hero.target);
+      g.position.set(eye.x, w.ground, eye.z);  // Marble camera height above its ground plane = w.ground (m)
+      g.rotation.y = Math.atan2(-(tgt.x - eye.x), -(tgt.z - eye.z));  // Marble camera looks down -Z
+      const m = new SplatMesh({ url: w.url });
+      m.quaternion.set(1, 0, 0, 0);  // OpenCV -> three.js axes
+      m.scale.setScalar(w.scale);
+      g.add(m); g.visible = false; scene.add(g);
+      await m.initialized;
+      splatGroups[s.hero.index] = g;
+    }));
+  })();
+  // Hide / restore the procedural twin without disturbing things that were already hidden (e.g. the Design B set).
+  function twinVisible(on) {
+    for (const o of procedural) {
+      if (o.isLight) continue;
+      if (!on && o.visible) { o.visible = false; o.userData.hiddenByDirector = true; }
+      if (on && o.userData.hiddenByDirector) { o.visible = true; o.userData.hiddenByDirector = false; }
+    }
+  }
+  function showWorld(seg, mode) {
+    const g = seg && seg.world ? splatGroups[seg.hero.index] : null;
+    for (const k in splatGroups) splatGroups[k].visible = splatGroups[k] === g;
+    if (pointsObj) pointsObj.visible = mode === "points";
+    twinVisible(!g && mode !== "points");
+    scene.background = g || mode === "points" ? new THREE.Color(0x05070a) : new THREE.Color(0x0d1117);
+    return g;
+  }
+  function outlineBox(id) {
+    const g = groups[id]; if (!g) return;
+    const e = g.userData.el, [w, d] = e.size, h = Math.max(0.3, e.height);
+    const box3 = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w + 0.08, h + 0.04, d + 0.08)),
+      new THREE.LineBasicMaterial({ color: 0xff2d2d, linewidth: 2, depthTest: false }));
+    box3.position.copy(g.position).setY(h / 2); box3.rotation.copy(g.rotation); box3.renderOrder = 20; fx.add(box3);
+  }
+
+
+  // Point cloud of the real scan (story chapters "scan" and "clean") -----------------------------
+  const scanSeg = tour.segments.find(s => s.type === "scan" || s.type === "clean");
+  const pointsReady = (async () => {
+    if (!scanSeg) return;
+    const buf = await (await fetch(scanSeg.points)).arrayBuffer();
+    const n = buf.byteLength / 16, dv = new DataView(buf);
+    const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), flg = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const o = i * 16, x = dv.getFloat32(o, true), y = dv.getFloat32(o + 4, true), z = dv.getFloat32(o + 8, true);
+      pos[i * 3] = x; pos[i * 3 + 1] = z; pos[i * 3 + 2] = -y;
+      col[i * 3] = dv.getUint8(o + 12) / 255; col[i * 3 + 1] = dv.getUint8(o + 13) / 255; col[i * 3 + 2] = dv.getUint8(o + 14) / 255;
+      flg[i] = dv.getUint8(o + 15);
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    geo.setAttribute("flag", new THREE.BufferAttribute(flg, 1));
+    const m = new THREE.ShaderMaterial({
+      uniforms: { uClean: { value: 0 }, uRefill: { value: 0 }, uSize: { value: 0.045 }, uScale: { value: innerHeight / 2 } },
+      vertexShader: `attribute vec3 color; attribute float flag; uniform float uClean, uRefill, uSize, uScale; varying vec3 vC; varying float vA;
+        void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv;
+          vC = color; vA = 1.0; float s = uSize;
+          if (flag > 0.5 && flag < 1.5) { float r = smoothstep(0.0, 0.35, uClean); vC = mix(color, vec3(1.0, 0.18, 0.15), r);
+            float gone = smoothstep(0.45, 1.0, uClean); vA = 1.0 - gone; s *= 1.0 - gone; }
+          if (flag > 1.5) { vA = uRefill; s *= uRefill; }
+          gl_PointSize = max(1.0, s * uScale / -mv.z); }`,
+      fragmentShader: `varying vec3 vC; varying float vA; void main(){ vec2 c = gl_PointCoord - 0.5; if (dot(c, c) > 0.25 || vA < 0.02) discard; gl_FragColor = vec4(vC, vA); }`,
+      transparent: true, depthWrite: true,
+    });
+    pointsObj = new THREE.Points(geo, m); pointsObj.visible = false; pointsObj.frustumCulled = false; scene.add(pointsObj);
+  })();
+  const prevReady = window.splatsReady;
+  window.splatsReady = Promise.all([prevReady, pointsReady]);
+
+  // Build-up (stations drop into the empty room zone by zone) and A -> B morph ---------------------
+  const zoneOrder = (spec.zones || []).map(z => z.id);
+  const elOrder = Object.values(groups).sort((a, b) => zoneOrder.indexOf(a.userData.el.zone) - zoneOrder.indexOf(b.userData.el.zone));
+  const homeA = Object.fromEntries(Object.entries(groups).map(([id, g]) => [id, { p: g.position.clone(), r: g.rotation.y }]));
+  function resetA() {
+    for (const [id, g] of Object.entries(groups)) { g.position.copy(homeA[id].p); g.rotation.y = homeA[id].r; g.scale.setScalar(1); g.visible = true; }
+    for (const g of Object.values(groupsB)) g.visible = false;
+    for (const s of signs) if (s.userData.designB) s.visible = false;
+  }
+  function buildUp(u) {
+    const n = elOrder.length;
+    elOrder.forEach((g, i) => {
+      const t0 = 0.05 + 0.75 * i / n, k = Math.min(1, Math.max(0, (u - t0) / 0.12));
+      g.visible = k > 0; g.scale.set(1, Math.max(0.001, ease(k)), 1); g.position.y = (1 - ease(k)) * 1.2;
+    });
+  }
+  function morph(u) {
+    const k = ease(Math.min(1, u / 0.6));
+    for (const [id, g] of Object.entries(groups)) {
+      const b = groupsB[id];
+      if (b) { g.position.lerpVectors(homeA[id].p, b.position, k); g.rotation.y = homeA[id].r + (b.rotation.y - homeA[id].r) * k; g.visible = u < 0.62; }
+      else { g.scale.setScalar(Math.max(0.001, 1 - ease(Math.min(1, u / 0.4)))); g.visible = u < 0.4; }  // removed in B
+    }
+    for (const [id, b] of Object.entries(groupsB)) {
+      if (groups[id]) b.visible = u >= 0.62;
+      else { const kk = Math.min(1, Math.max(0, (u - 0.62) / 0.15)); b.visible = kk > 0; b.scale.set(1, Math.max(0.001, ease(kk)), 1); }  // new in B
+    }
+  }
+  function storyCam(T, high = 12, r = 14) { const ang = -1.7 + T * 0.035; return [P(W / 2 + Math.cos(ang) * r, D / 2 + Math.sin(ang) * r, high), P(W / 2, D / 2, 0.4)]; }
+
+  // Story cards ------------------------------------------------------------------------------------
+  function storyCard(s, u) {
+    const reveal = (i, n) => `style="opacity:${Math.min(1, Math.max(0, (u * (n + 2) - i) ))};transform:translateY(${Math.max(0, 10 - (u * (n + 2) - i) * 10)}px)"`;
+    if (s.kind === "problem" || s.kind === "solution" || s.kind === "demo")
+      return `<div class="card"><div class="cardin"><div class="kicker">${esc(s.kicker || "")}</div><h1 class="big" style="font-size:72px">${esc(s.title)}</h1>
+        ${(s.points || []).map((p, i) => `<div class="sub" ${reveal(i + 1, s.points.length)}>${esc(p)}</div>`).join("")}${s.svg || ""}</div></div>`;
+    if (s.kind === "research")
+      return `<div class="card"><div class="cardin" style="width:min(1500px,92vw)"><div class="kicker">Research agent · ${s.sources} cited sources</div><h2 class="agentname" style="font-size:52px">${esc(s.title)}</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px">${s.zones.map((z, i) => `<div ${reveal(i, s.zones.length)} class="zcard"><b>${esc(z.label)}</b><span>${z.items} items · ${z.reqs} requirements</span><em>${esc(z.example)}</em></div>`).join("")}</div></div></div>`;
+    if (s.kind === "metrics")
+      return `<div class="card"><div class="cardin" style="width:min(1500px,92vw)"><div class="kicker">Results</div><h2 class="agentname" style="font-size:56px">${esc(s.title)}</h2>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0">${s.tiles.map((t, i) => `<div ${reveal(i, 4)} class="tile"><span>${esc(t.label)}</span><b><s>${esc(t.a)}</s> → ${esc(t.b)}</b></div>`).join("")}</div>
+        <table class="sum"><tr><th>Agent</th><th style="text-align:right">A failed</th><th style="text-align:right">A blocking</th><th>A score</th><th style="text-align:right">B failed</th><th style="text-align:right">B blocking</th><th>B score</th></tr>
+        ${s.rows.map(r => `<tr><td style="font-weight:750"><span class="dot" style="width:16px;height:16px;background:${r.color};margin-right:10px"></span>${esc(r.agent)}</td><td class="num">${r.a_failed}</td><td class="num">${r.a_blocking}</td>
+          <td style="width:170px"><b>${r.a_score.toFixed(0)}%</b><div class="bar"><i style="width:${r.a_score}%;background:${r.color};opacity:.5"></i></div></td><td class="num">${r.b_failed}</td><td class="num">${r.b_blocking}</td>
+          <td style="width:170px"><b>${r.b_score.toFixed(0)}%</b><div class="bar"><i style="width:${r.b_score}%;background:${r.color}"></i></div></td></tr>`).join("")}</table></div></div>`;
+    return cardHTML(s);
+  }
+  const chapters = tour.segments.filter(s => s.chapter);
+  function chrome(T, seg) {
+    const ch = [...tour.segments].reverse().find(s => s.chapter && s.t0 <= T + 1e-6);
+    const idx = ch ? chapters.indexOf(ch) + 1 : 0;
+    return (ch ? `<div class="chapter">${idx}/${chapters.length} · ${esc(ch.chapter)}</div>` : "")
+      + `<div class="progress"><i style="width:${(100 * T / tour.duration).toFixed(2)}%"></i></div>`
+      + (seg.caption && seg.type !== "orbit" ? `<div class="cap">${esc(seg.caption)}</div>` : "");
+  }
+  css.textContent += `
+    .chapter { position:absolute; right:36px; bottom:36px; font-size:20px; color:#c9d1d9; background:rgba(13,17,23,.75); border:1px solid #30363d; border-radius:10px; padding:8px 14px; }
+    .progress { position:absolute; left:0; right:0; bottom:0; height:6px; background:rgba(255,255,255,.08); } .progress i { display:block; height:100%; background:#58a6ff; }
+    .zcard { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:4px; font-size:24px; }
+    .zcard span { color:#8b949e; font-size:18px; } .zcard em { color:#7ee787; font-size:17px; font-style:normal; }
+    .tile { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:18px; } .tile span { color:#8b949e; font-size:20px; display:block; }
+    .tile b { font-size:44px; } .tile s { color:#ff7b72; text-decoration-thickness:3px; font-weight:600; }
+    .fade { position:absolute; inset:0; background:#000; }
+    .changes { position:absolute; right:36px; top:32px; width:560px; background:rgba(13,17,23,.9); border:1px solid #30363d; border-radius:16px; padding:18px 22px; font-size:22px; }
+    .changes li { margin:8px 0; } .changes li b { color:#7ee787; }
+  `;
+
   // Frame ----------------------------------------------------------------------------------------
   window.TOUR_DURATION = tour.duration;
   window.renderAt = function (T) {
@@ -240,9 +389,57 @@ function director(tour) {
     clearFx();
     for (const a of Object.values(avatars)) a.visible = false;
     let cam;
+    const next = tour.segments[i + 1];
+    const worldSeg = seg.world ? seg : (seg.type === "walk" && next?.world ? next : null);
+    const pointsMode = seg.type === "scan" || seg.type === "clean" || (seg.type === "card" && seg.backdrop === "points");
+    const wg = showWorld(worldSeg, pointsMode ? "points" : null);
+    const fadeIn = seg.fade ? Math.max(0, 1 - tl / 0.6) : 0, fadeOut = seg.fadeOut ? Math.max(0, 1 - (seg.dur - tl) / 0.6) : 0;
+    const fadeHTML = (fadeIn || fadeOut) ? `<div class="fade" style="opacity:${Math.max(fadeIn, fadeOut).toFixed(3)}"></div>` : "";
+    if (["scan", "clean", "build", "morph"].includes(seg.type) || (seg.type === "card" && seg.backdrop)) {
+      if (seg.type === "build" || (seg.type === "card" && seg.backdrop === "build")) { resetA(); buildUp(seg.type === "build" ? u : 0); }
+      else if (seg.type === "morph") { resetA(); morph(u); }
+      else if (seg.backdrop === "designB") { resetA(); morph(1); }
+      else resetA();
+      if (pointsObj) {
+        pointsObj.material.uniforms.uClean.value = seg.type === "clean" ? Math.min(1, u / 0.7) : (seg.after === "clean" ? 1 : 0);
+        pointsObj.material.uniforms.uRefill.value = seg.type === "clean" ? Math.max(0, (u - 0.6) / 0.4) : (seg.after === "clean" ? 1 : 0);
+        pointsObj.material.uniforms.uScale.value = innerHeight / 2;
+      }
+      cam = storyCam(T, seg.type === "morph" ? 13 : 12, seg.type === "scan" || seg.type === "clean" ? 12 : 14.5);
+      setCam(cam); lastCam = cam;
+      let html = seg.type === "card" ? storyCard(seg, u) : "";
+      if (seg.type === "morph" && seg.changes) html += `<div class="changes"><div class="kicker" style="font-size:16px">Remediation agent</div><ul style="padding-left:20px;margin:6px 0">${seg.changes.map((c, j) => `<li style="opacity:${u * (seg.changes.length + 1) > j ? 1 : 0.15}">${c}</li>`).join("")}</ul></div>`;
+      overlay(html + chrome(T, seg) + fadeHTML);
+      tick(T, 0.3); renderer.render(scene, camera);
+      return seg.type;
+    }
+    if (wg) {
+      const h = worldSeg.hero, eye = P(...h.eye), tgt = P(...h.target), f = worldSeg.finding;
+      const dir = tgt.clone().sub(eye).setY(0).normalize();
+      const av = avatarFor(worldSeg); av.visible = true;
+      if (seg.type === "walk") {
+        // The agent covers the last few meters of its route inside the photoreal shot.
+        const d0 = Math.max(0, seg.len - 3.5), d = d0 + (seg.len - d0) * ease(u);
+        const [x, y, hd] = along(seg.path, d); av.position.copy(P(x, y, 0)); av.rotation.y = hd; pose(av, d);
+        overlay(`<div class="hud"><span class="dot" style="width:22px;height:22px;background:${seg.color}"></span><div>${esc(agentName(seg.agent))}<small>${esc(seg.label.split(": ")[1] || "")}</small></div></div><div class="filterlabel" style="background:#1f6feb">Photoreal world · World Labs Marble</div>`);
+        cam = [eye.clone().addScaledVector(dir, -0.4), tgt];
+      } else {
+        av.position.copy(P(seg.at[0], seg.at[1], 0)); av.rotation.y = Math.atan2(f.location[1] - seg.at[1], f.location[0] - seg.at[0]); pose(av, 0);
+        if (f.element_id) outlineBox(f.element_id);
+        if (seg.noise) { outlineBox(seg.noise.source_id); noiseViz(seg.noise, T); }
+        if (seg.reach) reachViz(seg.reach);
+        marker(f.location, T);
+        cam = [eye.clone().addScaledVector(dir, 0.6 * ease(u)), tgt];
+        overlay(stopHTML(seg) + `<div class="filterlabel" style="background:#1f6feb;top:${seg.filter ? 86 : 32}px">Photoreal world · World Labs Marble</div>`);
+        if (seg.filter) renderer.domElement.style.filter = "url(#deutan)";
+      }
+      setCam(cam); lastCam = cam;
+      renderer.render(scene, camera);
+      return seg.type;
+    }
     if (seg.type === "card" || seg.type === "orbit") {
       cam = orbitCam(T, seg.type === "card");
-      overlay(seg.type === "card" ? cardHTML(seg) : `<div class="cap">${esc(seg.caption)}</div>`);
+      overlay((seg.type === "card" ? storyCard(seg, u) : `<div class="cap">${esc(seg.caption)}</div>`) + chrome(T, seg) + fadeHTML);
       lastCam = cam;
     } else if (seg.type === "walk") {
       const av = avatarFor(seg); av.visible = true;
@@ -266,7 +463,7 @@ function director(tour) {
       cam = stopCam(seg, u);
       if (!seg.from) seg.from = lastCam;
       if (tl < 1.0) cam = blend(seg.from, cam, ease(tl / 1.0));
-      overlay(stopHTML(seg));
+      overlay(stopHTML(seg) + chrome(T, seg) + fadeHTML);
       lastCam = cam;
     }
     if (seg.type === "walk") lastCam = cam;
