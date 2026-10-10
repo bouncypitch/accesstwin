@@ -33,7 +33,6 @@
   <label><input type="checkbox" id="tCallouts">Floating callouts</label>
   <label><input type="checkbox" id="tWalls" checked>Walls</label>
   <label><input type="checkbox" id="tZones" checked>Zone floor colors</label>
-  <label><input type="checkbox" id="tSpin">Auto-rotate</label>
 </div>
 <div id="legend" class="panel"></div>
 <div id="tip" class="panel"></div>
@@ -2447,7 +2446,6 @@ document.getElementById("tSigns").onchange = ev => signs.forEach(s => (s.visible
 document.getElementById("tCallouts").onchange = ev => callouts.forEach(s => (s.visible = ev.target.checked));
 document.getElementById("tWalls").onchange = ev => (walls.visible = ev.target.checked);
 document.getElementById("tZones").onchange = ev => scene.traverse(o => { if (o.userData.zoneFloor) o.visible = ev.target.checked; });
-document.getElementById("tSpin").onchange = ev => (controls.autoRotate = ev.target.checked);
 
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById("tip");
 canvas.addEventListener("pointermove", ev => {
@@ -2537,11 +2535,11 @@ function buildMode() {
     <div class="now" id="bnow"><b>Empty shell</b><span style="color:#8b949e">${spec.elements.length} stations · ${order.length} zones to place</span></div>
     <ol id="blist">${order.map(z => `<li data-z="${z}"><i style="background:${zinfo[z].color}"></i>${zinfo[z].label}<span class="c">${byZone[z].length}</span></li>`).join("")}</ol>
     <button id="bgo">▶ Build the lab</button></div>`);
+  centerLeftOfPanel("bp");
   const groupsList = Object.values(groups);
   function hideAll() { for (const g of groupsList) { g.visible = false; g.scale.set(1, 0.001, 1); } rover.visible = false; }
   hideAll();
-  controls.autoRotateSpeed = 0.6;
-  document.getElementById("bgo").onclick = () => { hideAll(); start = null; done = false; started = true; controls.autoRotate = true;
+  document.getElementById("bgo").onclick = () => { hideAll(); start = null; done = false; started = true; fitCam();
     document.querySelectorAll("#blist li").forEach(li => li.classList.remove("done")); };
   let started = false;
   return {
@@ -2564,7 +2562,7 @@ function buildMode() {
       });
       const end = T0 + order.length * PER + 0.6;
       if (e >= end && !done) {
-        done = true; controls.autoRotate = false; rover.visible = true;
+        done = true; rover.visible = true;
         document.getElementById("bnow").innerHTML = `<b style="color:#3fb950">Design A complete</b><span style="color:#c9d1d9">${spec.elements.length} stations in ${order.length} color-coded zones, a sign at every station. Next: the disability agents audit it.</span>`;
         document.getElementById("bgo").textContent = "↻ Replay";
       }
@@ -3029,6 +3027,7 @@ function modePanel(title, sub) {
   document.head.append(css);
   for (const id of ["views", "legend"]) document.getElementById(id).style.display = "none";
   document.body.insertAdjacentHTML("beforeend", `<div id="mp"><h2>${title}</h2><div class="sub">${sub}</div><div id="mctl"></div><div class="now" id="mnow"></div><div class="log" id="mlog"></div></div>`);
+  centerLeftOfPanel("mp");
   return { ctl: document.getElementById("mctl"), now: document.getElementById("mnow"), log: document.getElementById("mlog") };
 }
 const SEVC = { blocking: 0xd1242f, major: 0xe8710a, minor: 0xd4a72c };
@@ -3057,7 +3056,7 @@ function agentFigure(color, seated) {
     for (const z of [-0.3, 0.3]) { const w = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.035, 10, 28), new THREE.MeshStandardMaterial({ color: 0x24292f })); w.position.set(0, 0.3, z); g.add(w); }
     limb(new THREE.Vector3(0, 0.5, 0), new THREE.Vector3(0, 1.0, 0), 0.17, m, g); sphere(0.13, skin, 0, 1.22, 0, g);
   } else { limb(new THREE.Vector3(0, 0.1, 0), new THREE.Vector3(0, 1.35, 0), 0.17, m, g); sphere(0.13, skin, 0, 1.6, 0, g); }
-  g.scale.setScalar(1.8); g.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(g); return g;
+  g.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(g); return g;  // true metric size
 }
 function pathLen(p) { let L = 0; for (let i = 1; i < p.length; i++) L += Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); return L; }
 function pathAt(p, d) {
@@ -3070,6 +3069,16 @@ function pathAt(p, d) {
   return [p[0][0], p[0][1], 0];
 }
 function fitCam() { const [p, t] = views.Overview; camera.position.copy(P(...p)); controls.target.copy(P(...t)); }
+// With a side panel on the right, shift the projection so the room is centered in the visible area.
+function centerLeftOfPanel(panelId) {
+  const apply = () => {
+    const el = document.getElementById(panelId); if (!el) return;
+    const w = el.getBoundingClientRect().width + 32;
+    if (w > innerWidth * 0.6) { camera.clearViewOffset(); return; }  // narrow screens: panel overlays
+    camera.setViewOffset(innerWidth, innerHeight, w / 2, 0, innerWidth, innerHeight); camera.updateProjectionMatrix();
+  };
+  apply(); addEventListener("resize", () => setTimeout(apply, 0));
+}
 
 // ---------- #agents: each disability agent walks the lab and finds problems ----------
 function agentsMode() {
@@ -3081,10 +3090,10 @@ function agentsMode() {
   ui.now.innerHTML = `<span class="muted">Pick an agent to watch it walk the lab.</span>`;
   function clear() { for (const p of pins) scene.remove(p); pins.length = 0; if (trail) scene.remove(trail); if (fig) scene.remove(fig); trail = fig = null; ui.log.innerHTML = ""; }
   function startAgent(list) {
-    clear();
+    clear(); fitCam();
     const a = AUDIT.agents[list[0]];
     fig = agentFigure(a.color, a.id === "wheelchair");
-    { const tag = signSprite(a.name, "#ffffff", a.color, 0.18); tag.position.y = 1.55; fig.add(tag); }
+    { const tag = signSprite(a.name, "#ffffff", a.color, 0.2); tag.position.y = a.id === "wheelchair" ? 1.65 : 2.05; fig.add(tag); }
     const pts = [];
     const tg = new THREE.BufferGeometry(); trail = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: a.color })); scene.add(trail);
     ui.now.innerHTML = `<b style="color:${a.color}">${a.name}</b><div class="muted">Checks: ${a.criteria.map(c => c.split(":")[0]).join(" · ")}</div>`;
@@ -3168,7 +3177,7 @@ function fixMode() {
     for (const [id, g] of Object.entries(groups)) { g.position.copy(home[id].p); g.rotation.y = home[id].r; g.scale.setScalar(1); g.visible = true; }
     for (const g of Object.values(groupsB)) g.visible = false;
     for (const p of pinObjs) { p.fixed = false; p.obj.userData.setColor(SEVC[p.severity]); }
-    ui.log.innerHTML = ""; run = { i: 0, t: 0 }; fitCam(); controls.autoRotate = true; controls.autoRotateSpeed = 0.4;
+    ui.log.innerHTML = ""; run = { i: 0, t: 0 }; fitCam();
   };
   return {
     tick(t) {
@@ -3177,7 +3186,7 @@ function fixMode() {
       const st = steps[run.i];
       if (!st) {
         if (!run.done) {
-          run.done = true; controls.autoRotate = false; resolve(() => true); upd();
+          run.done = true; resolve(() => true); upd();
           document.getElementById("msc").textContent = sb.toFixed(0) + "%";
           ui.now.innerHTML = `<b style="color:#3fb950">Design B</b><div class="muted">Score ${sa.toFixed(0)}% → ${sb.toFixed(0)}%. ${pinObjs.filter(p => !p.fixed).length} minor issues left, none blocking.</div>`;
           document.getElementById("mgo").textContent = "↻ Replay";
