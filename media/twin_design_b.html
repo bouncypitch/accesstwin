@@ -1,0 +1,2724 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AccessTwin Viewer</title>
+<style>
+  :root { --bg:#0d1117; --panel:rgba(22,27,34,.86); --text:#e6edf3; --muted:#8b949e; --line:#30363d; --accent:#58a6ff; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font:14px/1.4 Inter, -apple-system, Helvetica, Arial, sans-serif; overflow:hidden; }
+  #c { position:fixed; inset:0; }
+  .panel { position:fixed; background:var(--panel); border:1px solid var(--line); border-radius:10px; backdrop-filter:blur(8px); }
+  #title { top:16px; left:16px; padding:12px 16px; max-width:min(440px, calc(100vw - 32px)); }
+  #title h1 { margin:0 0 2px; font-size:17px; font-weight:650; }
+  #title p { margin:0; color:var(--muted); font-size:12.5px; }
+  #views { top:16px; right:16px; padding:10px; display:flex; flex-direction:column; gap:6px; }
+  #views button, #toggles label { font:inherit; font-size:12.5px; color:var(--text); background:#21262d; border:1px solid var(--line); border-radius:6px; padding:6px 10px; cursor:pointer; text-align:left; }
+  #views button:hover { border-color:var(--accent); }
+  #toggles { bottom:16px; right:16px; padding:10px; display:flex; flex-direction:column; gap:6px; }
+  #toggles input { margin-right:6px; }
+  #legend { bottom:16px; left:16px; padding:10px 12px; display:grid; grid-template-columns:repeat(3, auto); gap:5px 14px; font-size:12px; }
+  #legend span { display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  #legend i { width:12px; height:12px; border-radius:3px; display:inline-block; }
+  #tip { position:fixed; pointer-events:none; padding:6px 9px; font-size:12.5px; display:none; z-index:5; }
+  @media (max-width: 760px) { #legend { grid-template-columns:repeat(2, auto); bottom:auto; top:110px; } #views { top:auto; bottom:16px; right:auto; left:16px; flex-direction:row; flex-wrap:wrap; max-width:calc(100vw - 150px);} #legend{display:none} }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="title" class="panel"><h1 id="name">AccessTwin</h1><p id="sub"></p></div>
+<div id="views" class="panel"></div>
+<div id="toggles" class="panel">
+  <label><input type="checkbox" id="tSigns" checked>Station signs</label>
+  <label><input type="checkbox" id="tCallouts">Floating callouts</label>
+  <label><input type="checkbox" id="tWalls" checked>Walls</label>
+  <label><input type="checkbox" id="tZones" checked>Zone floor colors</label>
+  <label><input type="checkbox" id="tSpin">Auto-rotate</label>
+</div>
+<div id="legend" class="panel"></div>
+<div id="tip" class="panel"></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script id="spec" type="application/json">{
+  "name": "Design B: robotics lab in the hackathon venue",
+  "outline": [
+    [
+      0.0098,
+      11.3586
+    ],
+    [
+      18.3863,
+      11.3586
+    ],
+    [
+      18.3863,
+      10.4438
+    ],
+    [
+      17.3915,
+      10.4438
+    ],
+    [
+      17.3915,
+      9.8566
+    ],
+    [
+      18.3341,
+      9.8566
+    ],
+    [
+      18.3341,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      9.8692
+    ],
+    [
+      0.0098,
+      10.7581
+    ]
+  ],
+  "ceiling_height": 3.651,
+  "doors": [
+    {
+      "id": "D1",
+      "position": [
+        0.0,
+        7.3764
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.333,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "entrance",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.77 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D2",
+      "position": [
+        0.0,
+        1.8094
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.09,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "1.14 m opening; clear width estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D3",
+      "position": [
+        18.3341,
+        2.5081
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.402,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.90 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D4",
+      "position": [
+        18.3341,
+        7.3704
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.468,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 3.04 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D5",
+      "position": [
+        0.0,
+        3.2008
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.643,
+      "opening_force_lbf": 5.0,
+      "hardware": "none",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "open doorway; width from LiDAR"
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "lockers",
+      "kind": "storage",
+      "label": "Day lockers",
+      "center": [
+        0.225,
+        4.85
+      ],
+      "size": [
+        1.5,
+        0.45
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "Day lockers",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "lockers",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "ppe",
+      "kind": "storage",
+      "label": "PPE station (glasses, hearing, coats)",
+      "center": [
+        0.2,
+        6.2
+      ],
+      "size": [
+        1.0,
+        0.4
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "PPE station",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "ppe_rack",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "restroom",
+      "kind": "partition",
+      "label": "Accessible restroom",
+      "center": [
+        1.2,
+        10.15
+      ],
+      "size": [
+        2.3,
+        2.4
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Accessible restroom",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.372,
+        "tactile": true,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "restroom",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "kitchen",
+      "kind": "equipment",
+      "label": "Kitchenette (sink, dishwasher)",
+      "center": [
+        3.75,
+        11.030000000000001
+      ],
+      "size": [
+        2.4,
+        0.65
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.91,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "SINK",
+          "kind": "control_panel",
+          "position": [
+            3.75,
+            11.030000000000001
+          ],
+          "height": 0.86,
+          "approach": "forward",
+          "obstruction_depth": 0.6,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Kitchenette",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "kitchen_counter",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "fridge",
+      "kind": "equipment",
+      "label": "Refrigerator",
+      "center": [
+        5.45,
+        10.98
+      ],
+      "size": [
+        0.8,
+        0.75
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FRIDGE",
+          "kind": "handle",
+          "position": [
+            5.45,
+            10.98
+          ],
+          "height": 1.1,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Refrigerator",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "fridge",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "microwave",
+      "kind": "equipment",
+      "label": "Microwave",
+      "center": [
+        6.3,
+        11.105
+      ],
+      "size": [
+        0.6,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.2,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "MW",
+          "kind": "control_panel",
+          "position": [
+            6.3,
+            11.105
+          ],
+          "height": 1.15,
+          "approach": "forward",
+          "obstruction_depth": 0.3,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Microwave",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "microwave",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "dining1",
+      "kind": "table",
+      "label": "Dining table (6 seats)",
+      "center": [
+        3.511,
+        9.311
+      ],
+      "size": [
+        1.8,
+        0.9
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 1.5,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Dining table",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "dining_table",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "dining2",
+      "kind": "table",
+      "label": "Dining table (4 seats, accessible end)",
+      "center": [
+        4.506,
+        8.3
+      ],
+      "size": [
+        1.2,
+        0.9
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 0.9,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Dining table",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "dining_table",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "battery",
+      "kind": "cabinet",
+      "label": "Lithium battery cabinet (charging)",
+      "center": [
+        0.3,
+        0.7
+      ],
+      "size": [
+        1.2,
+        0.6
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "BATT",
+          "kind": "handle",
+          "position": [
+            0.3,
+            0.7
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "storage",
+      "sign": {
+        "text": "Lithium battery cabinet",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "battery_cabinet",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd1",
+      "kind": "workbench",
+      "label": "ESD bench 1",
+      "center": [
+        3.2,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 1",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd2",
+      "kind": "workbench",
+      "label": "ESD bench 2",
+      "center": [
+        5.1,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 2",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd3",
+      "kind": "workbench",
+      "label": "ESD bench 3 (height-adjustable)",
+      "center": [
+        7.0,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.86,
+      "work_surface_height": 0.81,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "accessible_station": true,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 3",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd4",
+      "kind": "workbench",
+      "label": "ESD bench 4",
+      "center": [
+        8.9,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 4",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "solder",
+      "kind": "workbench",
+      "label": "Soldering station (fume extraction)",
+      "center": [
+        10.6,
+        0.375
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FUME",
+          "kind": "switch",
+          "position": [
+            10.6,
+            0.375
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.6,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "electronics",
+      "sign": {
+        "text": "Soldering station",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "solder_station",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "components",
+      "kind": "storage",
+      "label": "ESD component drawers",
+      "center": [
+        12.1,
+        0.25
+      ],
+      "size": [
+        1.2,
+        0.5
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.5,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD component drawers",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "drawers",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "laser",
+      "kind": "equipment",
+      "label": "Laser cutter",
+      "center": [
+        13.6,
+        0.5
+      ],
+      "size": [
+        1.4,
+        1.0
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.1,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "LASER",
+          "kind": "control_panel",
+          "position": [
+            13.6,
+            0.5
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Laser cutter",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "laser_cutter",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "printers",
+      "kind": "equipment",
+      "label": "3D printer bank (HEPA + carbon)",
+      "center": [
+        15.7,
+        0.4
+      ],
+      "size": [
+        2.4,
+        0.8
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.9,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "fab",
+      "sign": {
+        "text": "3D printer bank",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "printer_bank",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cnc",
+      "kind": "equipment",
+      "label": "Benchtop CNC mill",
+      "center": [
+        17.65,
+        0.45
+      ],
+      "size": [
+        1.2,
+        0.9
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.6,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "CNC",
+          "kind": "e_stop",
+          "position": [
+            17.65,
+            0.45
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Benchtop CNC mill",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "cnc",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "mech",
+      "kind": "workbench",
+      "label": "Mechanical assembly bench",
+      "center": [
+        14.2,
+        2.4
+      ],
+      "size": [
+        2.0,
+        0.8
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "fab",
+      "sign": {
+        "text": "Mechanical assembly bench",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "mech_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "eyewash",
+      "kind": "equipment",
+      "label": "Emergency eyewash",
+      "center": [
+        12.3,
+        2.4
+      ],
+      "size": [
+        0.5,
+        0.4
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "EYE",
+          "kind": "handle",
+          "position": [
+            12.3,
+            2.4
+          ],
+          "height": 0.9,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Emergency eyewash",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "eyewash",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "hil",
+      "kind": "workbench",
+      "label": "HIL test bench (motor dyno)",
+      "center": [
+        10.4,
+        3.3
+      ],
+      "size": [
+        1.8,
+        0.8
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "HIL",
+          "kind": "e_stop",
+          "position": [
+            10.4,
+            3.3
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.5,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "electronics",
+      "sign": {
+        "text": "HIL test bench",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "hil_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cobot1",
+      "kind": "robot_cell",
+      "label": "Cobot cell 1 (UR5e class)",
+      "center": [
+        4.0,
+        3.3
+      ],
+      "size": [
+        1.2,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "ES1",
+          "kind": "e_stop",
+          "position": [
+            5.1,
+            3.3
+          ],
+          "height": 1.067,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "robots",
+      "sign": {
+        "text": "Cobot cell 1",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "cobot_small",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "teach",
+      "kind": "workbench",
+      "label": "Teach-pendant bench",
+      "center": [
+        6.419,
+        3.3
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.9,
+      "work_surface_height": 0.86,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "robots",
+      "sign": {
+        "text": "Teach-pendant bench",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "teach_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "desks",
+      "kind": "table",
+      "label": "Software desks (3 seats)",
+      "center": [
+        3.4,
+        5.6
+      ],
+      "size": [
+        3.6,
+        0.8
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.69,
+        "width": 1.0,
+        "depth": 0.5
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "desks",
+      "sign": {
+        "text": "Software desks",
+        "fg": "#ffffff",
+        "bg": "#22763e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "desk_row",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "arena",
+      "kind": "amr_track",
+      "label": "Test arena (netted, motion capture)",
+      "center": [
+        10.0,
+        6.811
+      ],
+      "size": [
+        6.0,
+        6.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 3.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "arena",
+      "sign": {
+        "text": "Test arena",
+        "fg": "#ffffff",
+        "bg": "#0a0acb",
+        "text_height": 0.15,
+        "mount_height": 2.55,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "arena",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "mocap",
+      "kind": "workstation",
+      "label": "Mocap operator station",
+      "center": [
+        6.4,
+        7.3
+      ],
+      "size": [
+        1.4,
+        0.7
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.75,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.69,
+        "width": 0.8,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "arena",
+      "sign": {
+        "text": "Mocap operator station",
+        "fg": "#ffffff",
+        "bg": "#0a0acb",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "mocap_station",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "shelving",
+      "kind": "shelf",
+      "label": "Parts shelving",
+      "center": [
+        8.0,
+        11.105
+      ],
+      "size": [
+        2.4,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Parts shelving",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "shelving",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "rawstock",
+      "kind": "shelf",
+      "label": "Raw stock rack",
+      "center": [
+        10.2,
+        11.055
+      ],
+      "size": [
+        1.8,
+        0.6
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Raw stock rack",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "raw_stock",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "flammables",
+      "kind": "cabinet",
+      "label": "Flammable liquids cabinet",
+      "center": [
+        11.8,
+        11.105
+      ],
+      "size": [
+        1.1,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.7,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Flammable liquids cabinet",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "flammables",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "repair",
+      "kind": "workbench",
+      "label": "Robot repair bench",
+      "center": [
+        14.486,
+        4.756
+      ],
+      "size": [
+        2.0,
+        0.8
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Robot repair bench",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "repair_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "humanoid_stand",
+      "kind": "equipment",
+      "label": "Humanoid service stand (hoist)",
+      "center": [
+        14.015,
+        7.3
+      ],
+      "size": [
+        1.2,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Humanoid service stand",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "humanoid_stand",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "quad_stand",
+      "kind": "equipment",
+      "label": "Quadruped service stand",
+      "center": [
+        13.806,
+        8.7
+      ],
+      "size": [
+        1.2,
+        0.7
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.7,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Quadruped service stand",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "quad_stand",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "spares",
+      "kind": "cabinet",
+      "label": "Spare actuators and sensors",
+      "center": [
+        15.809,
+        7.0
+      ],
+      "size": [
+        1.2,
+        0.5
+      ],
+      "rotation_deg": -90.0,
+      "height": 1.9,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "SPARE",
+          "kind": "handle",
+          "position": [
+            15.809000000000001,
+            7.0
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Spare actuators and sensors",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "spares",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "parking",
+      "kind": "storage",
+      "label": "Robot parking",
+      "center": [
+        13.85,
+        10.75
+      ],
+      "size": [
+        1.8,
+        1.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.6,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Robot parking",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "robot_parking",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cobot2",
+      "kind": "robot_cell",
+      "label": "Cobot cell 2 (UR10e class)",
+      "center": [
+        17.08,
+        4.92
+      ],
+      "size": [
+        1.5,
+        1.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "ES2",
+          "kind": "e_stop",
+          "position": [
+            15.78,
+            4.92
+          ],
+          "height": 1.07,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "robots",
+      "sign": {
+        "text": "Cobot cell 2",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": 0.75,
+      "screen_height": 0.0,
+      "model": "cobot_large",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "quiet",
+      "kind": "partition",
+      "label": "Quiet room",
+      "center": [
+        16.2,
+        10.200000000000001
+      ],
+      "size": [
+        2.2,
+        2.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "Quiet room",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.3716,
+        "tactile": true,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "quiet_room",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design B"
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "welcome",
+      "label": "Entry, PPE and lockers",
+      "color": "#0057a8"
+    },
+    {
+      "id": "break",
+      "label": "Kitchenette, dining and restroom",
+      "color": "#747406"
+    },
+    {
+      "id": "robots",
+      "label": "Robot cells",
+      "color": "#1b5e53"
+    },
+    {
+      "id": "arena",
+      "label": "Test arena",
+      "color": "#0a0acb"
+    },
+    {
+      "id": "electronics",
+      "label": "Electronics and soldering (ESD)",
+      "color": "#060674"
+    },
+    {
+      "id": "fab",
+      "label": "Fabrication",
+      "color": "#1b315e"
+    },
+    {
+      "id": "maintenance",
+      "label": "Maintenance and repair",
+      "color": "#740606"
+    },
+    {
+      "id": "storage",
+      "label": "Storage",
+      "color": "#077a91"
+    },
+    {
+      "id": "desks",
+      "label": "Software desks",
+      "color": "#22763e"
+    }
+  ],
+  "source": {
+    "kind": "design",
+    "confidence": 1.0,
+    "note": "Layout over the RoomPlan scan of the venue; program from knowledge/robotics_lab.json"
+  }
+}</script>
+<script id="tour" type="application/json">null</script>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const spec = JSON.parse(document.getElementById("spec").textContent);
+document.getElementById("name").textContent = spec.name;
+const xs = spec.outline.map(p => p[0]), ys = spec.outline.map(p => p[1]);
+const W = Math.max(...xs), D = Math.max(...ys), H = spec.ceiling_height;
+document.getElementById("sub").textContent =
+  `${W.toFixed(1)} × ${D.toFixed(1)} m room from the iPhone LiDAR scan · ${spec.elements.length} stations · drag to orbit, scroll to zoom`;
+
+// ---------- renderer / scene ----------
+const canvas = document.getElementById("c");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0d1117);
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 200);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.495;
+const P = (x, y, z = 0) => new THREE.Vector3(x, z, -y); // plan (x, y) + height z -> three
+
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x3a3328, 0.55));
+const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+sun.position.copy(P(W * 0.3, -D * 0.4, 14));
+sun.target.position.copy(P(W / 2, D / 2, 0));
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 40 });
+sun.shadow.bias = -0.0004;
+scene.add(sun, sun.target);
+
+// ---------- materials ----------
+const M = {};
+const mat = (key, color, o = {}) => (M[key] ??= new THREE.MeshStandardMaterial({ color, roughness: 0.6, metalness: 0.05, ...o }));
+const steel = () => mat("steel", 0xb8bec6, { metalness: 0.75, roughness: 0.35 });
+const dark = () => mat("dark", 0x2b2f36, { roughness: 0.5 });
+const black = () => mat("black", 0x15171b, { roughness: 0.45 });
+const wood = () => mat("wood", 0xc8a77e, { roughness: 0.7 });
+const white = () => mat("white", 0xf2f2ef, { roughness: 0.55 });
+const glass = () => mat("glass", 0xaad4ff, { transparent: true, opacity: 0.22, roughness: 0.05, metalness: 0.1 });
+const screen = () => mat("screen", 0x1d4ed8, { emissive: 0x2a62ff, emissiveIntensity: 0.6, roughness: 0.2 });
+const esd = () => mat("esd", 0x3c6fa8, { roughness: 0.8 });
+const urBlue = () => mat("ur", 0x9fb7c9, { metalness: 0.3, roughness: 0.4 });
+const orange = () => mat("kuka", 0xf28c28, { metalness: 0.2, roughness: 0.45 });
+const yellow = () => mat("yellow", 0xf5c400, { roughness: 0.5 });
+const red = () => mat("red", 0xd1242f, { roughness: 0.45 });
+const green = () => mat("green", 0x1f9d55, { roughness: 0.5 });
+
+function box(w, h, d, m, x = 0, y = 0, z = 0, parent) {
+  const g = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+  g.position.set(x, y + h / 2, z); g.castShadow = g.receiveShadow = true;
+  parent?.add(g); return g;
+}
+function cyl(r1, r2, h, m, x = 0, y = 0, z = 0, parent, seg = 24) {
+  const g = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, h, seg), m);
+  g.position.set(x, y + h / 2, z); g.castShadow = g.receiveShadow = true;
+  parent?.add(g); return g;
+}
+function sphere(r, m, x, y, z, parent) {
+  const g = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), m);
+  g.position.set(x, y, z); g.castShadow = true; parent?.add(g); return g;
+}
+// A capsule limb from a to b (Vector3s in the parent's frame).
+function limb(a, b, r, m, parent) {
+  const len = a.distanceTo(b);
+  const g = new THREE.Mesh(new THREE.CapsuleGeometry(r, Math.max(len - 2 * r, 0.001), 6, 12), m);
+  g.position.copy(a).add(b).multiplyScalar(0.5);
+  g.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+  g.castShadow = true; parent.add(g); return g;
+}
+function gridTexture(color, bg, cells = 8, line = 2, alpha = true) {
+  const c = document.createElement("canvas"); c.width = c.height = 256;
+  const x = c.getContext("2d");
+  if (bg) { x.fillStyle = bg; x.fillRect(0, 0, 256, 256); }
+  x.strokeStyle = color; x.lineWidth = line;
+  for (let i = 0; i <= cells; i++) { const p = (i * 256) / cells; x.beginPath(); x.moveTo(p, 0); x.lineTo(p, 256); x.stroke(); x.beginPath(); x.moveTo(0, p); x.lineTo(256, p); x.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function stripeTexture() {
+  const c = document.createElement("canvas"); c.width = 128; c.height = 16;
+  const x = c.getContext("2d"); x.fillStyle = "#f5c400"; x.fillRect(0, 0, 128, 16); x.fillStyle = "#111";
+  for (let i = -16; i < 144; i += 32) { x.beginPath(); x.moveTo(i, 16); x.lineTo(i + 16, 0); x.lineTo(i + 32, 0); x.lineTo(i + 16, 16); x.fill(); }
+  const t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+
+// ---------- room ----------
+const signs = [];
+const floorTex = gridTexture("rgba(0,0,0,.05)", "#9a9a96", 1, 2);
+floorTex.repeat.set(W, D);
+const shape = new THREE.Shape(spec.outline.map(([x, y]) => new THREE.Vector2(x, y)));
+const floor = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshStandardMaterial({ color: 0xb9b7b0, roughness: 0.35, metalness: 0.0 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ color: 0x161b22, roughness: 1 }));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.01; ground.receiveShadow = true; scene.add(ground);
+
+const walls = new THREE.Group(); scene.add(walls);
+const wallMat = new THREE.MeshStandardMaterial({ color: 0xe9e6df, roughness: 0.9 });
+const capMat = new THREE.MeshStandardMaterial({ color: 0x3b4048, roughness: 0.6 });
+const WALL_H = 2.6, T = 0.15;
+const fadeWalls = [], exitSigns = [];
+const ring = [...spec.outline, spec.outline[0]];
+const ccw = spec.outline.reduce((a, p, i) => { const q = spec.outline[(i + 1) % spec.outline.length]; return a + (p[0] * q[1] - q[0] * p[1]); }, 0) > 0;
+for (let i = 0; i < ring.length - 1; i++) {
+  const [ax, ay] = ring[i], [bx, by] = ring[i + 1];
+  const len = Math.hypot(bx - ax, by - ay); if (len < 0.05) continue;
+  const ux = (bx - ax) / len, uy = (by - ay) / len;
+  // Cut door openings that sit on this wall line.
+  const gaps = spec.doors.map(d => {
+    const t = (d.position[0] - ax) * ux + (d.position[1] - ay) * uy;
+    const off = Math.abs(-(d.position[0] - ax) * uy + (d.position[1] - ay) * ux);
+    return off < 0.2 && t > 0 && t < len ? [t - d.clear_width / 2 - 0.05, t + d.clear_width / 2 + 0.05, d] : null;
+  }).filter(Boolean).sort((a, b) => a[0] - b[0]);
+  let s = 0; const pieces = [];
+  for (const [g0, g1, d] of gaps) { pieces.push([s, g0, WALL_H]); pieces.push([g0, g1, null, d]); s = g1; }
+  pieces.push([s, len, WALL_H]);
+  for (const [t0, t1, h, d] of pieces) {
+    if (t1 - t0 < 0.01) continue;
+    // Shift the wall outward by half its thickness so its inner face sits on the scanned wall line.
+    const ox = (ccw ? uy : -uy) * T / 2, oy = (ccw ? -ux : ux) * T / 2;
+    const mx = ax + ux * (t0 + t1) / 2 + ox, my = ay + uy * (t0 + t1) / 2 + oy, ang = Math.atan2(uy, ux);
+    if (h) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(t1 - t0, h, T), wallMat.clone());
+      m.material.transparent = true;
+      m.position.copy(P(mx, my, h / 2)); m.rotation.y = ang; m.castShadow = m.receiveShadow = true; walls.add(m);
+      fadeWalls.push({ mesh: m, n: (ccw ? P(uy, -ux, 0) : P(-uy, ux, 0)).normalize(), mid: P(mx, my, 0) });
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(t1 - t0, 0.03, T + 0.01), capMat);
+      cap.position.copy(P(mx, my, h)); cap.rotation.y = ang; walls.add(cap);
+    } else {
+      // Door: frame, header and a half-open leaf (open doorways get only the frame).
+      const frame = new THREE.Group(); frame.position.copy(P(mx, my, 0)); frame.rotation.y = ang; walls.add(frame);
+      const w = t1 - t0;
+      box(0.06, 2.13, T + 0.02, dark(), -w / 2, 0, 0, frame); box(0.06, 2.13, T + 0.02, dark(), w / 2, 0, 0, frame);
+      box(w, WALL_H - 2.13, T, wallMat, 0, 2.13, 0, frame);
+      if (d.hardware !== "none") {
+        const leaf = new THREE.Group(); leaf.position.set(-w / 2 + 0.05, 0, 0); frame.add(leaf);
+        box(w - 0.1, 2.08, 0.045, mat("door", 0x8d6e4f, { roughness: 0.55 }), (w - 0.1) / 2, 0.02, 0, leaf);
+        leaf.rotation.y = -0.9 * Math.sign(d.inward[0] * uy - d.inward[1] * ux || 1);
+      }
+      exitSigns.push([frame, d]);
+    }
+  }
+}
+
+// ---------- signs ----------
+function signSprite(text, fg, bg, worldH = 0.22) {
+  const c = document.createElement("canvas"); const x = c.getContext("2d");
+  const fs = 64; x.font = `600 ${fs}px Inter, Helvetica, Arial, sans-serif`;
+  const w = Math.ceil(x.measureText(text).width) + 56; c.width = w; c.height = fs + 40;
+  x.font = `600 ${fs}px Inter, Helvetica, Arial, sans-serif`;
+  x.fillStyle = bg; roundRect(x, 0, 0, w, c.height, 18); x.fill();
+  x.strokeStyle = "rgba(0,0,0,.25)"; x.lineWidth = 3; x.stroke();
+  x.fillStyle = fg; x.textBaseline = "middle"; x.fillText(text, 28, c.height / 2 + 2);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthWrite: false }));
+  s.scale.set(worldH * w / c.height, worldH, 1); s.renderOrder = 10; return s;
+}
+function roundRect(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+
+// ---------- people & robots ----------
+function humanoid(parent, s = 1, m = mat("hum", 0xd9dde3, { metalness: 0.4, roughness: 0.35 })) {
+  const g = new THREE.Group(); parent.add(g); g.scale.setScalar(s);
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  box(0.36, 0.42, 0.2, m, 0, 0.82, 0, g); box(0.3, 0.12, 0.18, dark(), 0, 0.72, 0, g);
+  sphere(0.11, m, 0, 1.38, 0, g); box(0.16, 0.05, 0.02, screen(), 0, 1.36, 0.1, g);
+  limb(V(-0.1, 0.72, 0), V(-0.1, 0.38, 0.04), 0.055, m, g); limb(V(-0.1, 0.38, 0.04), V(-0.1, 0.05, 0), 0.05, m, g);
+  limb(V(0.1, 0.72, 0), V(0.1, 0.38, 0.04), 0.055, m, g); limb(V(0.1, 0.38, 0.04), V(0.1, 0.05, 0), 0.05, m, g);
+  box(0.1, 0.05, 0.2, dark(), -0.1, 0, 0.03, g); box(0.1, 0.05, 0.2, dark(), 0.1, 0, 0.03, g);
+  limb(V(-0.22, 1.2, 0), V(-0.26, 0.95, 0.05), 0.045, m, g); limb(V(-0.26, 0.95, 0.05), V(-0.24, 0.75, 0.15), 0.04, m, g);
+  limb(V(0.22, 1.2, 0), V(0.26, 0.95, 0.05), 0.045, m, g); limb(V(0.26, 0.95, 0.05), V(0.24, 0.75, 0.15), 0.04, m, g);
+  return g;
+}
+function quadruped(parent, m = mat("quad", 0xf2b01e, { roughness: 0.45 })) {
+  const g = new THREE.Group(); parent.add(g); const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  box(0.75, 0.16, 0.26, m, 0, 0.38, 0, g); box(0.12, 0.08, 0.2, dark(), 0.4, 0.42, 0, g);
+  for (const [x, z] of [[0.3, 0.14], [0.3, -0.14], [-0.3, 0.14], [-0.3, -0.14]]) {
+    limb(V(x, 0.42, z), V(x + 0.08, 0.22, z), 0.035, dark(), g); limb(V(x + 0.08, 0.22, z), V(x - 0.02, 0.02, z), 0.03, dark(), g);
+  }
+  return g;
+}
+function amr(parent, x = 0, z = 0) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); parent.add(g);
+  box(0.8, 0.3, 0.58, mat("amr", 0x30363d), 0, 0.04, 0, g); box(0.8, 0.02, 0.58, mat("amrTop", 0x58a6ff, { emissive: 0x1f6feb, emissiveIntensity: 0.25 }), 0, 0.34, 0, g);
+  cyl(0.06, 0.06, 0.07, black(), 0.28, 0.36, 0, g); return g;
+}
+function drone(parent, x, y, z) {
+  const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g);
+  box(0.12, 0.03, 0.12, black(), 0, 0, 0, g);
+  for (const [a, b] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { cyl(0.07, 0.07, 0.005, mat("prop", 0x9be9a8, { transparent: true, opacity: 0.6 }), a * 0.09, 0.03, b * 0.09, g); }
+  g.userData.spin = true; return g;
+}
+function arm(parent, scale, m, pose = [0.4, -0.9, 1.3, -0.4]) {
+  // Six-axis arm: base, shoulder, upper arm, elbow, forearm, wrist, gripper.
+  const g = new THREE.Group(); parent.add(g); g.scale.setScalar(scale);
+  cyl(0.09, 0.1, 0.12, m, 0, 0, 0, g);
+  const yaw = new THREE.Group(); yaw.position.y = 0.12; yaw.rotation.y = pose[0]; g.add(yaw);
+  cyl(0.075, 0.075, 0.1, m, 0, 0, 0, yaw); sphere(0.075, dark(), 0, 0.14, 0, yaw);
+  const sh = new THREE.Group(); sh.position.y = 0.14; sh.rotation.z = pose[1]; yaw.add(sh);
+  limb(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.42, 0), 0.06, m, sh); sphere(0.065, dark(), 0, 0.42, 0, sh);
+  const el = new THREE.Group(); el.position.y = 0.42; el.rotation.z = pose[2]; sh.add(el);
+  limb(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.38, 0), 0.05, m, el); sphere(0.05, dark(), 0, 0.38, 0, el);
+  const wr = new THREE.Group(); wr.position.y = 0.38; wr.rotation.z = pose[3]; el.add(wr);
+  cyl(0.04, 0.04, 0.1, m, 0, 0, 0, wr); box(0.1, 0.03, 0.05, black(), 0, 0.1, 0, wr);
+  box(0.015, 0.07, 0.04, black(), -0.035, 0.13, 0, wr); box(0.015, 0.07, 0.04, black(), 0.035, 0.13, 0, wr);
+  g.userData.joints = { yaw, sh, el, wr, pose }; return g;
+}
+const animated = [];
+
+// ---------- furniture builders (local frame: width on x, depth on z, front face at +z) ----------
+function bench(g, w, d, top, kind) {
+  const topMat = kind === "esd" ? esd() : kind === "steel" ? steel() : wood();
+  box(w, 0.04, d, topMat, 0, top - 0.04, 0, g);
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.05, top - 0.04, 0.05, dark(), sx * (w / 2 - 0.05), 0, sz * (d / 2 - 0.05), g);
+  box(w - 0.1, 0.03, d - 0.1, dark(), 0, 0.15, 0, g);
+  box(w, 0.7, 0.03, mat("riser", 0x8a929c, { metalness: 0.4 }), 0, top, -d / 2 + 0.02, g);
+  box(w, 0.03, 0.28, steel(), 0, top + 0.42, -d / 2 + 0.15, g);
+}
+function benchKit(g, w, d, top, kit) {
+  const z0 = -d / 2 + 0.17;
+  if (kit.includes("scope")) { box(0.32, 0.17, 0.14, mat("scope", 0x3d4a5c), -w / 4, top + 0.45, z0, g); box(0.2, 0.12, 0.005, screen(), -w / 4 - 0.04, top + 0.475, z0 + 0.073, g); }
+  if (kit.includes("psu")) { box(0.22, 0.13, 0.2, mat("psu", 0xe6e6e6), w / 4, top + 0.45, z0, g); }
+  if (kit.includes("monitor")) { box(0.55, 0.32, 0.02, black(), 0, top + 0.12, -d / 2 + 0.25, g); box(0.52, 0.29, 0.005, screen(), 0, top + 0.135, -d / 2 + 0.262, g); box(0.04, 0.12, 0.04, dark(), 0, top, -d / 2 + 0.24, g); }
+  if (kit.includes("solder")) {
+    cyl(0.07, 0.07, 0.08, red(), w / 3, top, 0.05, g);
+    const a = new THREE.Vector3(-w / 3, top + 0.7, -d / 2 + 0.05), b = new THREE.Vector3(-w / 3 + 0.15, top + 0.75, 0), c2 = new THREE.Vector3(-w / 3 + 0.25, top + 0.3, 0.12);
+    limb(a, b, 0.035, mat("fume", 0xe85d2c), g); limb(b, c2, 0.035, mat("fume", 0xe85d2c), g); cyl(0.09, 0.06, 0.08, mat("fume", 0xe85d2c), -w / 3 + 0.25, top + 0.22, 0.12, g);
+    box(0.35, 0.45, 0.3, mat("extractor", 0x6e7781), -w / 2 + 0.25, 0, 0, g);
+  }
+  if (kit.includes("dyno")) { cyl(0.12, 0.12, 0.3, steel(), 0, top, 0, g).rotation.z = Math.PI / 2; box(0.3, 0.2, 0.25, mat("pa", 0x2b3a55), w / 3, top, -0.1, g); }
+  if (kit.includes("vise")) { box(0.2, 0.12, 0.12, mat("vise", 0x2f6fb0, { metalness: 0.4 }), w / 3, top, 0.1, g); }
+  if (kit.includes("drill")) { box(0.25, 0.05, 0.3, dark(), -w / 3, top, 0, g); cyl(0.03, 0.03, 0.75, steel(), -w / 3, top, -0.1, g); box(0.18, 0.22, 0.3, mat("drill", 0x2f6fb0), -w / 3, top + 0.55, 0, g); }
+  if (kit.includes("robotpart")) { arm(g, 0.4, urBlue(), [0, -1.2, 1.6, 0.2]).position.set(w / 4, top, 0); }
+}
+function chair(parent, x, z, rot = 0) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = rot; parent.add(g);
+  cyl(0.02, 0.02, 0.42, dark(), 0, 0.03, 0, g); box(0.44, 0.06, 0.42, mat("seat", 0x24292f), 0, 0.45, 0, g);
+  box(0.42, 0.45, 0.05, mat("seat", 0x24292f), 0, 0.5, 0.2, g);
+  for (let i = 0; i < 5; i++) { const a = (i / 5) * Math.PI * 2; box(0.26, 0.025, 0.03, dark(), Math.cos(a) * 0.13, 0.03, Math.sin(a) * 0.13, g).rotation.y = -a; }
+}
+function shelving(g, w, d, h, bins = true) {
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.04, h, 0.04, mat("upright", 0x355f9e, { metalness: 0.4 }), sx * (w / 2 - 0.02), 0, sz * (d / 2 - 0.02), g);
+  const n = 5, colors = [0x1f6feb, 0xd1242f, 0xf5c400, 0x2da44e, 0x8250df];
+  for (let i = 0; i < n; i++) {
+    const y = 0.1 + (i * (h - 0.2)) / (n - 1);
+    box(w, 0.025, d, steel(), 0, y, 0, g);
+    if (bins && i < n - 1) for (let k = 0; k < Math.floor(w / 0.4); k++)
+      box(0.32, 0.2, d * 0.8, mat("bin" + ((i + k) % 5), colors[(i + k) % 5], { roughness: 0.6 }), -w / 2 + 0.22 + k * 0.4, y + 0.025, 0, g);
+  }
+}
+function cabinet(g, w, d, h, color, label) {
+  box(w, h, d, mat("cab" + color, color, { metalness: 0.25, roughness: 0.4 }), 0, 0, 0, g);
+  box(0.02, 0.25, 0.03, steel(), 0.04, h * 0.5, d / 2 + 0.01, g); box(0.02, 0.25, 0.03, steel(), -0.04, h * 0.5, d / 2 + 0.01, g);
+  box(0.005, h - 0.08, 0.005, dark(), 0, 0.04, d / 2 + 0.003, g);
+  if (label) { const s = plaque(label, "#111111", "#ffffff", 0.035); s.position.set(0, h * 0.62, d / 2 + 0.006); g.add(s); }
+}
+
+function cage(g, w, d, h) {
+  const tex = gridTexture("#3b3f45", null, 16, 3); const mesh = new THREE.MeshStandardMaterial({ map: tex, transparent: true, alphaTest: 0.2, side: THREE.DoubleSide, metalness: 0.5, roughness: 0.5 });
+  const sides = [[w, 0, d / 2, 0], [w, 0, -d / 2, 0], [d, w / 2, 0, Math.PI / 2], [d, -w / 2, 0, Math.PI / 2]];
+  sides.forEach(([len, x, z, r], i) => {
+    const panels = Math.max(1, Math.round(len / 1.2));
+    for (let k = 0; k < panels; k++) {
+      if (i === 2 && k === 0) continue; // interlocked gate opening on the west side
+      const pl = len / panels, off = -len / 2 + pl * (k + 0.5);
+      const t = tex.clone(); t.repeat.set(pl / 0.4, (h - 0.15) / 0.4); t.needsUpdate = true;
+      const p = new THREE.Mesh(new THREE.PlaneGeometry(pl - 0.04, h - 0.15), mesh.clone()); p.material.map = t;
+      p.position.set(x + (r ? 0 : off), 0.15 + (h - 0.15) / 2, z + (r ? off : 0)); p.rotation.y = r; g.add(p);
+      const post = box(0.05, h, 0.05, yellow(), x + (r ? 0 : off - pl / 2), 0, z + (r ? off - pl / 2 : 0), g);
+    }
+  });
+  box(0.05, h, 0.05, yellow(), w / 2, 0, d / 2, g);
+}
+function floorTape(parent, w, d, y = 0.004) {
+  const t = stripeTexture(); const m = new THREE.MeshBasicMaterial({ map: t });
+  for (const [len, x, z, r] of [[w, 0, d / 2, 0], [w, 0, -d / 2, 0], [d, w / 2, 0, Math.PI / 2], [d, -w / 2, 0, Math.PI / 2]]) {
+    const tt = t.clone(); tt.repeat.set(len / 0.4, 1); tt.needsUpdate = true;
+    const s = new THREE.Mesh(new THREE.PlaneGeometry(len, 0.08), new THREE.MeshBasicMaterial({ map: tt }));
+    s.rotation.x = -Math.PI / 2; s.rotation.z = r; s.position.set(x, y, z); parent.add(s);
+  }
+}
+
+function arena(g, w, d, h) {
+  const mats = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ map: (() => { const t = gridTexture("#4a4f57", "#2a2e35", 1, 6); t.repeat.set(w / 1, d / 1); return t; })(), roughness: 0.9 }));
+  mats.rotation.x = -Math.PI / 2; mats.position.y = 0.006; mats.receiveShadow = true; g.add(mats);
+  const netTex = gridTexture("rgba(240,240,240,.55)", null, 10, 2);
+  for (const [len, x, z, r] of [[w, 0, d / 2, 0], [w, 0, -d / 2, 0], [d, w / 2, 0, Math.PI / 2], [d, -w / 2, 0, Math.PI / 2]]) {
+    const t = netTex.clone(); t.repeat.set(len / 0.5, h / 0.5); t.needsUpdate = true;
+    const n = new THREE.Mesh(new THREE.PlaneGeometry(len, h), new THREE.MeshBasicMaterial({ map: t, transparent: true, side: THREE.DoubleSide, depthWrite: false }));
+    n.position.set(x, h / 2, z); n.rotation.y = r; g.add(n);
+  }
+  // Truss with 12 motion-capture cameras looking inward.
+  const truss = mat("truss", 0x9aa3ad, { metalness: 0.7, roughness: 0.3 });
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.12, h, 0.12, truss, sx * w / 2, 0, sz * d / 2, g);
+  box(w, 0.25, 0.12, truss, 0, h, d / 2, g); box(w, 0.25, 0.12, truss, 0, h, -d / 2, g);
+  box(0.12, 0.25, d, truss, w / 2, h, 0, g); box(0.12, 0.25, d, truss, -w / 2, h, 0, g);
+  const camPts = [];
+  for (let i = 0; i < 3; i++) { const t = -w / 2 + w * (i + 0.5) / 3; camPts.push([t, d / 2], [t, -d / 2]); }
+  for (let i = 0; i < 3; i++) { const t = -d / 2 + d * (i + 0.5) / 3; camPts.push([w / 2, t], [-w / 2, t]); }
+  for (const [x, z] of camPts) {
+    const c = new THREE.Group(); c.position.set(x, h - 0.05, z); g.add(c);
+    box(0.12, 0.1, 0.16, black(), 0, -0.1, 0, c);
+    const ringM = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.012, 8, 20), new THREE.MeshBasicMaterial({ color: 0xff3030 }));
+    ringM.position.set(0, -0.05, 0.085); c.add(ringM);
+    c.lookAt(g.localToWorld(new THREE.Vector3(0, 0.5, 0)).clone()); c.rotation.set(c.rotation.x, Math.atan2(-x, -z), 0);
+    c.children.forEach(ch => ch.position.z += 0);
+    const tilt = new THREE.Vector3(-x, -(h - 0.6), -z); c.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), tilt.normalize());
+  }
+  // Residents: humanoid on a gantry, quadruped, two AMRs on docks, three drones.
+  const gx = w / 2 - 1.2, gz = -d / 2 + 1.2;
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(0.07, 2.6, 0.07, steel(), gx + sx * 0.9, 0, gz + sz * 0.9, g);
+  box(1.9, 0.08, 0.08, steel(), gx, 2.6, gz - 0.9, g); box(1.9, 0.08, 0.08, steel(), gx, 2.6, gz + 0.9, g); box(0.08, 0.08, 1.9, steel(), gx, 2.6, gz, g);
+  cyl(0.006, 0.006, 1.1, yellow(), gx, 1.5, gz, g);
+  const h1 = humanoid(g, 1.0); h1.position.set(gx, 0, gz); h1.rotation.y = -0.6; animated.push({ obj: h1, kind: "sway" });
+  const q = quadruped(g); q.position.set(-0.6, 0, 0.8); q.rotation.y = 0.7; animated.push({ obj: q, kind: "patrol", r: 1.4, c: [-0.3, 0.3], phase: 0 });
+  amr(g, -w / 2 + 0.7, d / 2 - 0.7); amr(g, -w / 2 + 1.7, d / 2 - 0.7);
+  for (const [x, z] of [[-w / 2 + 0.7, d / 2 - 0.25], [-w / 2 + 1.7, d / 2 - 0.25]]) box(0.5, 0.25, 0.12, mat("dock", 0x24292f), x, 0, z, g);
+  const a2 = amr(g, 1.2, 1.4); animated.push({ obj: a2, kind: "patrol", r: 1.9, c: [0.4, 0.2], phase: 2.2 });
+  const mm = amr(g, 0, 0); const mmArm = arm(mm, 0.55, urBlue(), [0, -0.6, 1.5, -0.3]); mmArm.position.set(-0.1, 0.36, 0);
+  animated.push({ obj: mm, kind: "patrol", r: 1.6, c: [-0.8, -0.9], phase: 4.1 }); animated.push({ obj: mmArm, kind: "arm", phase: 2, speed: 1.1 });
+  for (const [x, y, z, p] of [[0.8, 1.8, -0.6, 0], [-1.4, 2.1, -1.5, 2], [1.6, 1.4, 1.6, 4]]) animated.push({ obj: drone(g, x, y, z), kind: "hover", base: [x, y, z], phase: p });
+}
+
+function restroom(g, w, d, h) {
+  const pm = mat("partition", 0xd0d4d9, { roughness: 0.7 });
+  box(w, h, 0.1, pm, 0, 0, -d / 2 + 0.05, g); box(0.1, h, d, pm, -w / 2 + 0.05, 0, 0, g); box(0.1, h, d, pm, w / 2 - 0.05, 0, 0, g);
+  box(w - 1.0, h, 0.1, pm, -0.5, 0, d / 2 - 0.05, g); // front wall with a 0.9 m door opening on the right
+  const leaf = new THREE.Group(); leaf.position.set(w / 2 - 0.1, 0, d / 2 - 0.05); leaf.rotation.y = 1.1; g.add(leaf);
+  box(0.9, 2.05, 0.04, mat("door", 0x8d6e4f), -0.45, 0, 0, leaf);
+  box(w - 0.2, 0.01, d - 0.2, mat("tile", 0xe8eef3), 0, 0, 0, g);
+  // Toilet with grab bars, lavatory
+  const tx = -w / 2 + 0.55, tz = -d / 2 + 0.45;
+  box(0.4, 0.4, 0.55, white(), tx, 0, tz, g); box(0.42, 0.35, 0.18, white(), tx, 0.4, tz - 0.2, g);
+  box(0.03, 0.03, 1.05, steel(), -w / 2 + 0.13, 0.86, tz + 0.3, g); box(0.9, 0.03, 0.03, steel(), tx, 0.86, -d / 2 + 0.13, g);
+  box(0.5, 0.15, 0.4, white(), w / 2 - 0.45, 0.72, -d / 2 + 0.3, g); box(0.5, 0.6, 0.02, mat("mirror", 0xcfe7ff, { metalness: 0.9, roughness: 0.05 }), w / 2 - 0.45, 1.0, -d / 2 + 0.11, g);
+}
+function kitchen(g, w, d) {
+  box(w, 0.86, d, mat("cabinets", 0x4b5563), 0, 0, 0, g); box(w + 0.02, 0.04, d + 0.02, mat("counter", 0xe8e4dc, { roughness: 0.3 }), 0, 0.87, 0, g);
+  box(0.55, 0.02, 0.4, steel(), -w / 4, 0.905, 0.02, g); cyl(0.015, 0.015, 0.3, steel(), -w / 4, 0.91, -0.2, g);
+  box(w, 0.7, 0.35, mat("uppers", 0xf2f2ef), 0, 1.45, -d / 2 + 0.17, g);
+  box(0.6, 0.83, 0.02, steel(), w / 4, 0.03, d / 2, g); // dishwasher face
+  for (let i = 0; i < 4; i++) box(0.01, 0.12, 0.02, steel(), -w / 2 + 0.3 + i * 0.6, 0.65, d / 2 + 0.01, g);
+}
+function deskRow(g, w, d, chairs = 3, monitors = true) {
+  box(w, 0.04, d, wood(), 0, 0.7, 0, g);
+  for (const sx of [-1, 1]) box(0.06, 0.7, d - 0.1, dark(), sx * (w / 2 - 0.05), 0, 0, g);
+  for (let i = 0; i < chairs; i++) {
+    const x = -w / 2 + w * (i + 0.5) / chairs;
+    if (monitors) { box(0.6, 0.36, 0.02, black(), x, 0.86, -d / 2 + 0.15, g); box(0.57, 0.33, 0.005, screen(), x, 0.875, -d / 2 + 0.162, g); box(0.05, 0.16, 0.05, dark(), x, 0.74, -d / 2 + 0.12, g); }
+    chair(g, x, d / 2 + 0.3);
+  }
+}
+
+// ---------- physical signs: plaques, name tags, tent cards, post signs ----------
+const callouts = [];
+const WALL_BACKED = new Set(["esd_bench", "solder_station", "kitchen_counter", "shelving", "raw_stock", "laser_cutter", "printer_bank",
+  "cnc", "drawers", "lockers", "ppe_rack", "battery_cabinet", "flammables", "fridge", "microwave"]);
+const BENCHES = new Set(["hil_bench", "repair_bench", "mech_bench", "teach_bench"]);
+const TABLES = new Set(["dining_table", "desk_row", "mocap_station"]);
+// A sign at true scale: capH is the cap height of the letters in meters (spec Sign.text_height).
+function plaque(text, fg, bg, capH, doubleSided = false) {
+  const fs = 96, c = document.createElement("canvas"), x = c.getContext("2d");
+  x.font = `700 ${fs}px Inter, Helvetica, Arial, sans-serif`;
+  c.width = Math.ceil(x.measureText(text).width) + fs; c.height = Math.round(fs * 1.55);
+  x.font = `700 ${fs}px Inter, Helvetica, Arial, sans-serif`;
+  x.fillStyle = bg; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = fg; x.textBaseline = "middle"; x.fillText(text, fs / 2, c.height / 2 + fs * 0.04);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  const k = capH / (0.72 * fs), pw = c.width * k, ph = c.height * k;
+  const g = new THREE.Group(); g.userData.size = [pw, ph];
+  box(pw + 0.012, ph + 0.012, 0.008, mat("acrylicEdge", 0x2b2f36, { roughness: 0.3 }), 0, -(ph + 0.012) / 2, 0, g);
+  const face = new THREE.MeshStandardMaterial({ map: t, roughness: 0.35, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.25 });
+  const f = new THREE.Mesh(new THREE.PlaneGeometry(pw, ph), face); f.position.z = 0.0045; g.add(f);
+  if (doubleSided) { const b = f.clone(); b.rotation.y = Math.PI; b.position.z = -0.0045; g.add(b); }
+  return g;
+}
+function placeSign(g, e, m, w, d, h, top) {
+  const s = e.sign, two = !WALL_BACKED.has(m);
+  const p = plaque(s.text, s.fg, s.bg, s.text_height, two), [pw, ph] = p.userData.size;
+  const yc = s.mount_height + ph / 2 - 0.15 * ph; // mount_height is the baseline of the letters
+  if (m === "arena") {
+    // Banner hanging from the truss, on the south and west faces.
+    p.position.set(0, yc, d / 2 + 0.08); g.add(p);
+    const p2 = plaque(s.text, s.fg, s.bg, s.text_height, true); p2.position.set(-w / 2 - 0.08, yc, 0); p2.rotation.y = -Math.PI / 2; g.add(p2); signs.push(p2);
+  } else if (m === "industrial_cage") {
+    p.position.set(-w / 2 - e.safeguard_margin - 0.04, yc, -0.9); p.rotation.y = -Math.PI / 2; g.add(p); // on the fence beside the gate
+  } else if (m === "cobot_small" || m === "cobot_large") {
+    const px = w / 2 + e.safeguard_margin, pz = d / 2 + e.safeguard_margin;
+    cyl(0.025, 0.025, yc + ph / 2, yellow(), px - pw / 2 - 0.05, 0, pz, g);
+    p.position.set(px - pw / 2 - 0.05, yc + ph / 2 - 0.01, pz + 0.03); g.add(p);
+  } else if (m === "restroom") {
+    p.position.set(w / 2 - 1.0 - pw / 2 - 0.1, yc, d / 2 + 0.005); g.add(p); // on the wall, latch side of the door
+  } else if (TABLES.has(m)) {
+    // Acrylic tent card standing on the table top, readable from both sides.
+    p.position.set(w / 2 - pw / 2 - 0.08, top + ph + 0.02, 0); g.add(p);
+    box(Math.min(pw, 0.3), 0.012, 0.06, mat("acrylic", 0xdde6ee, { transparent: true, opacity: 0.6 }), w / 2 - pw / 2 - 0.08, top, 0, g);
+  } else if (h >= s.mount_height - 0.05) {
+    // Tall unit: plastic name tag on its front face near the top.
+    p.position.set(0, h - 0.06, d / 2 + 0.006); g.add(p);
+  } else if (WALL_BACKED.has(m)) {
+    p.position.set(0, yc, -d / 2 + 0.006); g.add(p); // wall plaque above the station
+  } else if (BENCHES.has(m)) {
+    // Bracket sign rising off the bench riser.
+    for (const sx of [-1, 1]) box(0.02, yc - top - 0.62, 0.02, steel(), sx * pw * 0.4, top + 0.7, -d / 2 + 0.03, g);
+    p.position.set(0, yc + ph / 2 - 0.01, -d / 2 + 0.03); g.add(p);
+  } else {
+    // Freestanding post sign at the front corner.
+    const px = Math.min(w / 2, 0.8), pz = d / 2 + 0.25;
+    cyl(0.02, 0.02, yc + 0.01, dark(), px, 0, pz, g); cyl(0.15, 0.15, 0.02, dark(), px, 0, pz, g);
+    p.position.set(px, yc + ph / 2, pz + 0.025); g.add(p);
+  }
+  signs.push(p);
+}
+
+// ---------- build every element ----------
+for (const [frame, d] of exitSigns) {
+  const ex = plaque(d.role === "entrance" ? "MAIN ENTRANCE" : "EXIT", "#ffffff", d.role === "entrance" ? "#1a7f37" : "#c62828", 0.1, true);
+  ex.position.set(0, 2.42, 0); frame.add(ex); signs.push(ex);
+}
+const ZC = Object.fromEntries((spec.zones || []).map(z => [z.id, z.color]));
+const zoneFloors = new THREE.Group(); scene.add(zoneFloors);
+const pickables = [], groups = {};
+for (const e of spec.elements) {
+  const [w, d] = e.size, h = e.height, top = e.work_surface_height ?? h;
+  const g = new THREE.Group(); g.position.copy(P(e.center[0], e.center[1], 0)); g.rotation.y = THREE.MathUtils.degToRad(e.rotation_deg); scene.add(g);
+  g.userData.el = e; groups[e.id] = g;
+  const m = e.model || e.kind;
+  switch (m) {
+    case "esd_bench": bench(g, w, d, top, "esd"); benchKit(g, w, d, top, ["scope", "psu"]); chair(g, 0, d / 2 + 0.35, 0); break;
+    case "solder_station": bench(g, w, d, top, "esd"); benchKit(g, w, d, top, ["solder", "scope"]); chair(g, 0, d / 2 + 0.35); break;
+    case "hil_bench": bench(g, w, d, top, "steel"); benchKit(g, w, d, top, ["dyno", "monitor"]); break;
+    case "repair_bench": bench(g, w, d, top, "esd"); benchKit(g, w, d, top, ["vise", "robotpart", "psu"]); break;
+    case "mech_bench": bench(g, w, d, top, "wood"); benchKit(g, w, d, top, ["vise", "drill"]); box(w, 0.9, 0.03, mat("peg", 0xb08d5b), 0, top + 0.75, -d / 2 + 0.02, g); break;
+    case "teach_bench": bench(g, w, d, top, "wood"); benchKit(g, w, d, top, ["monitor"]); box(0.25, 0.04, 0.18, mat("pendant", 0x2b3a55), w / 4, top, 0.1, g); chair(g, 0, d / 2 + 0.35); break;
+    case "cobot_small": case "cobot_large": {
+      const s = m === "cobot_large" ? 1.35 : 1.0;
+      box(w * 0.9, 0.8, d * 0.9, mat("pedestal", 0x59636e, { metalness: 0.5 }), 0, 0, 0, g); box(w, 0.04, d, steel(), 0, 0.8, 0, g);
+      const a = arm(g, s, urBlue(), [0.5, -0.8, 1.4, -0.5]); a.position.set(0, 0.84, 0); animated.push({ obj: a, kind: "arm", phase: Math.random() * 6 });
+      box(0.12, 0.08, 0.12, mat("part", 0x2da44e), w * 0.25, 0.84, d * 0.2, g);
+      floorTape(g, w + 2 * e.safeguard_margin, d + 2 * e.safeguard_margin);
+      for (const sx of [-1, 1]) { const post = box(0.05, 1.6, 0.05, yellow(), sx * (w / 2 + e.safeguard_margin), 0, (d / 2 + e.safeguard_margin), g); }
+      break;
+    }
+    case "industrial_cage": {
+      box(0.9, 0.5, 0.9, dark(), 0, 0, 0, g);
+      const a = arm(g, 2.0, orange(), [0.9, -0.5, 1.2, -0.6]); a.position.set(0, 0.5, 0); animated.push({ obj: a, kind: "arm", phase: 1, speed: 0.6 });
+      cage(g, w + 2 * e.safeguard_margin, d + 2 * e.safeguard_margin, 2.0);
+      break;
+    }
+    case "arena": arena(g, w, d, h); break;
+    case "mocap_station": deskRow(g, w, d, 1, true); break;
+    case "desk_row": deskRow(g, w, d, 3, true); break;
+    case "dining_table": {
+      box(w, 0.04, d, wood(), 0, 0.7, 0, g); cyl(0.04, 0.04, 0.7, dark(), -w / 2 + 0.2, 0, 0, g); cyl(0.04, 0.04, 0.7, dark(), w / 2 - 0.2, 0, 0, g);
+      const n = Math.round(w / 0.6); for (let i = 0; i < n; i++) { const x = -w / 2 + w * (i + 0.5) / n; chair(g, x, d / 2 + 0.3); chair(g, x, -d / 2 - 0.3, Math.PI); }
+      break;
+    }
+    case "restroom": restroom(g, w, d, h); break;
+    case "kitchen_counter": kitchen(g, w, d); break;
+    case "fridge": box(w, h, d, mat("ss", 0xc9ced4, { metalness: 0.8, roughness: 0.25 }), 0, 0, 0, g); box(0.03, 0.6, 0.04, dark(), w / 2 - 0.08, 0.85, d / 2 + 0.02, g); box(w, 0.01, 0.01, dark(), 0, 1.15, d / 2 + 0.003, g); break;
+    case "microwave": box(w, 0.86, d, mat("cabinets", 0x4b5563), 0, 0, 0, g); box(w, 0.32, d * 0.9, black(), 0, 0.88, 0, g); box(w * 0.6, 0.2, 0.005, mat("mwglass", 0x222, { metalness: 0.6 }), -0.06, 0.94, d * 0.45 + 0.003, g); break;
+    case "lockers": {
+      const n = Math.round(w / 0.3); for (let i = 0; i < n; i++) for (let j = 0; j < 2; j++) {
+        box(w / n - 0.01, h / 2 - 0.01, d, mat("locker" + ((i + j) % 2), (i + j) % 2 ? 0x6e40c9 : 0x8250df, { metalness: 0.3 }), -w / 2 + w * (i + 0.5) / n, j * h / 2, 0, g);
+        box(0.02, 0.1, 0.02, steel(), -w / 2 + w * (i + 0.5) / n + 0.08, j * h / 2 + h / 4, d / 2 + 0.01, g);
+      }
+      break;
+    }
+    case "ppe_rack": {
+      box(w, h, 0.05, mat("pegwhite", 0xf0f0f0), 0, 0, -d / 2 + 0.03, g);
+      for (let i = 0; i < 4; i++) box(0.2, 0.6, 0.12, mat("coat", 0xffffff), -w / 2 + 0.15 + i * 0.24, 0.9, 0, g);
+      for (let i = 0; i < 4; i++) box(0.16, 0.06, 0.08, mat("glasses", 0xf5c400), -w / 2 + 0.15 + i * 0.24, 1.6, 0, g);
+      break;
+    }
+    case "shelving": shelving(g, w, d, h); break;
+    case "raw_stock": shelving(g, w, d, h, false); for (let i = 0; i < 4; i++) box(w * 0.95, 0.04, 0.05, mat("alu", 0xcfd6dd, { metalness: 0.9, roughness: 0.25 }), 0, 0.15 + i * 0.45, 0.1 - i * 0.04, g); break;
+    case "flammables": cabinet(g, w, d, h, 0xf5c400, "FLAMMABLE"); break;
+    case "battery_cabinet": cabinet(g, w, d, h, 0xc62828, "LITHIUM BATTERIES"); box(0.4, 0.06, 0.02, mat("led", 0x2da44e, { emissive: 0x2da44e, emissiveIntensity: 1 }), 0, h - 0.2, d / 2 + 0.02, g); break;
+    case "spares": cabinet(g, w, d, h, 0x57606a); break;
+    case "drawers": { box(w, h, d, mat("drawers", 0x355f9e, { metalness: 0.3 }), 0, 0, 0, g); for (let i = 0; i < 8; i++) for (let k = 0; k < 3; k++) box(w / 3 - 0.03, 0.14, 0.01, mat("drawerFront", 0x4b7cc4), -w / 3 + k * w / 3, 0.05 + i * 0.18, d / 2 + 0.005, g); break; }
+    case "laser_cutter": box(w, 0.9, d, white(), 0, 0, 0, g); box(w, 0.2, d, glass(), 0, 0.9, 0, g); box(w * 0.98, 0.02, d * 0.9, mat("bed", 0x333), 0, 0.85, 0, g); cyl(0.08, 0.08, 1.8, steel(), w / 2 - 0.15, 1.1, -d / 2 + 0.1, g); box(0.2, 0.12, 0.02, screen(), w / 2 - 0.2, 0.75, d / 2 + 0.01, g); break;
+    case "printer_bank": {
+      box(w, 0.75, d, mat("cabinets", 0x4b5563), 0, 0, 0, g);
+      for (let i = 0; i < 3; i++) { const x = -w / 2 + w * (i + 0.5) / 3; box(w / 3 - 0.05, 0.75, d - 0.05, mat("printer", 0x24292f), x, 0.77, 0, g); box(w / 3 - 0.15, 0.55, 0.01, glass(), x, 0.85, d / 2 - 0.02, g); box(0.15, 0.12, 0.15, mat("print" + i, [0xff7b72, 0x58a6ff, 0x7ee787][i]), x, 0.82, 0, g); }
+      box(w, 0.3, d, mat("hepa", 0xd0d7de), 0, 1.55, 0, g); break;
+    }
+    case "cnc": box(w, 0.75, d, mat("cabinets", 0x4b5563), 0, 0, 0, g); box(w, 0.85, d, mat("cncbody", 0xe6e6e6, { metalness: 0.3 }), 0, 0.75, 0, g); box(w * 0.6, 0.5, 0.01, glass(), -0.1, 0.9, d / 2 + 0.005, g); cyl(0.04, 0.04, 0.03, red(), w / 2 - 0.15, 1.2, d / 2, g).rotation.x = Math.PI / 2; break;
+    case "eyewash": cyl(0.05, 0.08, 0.85, green(), 0, 0, 0, g); cyl(0.15, 0.1, 0.08, mat("bowl", 0xf5c400), 0, 0.85, 0, g); { const s = plaque("EYEWASH", "#ffffff", "#1a7f37", 0.06, true); s.position.set(0, 2.2, -0.12); g.add(s); signs.push(s); cyl(0.02, 0.02, 2.05, green(), 0, 0, -0.15, g); } break;
+    case "humanoid_stand": {
+      for (const sx of [-1, 1]) { box(0.08, h, 0.08, mat("hoist", 0x2f6fb0, { metalness: 0.4 }), sx * w / 2, 0, 0, g); box(0.08, 0.08, d, mat("hoist", 0x2f6fb0), sx * w / 2, 0, 0, g); }
+      box(w + 0.08, 0.1, 0.1, mat("hoist", 0x2f6fb0), 0, h, 0, g); box(0.18, 0.18, 0.18, yellow(), 0, h - 0.25, 0, g); cyl(0.008, 0.008, 0.6, black(), 0, h - 0.85, 0, g);
+      const hu = humanoid(g, 0.95); hu.position.set(0, 0.1, 0); animated.push({ obj: hu, kind: "sway" }); break;
+    }
+    case "quad_stand": box(w, 0.35, d * 0.6, mat("stand", 0x2f6fb0, { metalness: 0.4 }), 0, 0, 0, g); quadruped(g).position.set(0, 0.35, 0); break;
+    case "robot_parking": { floorTape(g, w, d); amr(g, -w / 4, 0); quadruped(g).position.set(w / 4, 0, 0); break; }
+    default: box(w, h, d, mat("default", 0x8b949e), 0, 0, 0, g);
+  }
+  // Zone floor color under each station, and its sign.
+  if (e.zone && ZC[e.zone] && m !== "arena") {
+    const z = new THREE.Mesh(new THREE.PlaneGeometry(w + 0.5 + 2 * (e.safeguard_margin || 0), d + 0.5 + 2 * (e.safeguard_margin || 0)),
+      new THREE.MeshBasicMaterial({ color: ZC[e.zone], transparent: true, opacity: 0.28, depthWrite: false }));
+    z.rotation.x = -Math.PI / 2; z.position.y = 0.003; g.add(z); zoneFloors.add(z.clone()); z.userData.zoneFloor = true;
+  }
+  if (e.sign) placeSign(g, e, m, w, d, h, top);
+  // Optional floating callout (off by default; the physical signs are the real labels).
+  { const c = signSprite(e.label.split(" (")[0], "#ffffff", "rgba(13,17,23,.85)", 0.2); c.position.set(0, Math.max(h, 1.2) + 0.45, 0); c.visible = false; g.add(c); callouts.push(c); }
+  g.traverse(o => { if (o.isMesh) { o.userData.owner = g; pickables.push(o); } });
+}
+// A delivery AMR runs laps of the main aisle between the desks and the arena.
+{ const rover = amr(scene, 0, 0); const tote = box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
+  animated.push({ obj: rover, kind: "route", pts: [[1.8, 4.6], [6.6, 4.6], [6.6, 1.9], [12.6, 1.9], [12.6, 3.3], [6.6, 3.3], [6.6, 4.6]].map(([x, y]) => P(x, y, 0)), speed: 0.6 }); }
+// The per-element zone planes live in their groups; drop the stray clones.
+zoneFloors.clear();
+
+// ---------- UI ----------
+const legend = document.getElementById("legend");
+for (const z of spec.zones || []) legend.insertAdjacentHTML("beforeend", `<span><i style="background:${z.color}"></i>${z.label}</span>`);
+const views = {
+  "Overview": [[W / 2 - 9, -6, 17], [W / 2, D / 2, 0]],
+  "Test arena": [[6.5, 1.5, 4.2], [10, 7.3, 1]],
+  "Robot cells": [[13.4, 3.4, 3.8], [16.4, 8.2, 1.0]],
+  "Electronics": [[8.8, 3.6, 2.9], [5.0, 0.2, 1.3]],
+  "Fabrication": [[11.3, 1.9, 2.3], [16.2, 0.4, 1.0]],
+  "Kitchen & restroom": [[6.2, 6.0, 2.6], [2.5, 10.2, 0.8]],
+  "Top-down plan": [[W / 2, D / 2 - 0.01, 24], [W / 2, D / 2, 0]],
+};
+let fly = null;
+for (const [name, [pos, tgt]] of Object.entries(views)) {
+  const b = document.createElement("button"); b.textContent = name; document.getElementById("views").append(b);
+  b.onclick = () => { fly = { p0: camera.position.clone(), t0: controls.target.clone(), p1: P(...pos), t1: P(...tgt), t: 0 }; };
+}
+const camHash = /#cam=([-\d.,]+)/.exec(location.hash);  // #cam=x,y,z,tx,ty,tz in plan coordinates
+const v0 = camHash ? (n => [n.slice(0, 3), n.slice(3, 6)])(camHash[1].split(",").map(Number))
+  : views[decodeURIComponent(location.hash.replace("#view=", ""))] || views.Overview;
+if (/ceil/.test(location.hash)) {  // photo-style renders: ceiling with recessed lights, like the real venue
+  const ceil = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshStandardMaterial({ color: 0xf4f2ec, roughness: 0.9, side: THREE.DoubleSide }));
+  ceil.rotation.x = -Math.PI / 2; ceil.position.y = WALL_H; scene.add(ceil);
+  for (let x = 1.5; x < W; x += 2.4) for (let y = 1.2; y < D; y += 2.4) {
+    const l = new THREE.Mesh(new THREE.CircleGeometry(0.12, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    l.rotation.x = Math.PI / 2; l.position.copy(P(x, y, WALL_H - 0.01)); scene.add(l);
+  }
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+}
+if (/depth/.test(location.hash)) {  // linear depth (near = white) for ControlNet-depth photorealization
+  scene.overrideMaterial = new THREE.ShaderMaterial({
+    uniforms: { near: { value: 0.3 }, far: { value: 14.0 } },
+    vertexShader: "varying float vz; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vz = -mv.z; gl_Position = projectionMatrix * mv; }",
+    fragmentShader: "uniform float near; uniform float far; varying float vz; void main(){ float d = clamp((vz-near)/(far-near),0.0,1.0); float v = pow(1.0-d, 1.4); gl_FragColor = vec4(v,v,v,1.0); }",
+  });
+  scene.background = new THREE.Color(0x000000); scene.environment = null;
+  addEventListener("load", () => { signs.forEach(s => (s.visible = false)); callouts.forEach(c => (c.visible = false)); });
+  for (const f of fadeWalls) f.mesh.material.opacity = 1;
+}
+if (/clean/.test(location.hash)) for (const id of ["views", "toggles", "legend", "title"]) document.getElementById(id).style.display = "none";
+if (/fov=(\d+)/.test(location.hash)) { camera.fov = Number(/fov=(\d+)/.exec(location.hash)[1]); camera.updateProjectionMatrix(); }
+camera.position.copy(P(...v0[0])); controls.target.copy(P(...v0[1]));
+document.getElementById("tSigns").onchange = ev => signs.forEach(s => (s.visible = ev.target.checked));
+document.getElementById("tCallouts").onchange = ev => callouts.forEach(s => (s.visible = ev.target.checked));
+document.getElementById("tWalls").onchange = ev => (walls.visible = ev.target.checked);
+document.getElementById("tZones").onchange = ev => scene.traverse(o => { if (o.userData.zoneFloor) o.visible = ev.target.checked; });
+document.getElementById("tSpin").onchange = ev => (controls.autoRotate = ev.target.checked);
+
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById("tip");
+canvas.addEventListener("pointermove", ev => {
+  mouse.set((ev.clientX / innerWidth) * 2 - 1, -(ev.clientY / innerHeight) * 2 + 1);
+  ray.setFromCamera(mouse, camera);
+  const hit = ray.intersectObjects(pickables, false)[0];
+  const e = hit?.object.userData.owner?.userData.el;
+  if (e) {
+    const z = (spec.zones || []).find(z => z.id === e.zone);
+    tip.innerHTML = `<b>${e.label}</b><br><span style="color:#8b949e">${z ? z.label : e.kind} · ${e.size[0].toFixed(1)} × ${e.size[1].toFixed(1)} m</span>`;
+    tip.style.display = "block"; tip.style.left = ev.clientX + 14 + "px"; tip.style.top = ev.clientY + 14 + "px";
+  } else tip.style.display = "none";
+});
+
+function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); }
+addEventListener("resize", resize); resize();
+// ---------- animation (deterministic in t, so the director can render any frame) ----------
+for (const a of animated) if (a.kind === "route") {
+  a.cum = [0]; for (let i = 0; i < a.pts.length; i++) a.cum.push(a.cum[i] + a.pts[i].distanceTo(a.pts[(i + 1) % a.pts.length]));
+}
+function tick(t, wallLerp = 0.15) {
+  for (const a of animated) {
+    if (a.kind === "arm") { const j = a.obj.userData.joints, s = a.speed ?? 0.8, p = a.phase; j.yaw.rotation.y = j.pose[0] + Math.sin(t * s + p) * 0.9; j.sh.rotation.z = j.pose[1] + Math.sin(t * s * 1.3 + p) * 0.25; j.el.rotation.z = j.pose[2] + Math.sin(t * s * 1.1 + p + 1) * 0.3; }
+    if (a.kind === "hover") { a.obj.position.set(a.base[0] + Math.sin(t * 0.7 + a.phase) * 0.6, a.base[1] + Math.sin(t * 1.7 + a.phase) * 0.12, a.base[2] + Math.cos(t * 0.5 + a.phase) * 0.6); a.obj.rotation.y = t * 0.4; }
+    if (a.kind === "patrol") { const ang = t * 0.35 + a.phase; a.obj.position.set(a.c[0] + Math.cos(ang) * a.r, 0, a.c[1] + Math.sin(ang) * a.r); a.obj.rotation.y = -ang; }
+    if (a.kind === "route") {
+      const total = a.cum[a.cum.length - 1], d = (t * a.speed) % total; let i = 0; while (a.cum[i + 1] < d) i++;
+      const p0 = a.pts[i], p1 = a.pts[(i + 1) % a.pts.length]; a.obj.position.lerpVectors(p0, p1, (d - a.cum[i]) / (a.cum[i + 1] - a.cum[i]));
+      a.obj.rotation.y = Math.atan2(-(p1.z - p0.z), p1.x - p0.x);
+    }
+    if (a.kind === "sway") a.obj.rotation.z = Math.sin(t * 1.2) * 0.02;
+  }
+  for (const f of fadeWalls) {
+    const toCam = camera.position.clone().sub(f.mid); toCam.y = 0;
+    const facing = toCam.dot(f.n) > 0 && camera.position.y < 20;
+    const target = facing ? 0.1 : 1; f.mesh.material.opacity += (target - f.mesh.material.opacity) * wallLerp;
+    f.mesh.material.depthWrite = f.mesh.material.opacity > 0.9; f.mesh.castShadow = !facing;
+  }
+}
+
+const TOUR = JSON.parse(document.getElementById("tour").textContent.trim().replace(/^\/\*TOUR\*\/$/, "null") || "null");
+if (!TOUR) {
+  const clock = new THREE.Clock();
+  renderer.setAnimationLoop(() => {
+    const t = clock.getElapsedTime();
+    if (fly) {
+      fly.t = Math.min(1, fly.t + 0.012); const k = fly.t * fly.t * (3 - 2 * fly.t);
+      camera.position.lerpVectors(fly.p0, fly.p1, k); controls.target.lerpVectors(fly.t0, fly.t1, k); if (fly.t >= 1) fly = null;
+    }
+    tick(t); controls.update(); renderer.render(scene, camera);
+  });
+} else {
+  director(TOUR);
+}
+
+// ---------- director: plays a tour.json timeline frame by frame ----------
+function director(tour) {
+  for (const id of ["views", "toggles", "legend", "title"]) document.getElementById(id).style.display = "none";
+  controls.enabled = false;
+  const css = document.createElement("style");
+  css.textContent = `
+    #ov { position:fixed; inset:0; pointer-events:none; font-family:Inter,-apple-system,Helvetica,Arial,sans-serif; color:#e6edf3; }
+    .card { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(8,11,16,.82); backdrop-filter:blur(6px); }
+    .cardin { width:min(1240px,86vw); }
+    .kicker { font-size:22px; letter-spacing:.14em; text-transform:uppercase; color:#8b949e; margin-bottom:10px; }
+    .big { font-size:96px; font-weight:800; letter-spacing:-.02em; margin:0; }
+    .sub { font-size:34px; color:#c9d1d9; margin-top:14px; line-height:1.3; }
+    .agentname { font-size:64px; font-weight:800; margin:0 0 6px; display:flex; align-items:center; gap:22px; }
+    .dot { width:38px; height:38px; border-radius:50%; display:inline-block; flex:none; }
+    .crit { list-style:none; padding:0; margin:28px 0 0; display:grid; gap:14px; }
+    .crit li { font-size:29px; line-height:1.3; display:grid; grid-template-columns:44px 1fr auto; gap:14px; align-items:baseline; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:12px; padding:14px 20px; }
+    .crit .n { font-weight:800; }
+    .crit .cite { font-size:20px; color:#8b949e; white-space:nowrap; }
+    .hud { position:absolute; left:36px; top:32px; background:rgba(13,17,23,.85); border:1px solid #30363d; border-radius:14px; padding:14px 20px; font-size:26px; font-weight:650; display:flex; align-items:center; gap:14px; }
+    .hud small { display:block; font-size:18px; color:#8b949e; font-weight:500; }
+    .panel2 { position:absolute; left:36px; bottom:36px; width:min(1020px,62vw); background:rgba(13,17,23,.9); border:1px solid #30363d; border-radius:16px; padding:22px 26px; }
+    .sev { display:inline-block; font-size:18px; font-weight:800; letter-spacing:.08em; padding:5px 12px; border-radius:6px; margin-right:12px; color:#fff; }
+    .ftitle { font-size:34px; font-weight:750; margin:10px 0 8px; line-height:1.2; }
+    .fdetail { font-size:25px; color:#c9d1d9; line-height:1.35; }
+    .row { display:grid; grid-template-columns:150px 1fr; gap:8px 16px; margin-top:14px; font-size:23px; }
+    .row b { color:#8b949e; font-weight:600; }
+    .fix { color:#7ee787; }
+    .cap { position:absolute; left:50%; bottom:40px; transform:translateX(-50%); background:rgba(13,17,23,.85); border:1px solid #30363d; border-radius:12px; padding:14px 22px; font-size:28px; white-space:nowrap; }
+    table.sum { width:100%; border-collapse:collapse; margin-top:26px; font-size:24px; }
+    table.sum th { text-align:left; color:#8b949e; font-weight:600; font-size:19px; text-transform:uppercase; letter-spacing:.06em; padding:10px 12px; border-bottom:1px solid #30363d; }
+    table.sum td { padding:14px 12px; border-bottom:1px solid #21262d; vertical-align:top; }
+    table.sum td.num { font-variant-numeric:tabular-nums; text-align:right; font-weight:700; }
+    table.sum .top { font-size:19px; color:#c9d1d9; line-height:1.35; }
+    .bar { height:12px; border-radius:6px; background:#21262d; overflow:hidden; margin-top:6px; } .bar i { display:block; height:100%; }
+    .filterlabel { position:absolute; right:36px; top:32px; background:#6e40c9; color:#fff; font-size:22px; font-weight:700; padding:10px 16px; border-radius:10px; }
+  `;
+  document.head.append(css);
+  document.body.insertAdjacentHTML("beforeend", `<div id="ov"></div>
+  <svg width="0" height="0" style="position:absolute"><filter id="deutan" color-interpolation-filters="linearRGB">
+    <feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/></filter></svg>`);
+  const ov = document.getElementById("ov");
+  const SEV = { blocking: "#d1242f", major: "#e8710a", minor: "#b58b00" };
+  const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+  // Avatars --------------------------------------------------------------------------------------
+  function person(kind, color) {
+    const g = new THREE.Group(), V = (x, y, z) => new THREE.Vector3(x, y, z);
+    const skin = mat("skin", 0xc68e6a, { roughness: 0.7 }), cloth = mat("cloth" + color, new THREE.Color(color), { roughness: 0.6 });
+    const pants = mat("pants", 0x2b3240), legs = [];
+    const seated = kind === "wheelchair";
+    if (seated) {
+      g.userData.wheels = [];
+      for (const sz of [-1, 1]) { const w = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.025, 10, 32), dark()); w.position.set(-0.05, 0.3, sz * 0.3); g.add(w); g.userData.wheels.push(w); }
+      box(0.46, 0.05, 0.44, dark(), 0, 0.48, 0, g); box(0.05, 0.45, 0.44, dark(), -0.23, 0.5, 0, g);
+      cyl(0.04, 0.04, 0.04, dark(), 0.25, 0.04, 0.17, g); cyl(0.04, 0.04, 0.04, dark(), 0.25, 0.04, -0.17, g);
+      limb(V(0.0, 0.56, 0.1), V(0.38, 0.56, 0.1), 0.065, pants, g); limb(V(0.38, 0.56, 0.1), V(0.42, 0.12, 0.1), 0.055, pants, g);
+      limb(V(0.0, 0.56, -0.1), V(0.38, 0.56, -0.1), 0.065, pants, g); limb(V(0.38, 0.56, -0.1), V(0.42, 0.12, -0.1), 0.055, pants, g);
+      box(0.24, 0.5, 0.38, cloth, -0.08, 0.56, 0, g); sphere(0.11, skin, -0.06, 1.24, 0, g);
+      limb(V(-0.06, 1.0, 0.22), V(0.05, 0.72, 0.28), 0.045, cloth, g); limb(V(-0.06, 1.0, -0.22), V(0.05, 0.72, -0.28), 0.045, cloth, g);
+    } else {
+      for (const sz of [-1, 1]) { const l = new THREE.Group(); l.position.set(0, 0.92, sz * 0.1); g.add(l); limb(V(0, 0, 0), V(0, -0.88, 0), 0.07, pants, l); box(0.24, 0.07, 0.11, dark(), 0.05, -0.92, 0, l); legs.push(l); }
+      box(0.26, 0.6, 0.4, cloth, 0, 0.9, 0, g); sphere(0.115, skin, 0, 1.63, 0, g);
+      const arms = [];
+      for (const sz of [-1, 1]) { const a = new THREE.Group(); a.position.set(0, 1.44, sz * 0.25); g.add(a); limb(V(0, 0, 0), V(0, -0.6, 0), 0.05, cloth, a); arms.push(a); }
+      g.userData.arms = arms;
+      if (kind === "cane") { box(0.04, 0.05, 0.22, black(), 0.1, 1.62, 0, g); const c = cyl(0.012, 0.012, 1.25, white(), 0, 0, 0, g); c.position.set(0.45, 0.55, 0.28); c.rotation.z = -0.55; box(0.06, 0.12, 0.012, red(), 0.62, 0.0, 0.28, g); }
+      if (kind === "headphones") { const h = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.02, 8, 24, Math.PI), dark()); h.position.set(0, 1.65, 0); h.rotation.y = Math.PI / 2; g.add(h); sphere(0.05, cloth, 0, 1.62, 0.12, g); sphere(0.05, cloth, 0, 1.62, -0.12, g); }
+      if (kind === "hivis") { box(0.28, 0.42, 0.42, mat("vest", 0xffd400, { emissive: 0x332b00 }), 0, 1.0, 0, g); box(0.29, 0.04, 0.43, mat("refl", 0xe0e0e0, { metalness: 0.8, roughness: 0.2 }), 0, 1.1, 0, g); sphere(0.13, mat("helmet", 0xffffff), 0, 1.7, 0, g); }
+    }
+    g.userData.legs = legs; g.userData.seated = seated;
+    g.traverse(o => { if (o.isMesh) o.castShadow = true; });
+    return g;
+  }
+  const avatars = {};
+  function avatarFor(seg) {
+    if (!avatars[seg.agent]) { avatars[seg.agent] = person(seg.avatar, seg.color); scene.add(avatars[seg.agent]); }
+    return avatars[seg.agent];
+  }
+  function pose(av, s) {
+    const sw = Math.sin(s * 5.2) * 0.5;
+    av.userData.legs?.forEach((l, i) => (l.rotation.z = i ? sw : -sw));
+    av.userData.arms?.forEach((a, i) => (a.rotation.z = (i ? -sw : sw) * 0.6));
+    av.userData.wheels?.forEach(w => (w.rotation.z = -s / 0.3));
+  }
+
+  // Path helpers ---------------------------------------------------------------------------------
+  function along(path, d) {
+    let acc = 0;
+    for (let i = 0; i < path.length - 1; i++) {
+      const a = path[i], b = path[i + 1], L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      if (acc + L >= d || i === path.length - 2) { const u = L ? Math.min(1, (d - acc) / L) : 0; return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, Math.atan2(b[1] - a[1], b[0] - a[0])]; }
+      acc += L;
+    }
+    return [...path[0], 0];
+  }
+  const plen = path => path.reduce((s, p, i) => (i ? s + Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]) : 0), 0);
+  for (const s of tour.segments) if (s.type === "walk") s.len = plen(s.path);
+
+  // Finding markers ------------------------------------------------------------------------------
+  const fx = new THREE.Group(); scene.add(fx);
+  const beamMat = new THREE.MeshBasicMaterial({ color: 0xff3b30, transparent: true, opacity: 0.35, depthWrite: false, blending: THREE.AdditiveBlending });
+  let highlighted = [];
+  function clearFx() {
+    fx.traverse(o => { o.geometry?.dispose?.(); });
+    fx.clear();
+    for (const [o, m] of highlighted) o.material = m;
+    highlighted = [];
+    renderer.domElement.style.filter = "";
+  }
+  function highlight(id, color) {
+    const g = groups[id]; if (!g) return;
+    g.traverse(o => {
+      if (!o.isMesh || !o.material?.emissive || o.userData.zoneFloor) return;
+      const m = o.material.clone(); m.emissive.set(color); m.emissiveIntensity = 0.55;
+      highlighted.push([o, o.material]); o.material = m;
+    });
+  }
+  function marker(loc, t) {
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 3.2, 12, 1, true), beamMat); beam.position.copy(P(loc[0], loc[1], 1.6)); fx.add(beam);
+    for (let k = 0; k < 3; k++) {
+      const ph = ((t * 0.9 + k / 3) % 1), r = 0.25 + ph * 0.9;
+      const ring = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.05, 48), new THREE.MeshBasicMaterial({ color: 0xff3b30, transparent: true, opacity: 0.9 * (1 - ph), side: THREE.DoubleSide, depthWrite: false }));
+      ring.rotation.x = -Math.PI / 2; ring.position.copy(P(loc[0], loc[1], 0.02)); fx.add(ring);
+    }
+    const pin = new THREE.Mesh(new THREE.SphereGeometry(0.12, 20, 14), new THREE.MeshBasicMaterial({ color: 0xff3b30 })); pin.position.copy(P(loc[0], loc[1], 3.2 + Math.sin(t * 3) * 0.06)); fx.add(pin);
+  }
+  function reachViz(r) {
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(r.r, 64), new THREE.MeshBasicMaterial({ color: 0xff3b30, transparent: true, opacity: 0.28, depthWrite: false }));
+    disc.rotation.x = -Math.PI / 2; disc.position.copy(P(r.center[0], r.center[1], 0.03)); fx.add(disc);
+    const edge = new THREE.Mesh(new THREE.RingGeometry(r.r - 0.03, r.r, 96), new THREE.MeshBasicMaterial({ color: 0xff3b30, side: THREE.DoubleSide }));
+    edge.rotation.x = -Math.PI / 2; edge.position.copy(P(r.center[0], r.center[1], 0.035)); fx.add(edge);
+    const zone = new THREE.Line(new THREE.BufferGeometry().setFromPoints(r.zone.map(([x, y]) => P(x, y, 0.05))), new THREE.LineBasicMaterial({ color: 0x00e5ff }));
+    fx.add(zone);
+  }
+  function noiseViz(n, t) {
+    for (let k = 0; k < 5; k++) {
+      const ph = ((t * 0.6 + k / 5) % 1), r = 0.4 + ph * 5.5;
+      const ring = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.06, 64), new THREE.MeshBasicMaterial({ color: 0xffa657, transparent: true, opacity: 0.7 * (1 - ph), side: THREE.DoubleSide, depthWrite: false }));
+      ring.rotation.x = -Math.PI / 2; ring.position.copy(P(n.source[0], n.source[1], 0.04)); fx.add(ring);
+    }
+  }
+
+  // Cameras --------------------------------------------------------------------------------------
+  const ease = u => u * u * (3 - 2 * u);
+  const clampX = x => Math.min(W - 0.35, Math.max(0.35, x)), clampY = y => Math.min(D - 0.35, Math.max(0.35, y));
+  function walkCam(x, y, h, seated) {
+    const back = 2.7, up = 2.9;
+    return [P(clampX(x - Math.cos(h) * back), clampY(y - Math.sin(h) * back), up), P(x + Math.cos(h) * 1.0, y + Math.sin(h) * 1.0, seated ? 0.7 : 1.0)];
+  }
+  function stopCam(seg, u) {
+    const f = seg.finding, L = f.location, A = seg.at;
+    let dx = A[0] - L[0], dy = A[1] - L[1], n = Math.hypot(dx, dy);
+    if (n < 0.3) { dx = -1; dy = -0.6; n = Math.hypot(dx, dy); }
+    const ang = Math.atan2(dy, dx) + (u - 0.5) * 0.5;
+    const dist = seg.reach ? 4.6 : seg.noise ? 6.5 : seg.sign ? 2.6 : seg.filter ? 9 : 3.8;
+    const hgt = seg.reach ? 4.0 : seg.noise ? 6.0 : seg.sign ? seg.sign.height + 0.2 : seg.filter ? 10 : 2.4;
+    const ly = seg.sign ? seg.sign.height : 0.9;
+    return [P(clampX(L[0] + Math.cos(ang) * dist), clampY(L[1] + Math.sin(ang) * dist), hgt), P(L[0], L[1], ly)];
+  }
+  let lastCam = [P(W / 2 - 9, -6, 17), P(W / 2, D / 2, 0)];
+  function setCam([p, t]) { camera.position.copy(p); controls.target.copy(t); camera.lookAt(t); }
+  function blend(a, b, k) { return [a[0].clone().lerp(b[0], k), a[1].clone().lerp(b[1], k)]; }
+  function orbitCam(T, high) { const ang = -1.9 + T * 0.03, r = 15; return [P(W / 2 + Math.cos(ang) * r, D / 2 + Math.sin(ang) * r, high ? 13 : 10), P(W / 2, D / 2, 0)]; }
+
+  // Overlay templates ----------------------------------------------------------------------------
+  function cardHTML(s) {
+    if (s.kind === "title" || s.kind === "end")
+      return `<div class="card"><div class="cardin"><div class="kicker">Future of Work Hackathon · Track 1: Accessible Workplace Twin</div><h1 class="big">${esc(s.title)}</h1><div class="sub">${esc(s.subtitle)}</div></div></div>`;
+    if (s.kind === "agent")
+      return `<div class="card"><div class="cardin"><div class="kicker">Agent · ${s.stats.checks} checks on this design</div>
+        <h2 class="agentname"><span class="dot" style="background:${s.color}"></span>${esc(s.name)}</h2><div class="sub" style="font-size:28px">${esc(s.summary)}</div>
+        <div class="kicker" style="margin-top:30px">What this agent checks</div>
+        <ul class="crit">${s.criteria.map((c, i) => `<li><span class="n" style="color:${s.color}">${i + 1}</span><span>${esc(c.text)}</span><span class="cite">${esc(c.cite)}</span></li>`).join("")}</ul></div></div>`;
+    if (s.kind === "summary")
+      return `<div class="card"><div class="cardin" style="width:min(1500px,92vw)"><div class="kicker">Summary · overall score ${s.overall.toFixed(0)}%</div><h2 class="agentname" style="font-size:52px">${esc(s.title)}</h2>
+        <table class="sum"><tr><th>Agent</th><th style="text-align:right">Checks</th><th style="text-align:right">Failed</th><th style="text-align:right">Blocking</th><th style="text-align:right">Major</th><th style="text-align:right">Minor</th><th>Score</th><th>Top findings</th></tr>
+        ${s.rows.map(r => `<tr><td style="font-weight:750;white-space:nowrap"><span class="dot" style="width:16px;height:16px;background:${r.color};margin-right:10px"></span>${esc(r.agent)}</td>
+          <td class="num">${r.checks}</td><td class="num">${r.failed}</td><td class="num" style="color:${r.blocking ? "#ff7b72" : "#8b949e"}">${r.blocking}</td><td class="num">${r.major}</td><td class="num">${r.minor}</td>
+          <td style="width:150px"><b>${r.score.toFixed(0)}%</b><div class="bar"><i style="width:${r.score}%;background:${r.color}"></i></div></td>
+          <td class="top">${r.top.map(esc).join("<br>")}</td></tr>`).join("")}</table></div></div>`;
+    return "";
+  }
+  const names = {}; for (const s of tour.segments) if (s.kind === "agent") names[s.agent] = s.name;
+  const agentName = id => names[id] || id;
+  function stopHTML(s) {
+    const f = s.finding;
+    return `<div class="hud"><span class="dot" style="width:22px;height:22px;background:${s.color}"></span><div>${esc(agentName(s.agent))}<small>Finding ${s.index} of ${s.of}</small></div></div>
+      ${s.filter ? `<div class="filterlabel">Simulated deuteranopia (red-green color blindness)</div>` : ""}
+      <div class="panel2"><span class="sev" style="background:${SEV[f.severity]}">${f.severity.toUpperCase()}</span><span style="color:#8b949e;font-size:20px">${esc(f.citation)}</span>
+        <div class="ftitle">${esc(f.title)}</div><div class="fdetail">${esc(f.detail)}</div>
+        <div class="row"><b>Required</b><span>${esc(f.required)}</span>${f.fix ? `<b>Fix</b><span class="fix">${esc(f.fix)}</span>` : ""}</div></div>`;
+  }
+  let lastHTML = "";
+  function overlay(html) { if (html !== lastHTML) { ov.innerHTML = html; lastHTML = html; } }
+
+  // Frame ----------------------------------------------------------------------------------------
+  window.TOUR_DURATION = tour.duration;
+  window.renderAt = function (T) {
+    let i = tour.segments.findIndex(s => T < s.t0 + s.dur); if (i < 0) i = tour.segments.length - 1;
+    const seg = tour.segments[i], u = Math.min(1, (T - seg.t0) / seg.dur), tl = T - seg.t0;
+    clearFx();
+    for (const a of Object.values(avatars)) a.visible = false;
+    let cam;
+    if (seg.type === "card" || seg.type === "orbit") {
+      cam = orbitCam(T, seg.type === "card");
+      overlay(seg.type === "card" ? cardHTML(seg) : `<div class="cap">${esc(seg.caption)}</div>`);
+      lastCam = cam;
+    } else if (seg.type === "walk") {
+      const av = avatarFor(seg); av.visible = true;
+      const d = seg.len * ease(u), [x, y, h] = along(seg.path, d), [, , h2] = along(seg.path, Math.min(seg.len, d + 1.0));
+      const hh = Math.atan2(Math.sin(h) + Math.sin(h2), Math.cos(h) + Math.cos(h2));
+      av.position.copy(P(x, y, 0)); av.rotation.y = hh; pose(av, d);
+      cam = walkCam(x, y, hh, av.userData.seated);
+      if (tl < 0.9) cam = blend(seg.from || lastCam, cam, ease(tl / 0.9)); else seg.from = seg.from || lastCam;
+      if (tl < 0.9 && !seg.from) seg.from = lastCam;
+      overlay(`<div class="hud"><span class="dot" style="width:22px;height:22px;background:${seg.color}"></span><div>${esc(agentName(seg.agent))}<small>${esc(seg.label.split(": ")[1] || "")}</small></div></div>`
+        + (seg.agent === "low_vision" ? `<div class="filterlabel">Simulated low vision</div>` : ""));
+      if (seg.agent === "low_vision") renderer.domElement.style.filter = "blur(1.6px) contrast(.75)";
+    } else if (seg.type === "stop") {
+      const av = avatarFor(seg); av.visible = true; av.position.copy(P(seg.at[0], seg.at[1], 0));
+      const f = seg.finding; av.rotation.y = Math.atan2(f.location[1] - seg.at[1], f.location[0] - seg.at[0]); pose(av, 0);
+      if (f.element_id) highlight(f.element_id, 0xff2d2d);
+      if (seg.noise) { highlight(seg.noise.source_id, 0xff8c00); noiseViz(seg.noise, T); }
+      if (seg.reach) reachViz(seg.reach);
+      marker(f.location, T);
+      if (seg.filter) renderer.domElement.style.filter = "url(#deutan)";
+      cam = stopCam(seg, u);
+      if (!seg.from) seg.from = lastCam;
+      if (tl < 1.0) cam = blend(seg.from, cam, ease(tl / 1.0));
+      overlay(stopHTML(seg));
+      lastCam = cam;
+    }
+    if (seg.type === "walk") lastCam = cam;
+    setCam(cam);
+    tick(T, 0.3);
+    renderer.render(scene, camera);
+    return seg.type;
+  };
+  // Live preview when opened in a browser: play in real time.
+  if (!new URLSearchParams(location.search).has("record")) {
+    const t0 = performance.now();
+    renderer.setAnimationLoop(() => window.renderAt(((performance.now() - t0) / 1000) % tour.duration));
+  }
+}
+
+window.__twin = { scene, camera, controls, P, views, renderer };
+</script>
+</body>
+</html>

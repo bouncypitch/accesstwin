@@ -1,0 +1,375 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AccessTwin Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;650;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e13;--card:#151a21;--line:#252b34;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--good:#3fb950;--bad:#f85149}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#fafbfc;--card:#ffffff;--line:#e1e4e8;--text:#1f2328;--muted:#57606a;--accent:#0969da;--good:#1a7f37;--bad:#cf222e}}
+:root[data-theme="light"]{--bg:#fafbfc;--card:#ffffff;--line:#e1e4e8;--text:#1f2328;--muted:#57606a;--accent:#0969da;--good:#1a7f37;--bad:#cf222e}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:17px/1.55 Inter,-apple-system,Helvetica,Arial,sans-serif}
+a{color:var(--accent)} img,video{max-width:100%;width:100%;display:block;border-radius:14px;background:#000}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .in{max-width:1100px;margin:auto;padding:10px 16px;display:flex;gap:16px;overflow-x:auto;white-space:nowrap;font-size:13px}
+nav a{color:var(--muted);text-decoration:none} nav a:hover{color:var(--text)} nav b{color:var(--text)}
+section{max-width:1100px;margin:auto;padding:72px 16px 24px}
+h1{font-size:clamp(44px,8vw,84px);line-height:1;margin:0 0 16px;letter-spacing:-.035em} h2{font-size:clamp(28px,4vw,42px);margin:0 0 10px;letter-spacing:-.025em}
+h3{margin:0;font-size:18px} .kicker{color:var(--accent);font-weight:650;letter-spacing:.14em;font-size:13px;margin-bottom:6px}
+.lead{font-size:clamp(17px,2vw,21px);color:var(--muted);max-width:820px;margin:0 0 22px} .muted{color:var(--muted)} .small{font-size:13px}
+.grid{display:grid;gap:16px} .g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))} .g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.agent{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px} .stat b{display:block;font-size:34px;letter-spacing:-.02em}
+table{width:100%;border-collapse:collapse;font-size:14px} th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:8px}
+td{padding:9px 8px;border-top:1px solid var(--line);vertical-align:top} td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-top:10px} .tablewrap td:first-child,.tablewrap th:first-child{padding-left:14px}
+.bad{color:var(--bad)} .good{color:var(--good)} .fix{color:var(--good)}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.bar{height:7px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:3px;min-width:80px} .bar i{display:block;height:100%}
+.sev{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:5px;color:#fff;white-space:nowrap}
+.sev.blocking{background:#d1242f} .sev.major{background:#bc4c00} .sev.minor{background:#9a6700}
+.pri{font-size:12px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--line)} .pri.must{background:#1f6feb;color:#fff}
+.agent header{display:flex;align-items:center;gap:8px} .agent .dot{background:var(--c);width:14px;height:14px}
+.crit{padding-left:20px;margin:12px 0} .crit li{margin:6px 0} .crit em{display:block;color:var(--muted);font-size:12px;font-style:normal}
+.found{border-top:1px solid var(--line);padding-top:10px;margin:0} .found b{color:var(--c)}
+.ba{position:relative;--p:45%;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#000}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0} .ba-top{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.ba-top::after{content:"";position:absolute;top:0;bottom:0;left:var(--p);width:2px;background:#fff;box-shadow:0 0 8px #000}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba-label{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:6px}
+figure{margin:0} figcaption{color:var(--muted);font-size:14px;margin-top:8px}
+.world{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:var(--text)}
+.world img{border-radius:0;aspect-ratio:16/9;object-fit:cover} .ph{display:grid;place-items:center;background:var(--line);color:var(--muted);aspect-ratio:16/9;border-radius:14px}
+.world .ph{border-radius:0} .world span{display:block;padding:10px 12px;font-size:13px}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:650;padding:10px 16px;border-radius:10px;margin:14px 8px 0 0}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
+details summary{cursor:pointer;color:var(--accent);margin:16px 0 4px}
+footer{max-width:1100px;margin:auto;padding:48px 16px;color:var(--muted);font-size:13px}
+</style></head><body>
+<nav><div class="in"><b>AccessTwin</b><a href="#ch1">The problem</a><a href="#ch2">Our solution</a><a href="#ch3">Live example</a><a href="#ch4">The RGB-D scan</a><a href="#ch5">Remove people and tables</a><a href="#ch6">Research the lab</a><a href="#ch7">Add everything</a><a href="#ch8">The disability agents</a><a href="#ch9">Where the agents find issues</a><a href="#ch10">Fix the design</a><a href="#ch11">The results</a></div></nav>
+<section><div class="kicker">FUTURE OF WORK HACKATHON · TRACK 1</div><h1>AccessTwin</h1>
+<p class="lead">Walk a workplace before it is built, as the people it might shut out.</p><video src="media/accesstwin_story.mp4" poster="media/ch09.jpg" controls preload="metadata" playsinline></video></section>
+<section id="ch1"><div class="kicker">01</div><h2>The problem</h2><p class="lead">Benches, controls and signs built for one standard body quietly shut out wheelchair users, people with low vision and neurodivergent workers, and it is usually discovered after the space is built.</p><video src="media/ch01.mp4" poster="media/ch01.jpg" autoplay muted loop playsinline preload="auto"></video></section>
+<section id="ch2"><div class="kicker">02</div><h2>Our solution</h2><p class="lead">A phone scan becomes a measured digital twin. AI agents, each living with a different disability, walk it, cite every problem and fix the design before anything is bought.</p><video src="media/ch02.mp4" poster="media/ch02.jpg" autoplay muted loop playsinline preload="auto"></video></section>
+<section id="ch3"><div class="kicker">03</div><h2>Live example</h2><p class="lead">This hackathon room, scanned tonight, redesigned as a full robotics lab.</p><video src="media/ch03.mp4" poster="media/ch03.jpg" autoplay muted loop playsinline preload="auto"></video></section>
+<section id="ch4"><div class="kicker">04</div><h2>The RGB-D scan</h2><p class="lead">iPhone LiDAR and video: 1,092 frames fused into 2 million colored points, aligned to the RoomPlan walls. 208 m², 3.65 m ceiling.</p><video src="media/ch04.mp4" poster="media/ch04.jpg" autoplay muted loop playsinline preload="auto"></video></section>
+<section id="ch5"><div class="kicker">05</div><h2>Remove people and tables</h2><p class="lead">Everything that is not wall, floor or ceiling is removed geometrically, and the carpet underneath is re-tiled from a clean patch of the real carpet. No one captured in the scan survives.</p><video src="media/ch05.mp4" poster="media/ch05.jpg" autoplay muted loop playsinline preload="auto"></video></section>
+<section id="ch6"><div class="kicker">06</div><h2>Research the lab</h2><p class="lead">14 zones and 40 pieces of equipment, every requirement traced to one of 26 sources: ISO 10218 / 13854 / 13857, ANSI ESD S20.20, Penn EHRS lab guidelines, university battery and soldering guidance, ADA 2010.</p><video src="media/ch06.mp4" poster="media/ch06.jpg" autoplay muted loop playsinline preload="auto"></video><details><summary>The lab program</summary><div class="tablewrap"><table><tr><th>Zone</th><th style="text-align:right">m²</th><th>Priority</th><th>Equipment</th><th>Requirements</th></tr><tr><td><b>Entry, PPE and lockers</b></td><td class="n">7</td><td><span class="pri must">must</span></td>
+        <td class="small">2 items</td><td class="small">3 cited requirements</td></tr>
+<tr><td><b>Collaborative arm cells</b></td><td class="n">20</td><td><span class="pri must">must</span></td>
+        <td class="small">3 items</td><td class="small">7 cited requirements</td></tr>
+<tr><td><b>Fenced industrial arm cell</b></td><td class="n">14</td><td><span class="pri should">should</span></td>
+        <td class="small">1 items</td><td class="small">6 cited requirements</td></tr>
+<tr><td><b>Netted test arena with motion capture (AMRs, quadrupeds, humanoid, drones)</b></td><td class="n">36</td><td><span class="pri must">must</span></td>
+        <td class="small">3 items</td><td class="small">4 cited requirements</td></tr>
+<tr><td><b>Electronics benches (ESD protected area)</b></td><td class="n">20</td><td><span class="pri must">must</span></td>
+        <td class="small">6 items</td><td class="small">8 cited requirements</td></tr>
+<tr><td><b>Fabrication: 3D printers, laser cutter, benchtop CNC, hand tools</b></td><td class="n">24</td><td><span class="pri must">must</span></td>
+        <td class="small">5 items</td><td class="small">8 cited requirements</td></tr>
+<tr><td><b>Battery charging and storage</b></td><td class="n">4</td><td><span class="pri must">must</span></td>
+        <td class="small">2 items</td><td class="small">5 cited requirements</td></tr>
+<tr><td><b>Storage: parts, raw stock, finished work, chemicals</b></td><td class="n">10</td><td><span class="pri must">must</span></td>
+        <td class="small">4 items</td><td class="small">2 cited requirements</td></tr>
+<tr><td><b>Hardware-in-the-loop / test benches</b></td><td class="n">6</td><td><span class="pri should">should</span></td>
+        <td class="small">1 items</td><td class="small">1 cited requirements</td></tr>
+<tr><td><b>Software / desk area</b></td><td class="n">16</td><td><span class="pri should">should</span></td>
+        <td class="small">2 items</td><td class="small">0 cited requirements</td></tr>
+<tr><td><b>Robot maintenance and repair bay</b></td><td class="n">10</td><td><span class="pri must">must</span></td>
+        <td class="small">4 items</td><td class="small">4 cited requirements</td></tr>
+<tr><td><b>Kitchenette (refrigerator, sink, dishwasher, microwave)</b></td><td class="n">9</td><td><span class="pri must">must</span></td>
+        <td class="small">3 items</td><td class="small">3 cited requirements</td></tr>
+<tr><td><b>Accessible single-user restroom</b></td><td class="n">5.5</td><td><span class="pri must">must</span></td>
+        <td class="small">2 items</td><td class="small">3 cited requirements</td></tr>
+<tr><td><b>Dining / break area</b></td><td class="n">14</td><td><span class="pri must">must</span></td>
+        <td class="small">2 items</td><td class="small">1 cited requirements</td></tr></table></div></details></section>
+<section id="ch7"><div class="kicker">07</div><h2>Add everything</h2><p class="lead">Design A: 36 stations in 9 color-coded zones, a sign at every one. Robot arms, a fenced industrial cell, humanoids, quadrupeds, AMRs and drones in a netted mocap arena.</p><video src="media/ch07.mp4" poster="media/ch07.jpg" autoplay muted loop playsinline preload="auto"></video></section>
+<section id="ch8"><div class="kicker">08</div><h2>The disability agents</h2><p class="lead">Four agents, each with a body model and a cited rulebook.</p><video src="media/ch08.mp4" poster="media/ch08.jpg" autoplay muted loop playsinline preload="auto"></video><div class="grid g2"><article class="agent" style="--c:#3b82f6"><header><span class="dot"></span><h3>Wheelchair user</h3></header>
+          <p class="muted">Manual or power wheelchair; seated eye height ~1.2 m; needs 36&quot; routes and 60&quot; turning space.</p><ol class="crit"><li><span>36&quot; clear route from the entrance to every station, e-stop and exit</span><em>ADA 403.5.1</em></li><li><span>60&quot; turning circle at the accessible station</span><em>ADA 304.3</em></li><li><span>Doors: 32&quot; clear opening, opening force 5 lbf or less</span><em>ADA 404.2.3, 404.2.9</em></li><li><span>Controls and e-stops reachable seated: 15-48&quot; (less over obstructions)</span><em>ADA 308</em></li><li><span>Work surfaces 28-34&quot; high with knee clearance</span><em>ADA 902.3, 306</em></li></ol>
+          <p class="found"><b>14</b> problems found in Design A · <b>5</b> blocking</p></article>
+<article class="agent" style="--c:#a855f7"><header><span class="dot"></span><h3>Low vision / color-blind</h3></header>
+          <p class="muted">Reduced acuity and contrast sensitivity, or red-green color blindness (~8% of men).</p><ol class="crit"><li><span>Sign contrast 4.5:1 or better between letters and background</span><em>WCAG 1.4.3, ADA 703.5.1</em></li><li><span>Letter height large enough for the mounting height and viewing distance</span><em>ADA 703.5.5</em></li><li><span>Zone colors stay distinct for red-green color blindness (protanopia, deuteranopia)</span><em>WCAG 1.4.1</em></li><li><span>Zones identified by name or pictogram, not color alone</span><em>WCAG 1.4.1</em></li><li><span>Room signs have raised characters and braille at 48-60&quot;</span><em>ADA 216.2, 703.2-703.4</em></li></ol>
+          <p class="found"><b>29</b> problems found in Design A · <b>0</b> blocking</p></article>
+<article class="agent" style="--c:#14b8a6"><header><span class="dot"></span><h3>Neurodivergent worker</h3></header>
+          <p class="muted">Autistic / ADHD / sensory-processing differences: sensitive to noise and motion, relies on predictable layouts.</p><ol class="crit"><li><span>Quiet stations (desks, ESD benches, soldering, dining) at 55 dBA or less from lab equipment</span><em>ANSI/ASA S12.2, PAS 6463</em></li><li><span>No continuous robot motion within 2 m of a seat without a screen</span><em>PAS 6463</em></li><li><span>Every station reachable from the entrance in 4 turns or fewer</span><em>PAS 6463</em></li><li><span>One consistent sign system: same colors, layout and letter size</span><em>PAS 6463</em></li><li><span>An enclosed quiet retreat room</span><em>PAS 6463</em></li></ol>
+          <p class="found"><b>20</b> problems found in Design A · <b>0</b> blocking</p></article>
+<article class="agent" style="--c:#f59e0b"><header><span class="dot"></span><h3>Motion clearance</h3></header>
+          <p class="muted">Anyone passing robot cells: the arm&#x27;s full sweep must stay inside its marked or fenced zone.</p><ol class="crit"><li><span>Each arm&#x27;s full reach stays inside its taped zone</span><em>ISO 10218-2:2025</em></li><li><span>Fenced cells: 120 mm between the arm&#x27;s reach and a 20 mm mesh fence</span><em>ISO 13857</em></li><li><span>500 mm crush gap between the arm&#x27;s reach and walls or furniture</span><em>ISO 13854</em></li><li><span>E-stops can be pressed from outside the arm&#x27;s reach</span><em>ISO 10218-2:2025</em></li></ol>
+          <p class="found"><b>5</b> problems found in Design A · <b>5</b> blocking</p></article></div></section>
+<section id="ch9"><div class="kicker">09</div><h2>Where the agents find issues</h2><p class="lead">Each agent walks real routes from the entrance. Every problem is shown where it is, as a photoreal World Labs world, with the measured value, the rule and the fix.</p><video src="media/ch09.mp4" poster="media/ch09.jpg" autoplay muted loop playsinline preload="auto"></video><div class="grid g2" style="margin-top:16px"><figure class="pair"><div class="ba"><img src="media/hero_00_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_00_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev blocking">blocking</span> Reach to e-stop ES1 on Cobot cell 1 (UR5e class)</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_01_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_01_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev blocking">blocking</span> Route to E-stop ES2 on Cobot cell 2 (UR10e class)</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_02_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_02_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev major">major</span> Letter height: &quot;ESD bench 1&quot;</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_03_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_03_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev major">major</span> Zones identified by color alone</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_04_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_04_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev major">major</span> Quiet retreat room</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_05_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_05_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev major">major</span> Noise at ESD bench 4</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_06_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_06_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev blocking">blocking</span> Cobot cell 2 (UR10e class): gap between arm and wall</figcaption></figure>
+<figure class="pair"><div class="ba"><img src="media/hero_07_photo.jpg" alt="Photoreal frame"><div class="ba-top"><img src="media/hero_07_twin.png" alt="Twin render"></div>
+  <input type="range" min="0" max="100" value="45" aria-label="Twin vs photoreal" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div>
+  <figcaption><span class="sev blocking">blocking</span> Industrial arm cell (fenced): arm sweep vs fence</figcaption></figure></div><p class="muted small">Drag: metric twin render ◀▶ photoreal frame.</p><details><summary>All 68 findings in Design A</summary><div class="tablewrap"><table><tr><th>Severity</th><th>Agent</th><th>Finding</th><th>Rule</th><th>Fix</th></tr><tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+          <td>Cobot cell 2 (UR10e class): arm sweep vs floor marking<div class="muted small">The 1.30 m reach sweeps past the tape line into the walkway.</div></td><td class="small">ISO 10218-2:2025 Robot applications and cells §safeguarded space</td>
+          <td class="small fix">Move the floor marking out to 1.35 m from the base, or limit the arm&#x27;s joint range in the safety controller.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+          <td>Cobot cell 2 (UR10e class): gap between arm and wall<div class="muted small">The arm reaches into wall.</div></td><td class="small">ISO 13854:2017 Minimum gaps to avoid crushing §Table 1 (body: 500 mm)</td>
+          <td class="small fix">Move Cobot cell 2 (UR10e class) so its reach stays 0.5 m clear of walls.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+          <td>E-stop ES2 outside the arm&#x27;s reach<div class="muted small">ES2 is 1.30 m from the base; the arm reaches 1.30 m.</div></td><td class="small">ISO 10218-2:2025 Robot applications and cells §safeguarded space</td>
+          <td class="small fix">Move ES2 to the zone boundary, 1.45 m from the base.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+          <td>Industrial arm cell (fenced): arm sweep vs fence<div class="muted small">Reach 1.40 m from the base; fence is only 100 mm beyond the arm&#x27;s reach.</div></td><td class="small">ISO 13857:2019 Safety distances §Table 4 (20 mm mesh: 120 mm)</td>
+          <td class="small fix">Move the fence out to 1.57 m from the base, or limit the arm&#x27;s joint range in the safety controller.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+          <td>Industrial arm cell (fenced): gap between arm and wall<div class="muted small">The arm reaches into wall.</div></td><td class="small">ISO 13854:2017 Minimum gaps to avoid crushing §Table 1 (body: 500 mm)</td>
+          <td class="small fix">Move Industrial arm cell (fenced) so its reach stays 0.5 m clear of walls.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to E-stop ES1 on Cobot cell 1 (UR5e class)<div class="muted small">Narrowest point is 32.5&quot; (0.83 m) between teach and cobot1.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Teach-pendant bench 5&quot; (0.12 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to E-stop ES2 on Cobot cell 2 (UR10e class)<div class="muted small">Narrowest point is 13.0&quot; (0.33 m) between repair and cobot2.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Robot repair bench 24&quot; (0.61 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to E-stop ES3 on Industrial arm cell (fenced)<div class="muted small">Narrowest point is 21.0&quot; (0.53 m) between industrial and humanoid_stand.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Humanoid service stand (hoist) 16&quot; (0.41 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Exit D4<div class="muted small">Narrowest point is 23.6&quot; (0.60 m) between humanoid_stand and spares.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Humanoid service stand (hoist) 14&quot; (0.34 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev blocking">blocking</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Reach to e-stop ES1 on Cobot cell 1 (UR5e class)<div class="muted small">Mounted at 54.0&quot; (1.37 m), side approach.</div></td><td class="small">2010 ADA Standards for Accessible Design §308.3.1</td>
+          <td class="small fix">Remount ES1 at 42&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Tactile room sign: &quot;Accessible restroom&quot;<div class="muted small">Room signs need raised characters and braille so blind users can find the room.</div></td><td class="small">2010 ADA Standards for Accessible Design §216.2, 703.2-703.4</td>
+          <td class="small fix">Replace with a tactile + braille sign, baseline at 54&quot;, latch side.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Letter height: &quot;ESD bench 1&quot;<div class="muted small">Capitals are 12 mm at 69&quot; high, read from 1.8 m.</div></td><td class="small">2010 ADA Standards for Accessible Design §703.5.5</td>
+          <td class="small fix">Enlarge the lettering on &quot;ESD bench 1&quot; to at least 16 mm.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Letter height: &quot;ESD bench 2&quot;<div class="muted small">Capitals are 12 mm at 69&quot; high, read from 1.8 m.</div></td><td class="small">2010 ADA Standards for Accessible Design §703.5.5</td>
+          <td class="small fix">Enlarge the lettering on &quot;ESD bench 2&quot; to at least 16 mm.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Laser cutter&quot;<div class="muted small">#ffffff on #fb8f44 is 2.3:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Laser cutter&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;3D printer bank&quot;<div class="muted small">#ffffff on #fb8f44 is 2.3:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;3D printer bank&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Benchtop CNC mill&quot;<div class="muted small">#ffffff on #fb8f44 is 2.3:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Benchtop CNC mill&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Mechanical assembly bench&quot;<div class="muted small">#ffffff on #fb8f44 is 2.3:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Mechanical assembly bench&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Emergency eyewash&quot;<div class="muted small">#ffffff on #fb8f44 is 2.3:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Emergency eyewash&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Cobot cell 1&quot;<div class="muted small">#ffb3b3 on #ffffff is 1.7:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Cobot cell 1&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Teach-pendant bench&quot;<div class="muted small">#ffb3b3 on #ffffff is 1.7:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Teach-pendant bench&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Test arena&quot;<div class="muted small">#fff1a8 on #ffffff is 1.1:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Test arena&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Mocap operator station&quot;<div class="muted small">#fff1a8 on #ffffff is 1.1:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Mocap operator station&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Cobot cell 2&quot;<div class="muted small">#ffb3b3 on #ffffff is 1.7:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Cobot cell 2&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Industrial arm cell&quot;<div class="muted small">#ffb3b3 on #ffffff is 1.7:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Industrial arm cell&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Zone colors Kitchenette, dining and restroom vs Fabrication<div class="muted small">#2da44e vs #fb8f44: dE 90 for typical vision but 9 with protanopia. These zones look the same to a color-blind visitor.</div></td><td class="small">WCAG 2.2 §1.4.1 Use of Color</td>
+          <td class="small fix">Change Fabrication to a color that differs in lightness, or add a pattern.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Zones identified by color alone<div class="muted small">Floor colors and sign colors are the only cue for which zone you are in (no zone names or pictograms).</div></td><td class="small">WCAG 2.2 §1.4.1 Use of Color</td>
+          <td class="small fix">Add zone names and pictograms to every sign and a floor legend at each entrance.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+          <td>Noise at ESD bench 4<div class="muted small">About 68 dBA while equipment runs; loudest is HIL test bench (motor dyno) (65 dBA here).</div></td><td class="small">ANSI/ASA S12.2 room noise criteria; PAS 6463 acoustic zoning §</td>
+          <td class="small fix">Enclose HIL test bench (motor dyno) in an acoustic enclosure (-15 dB), or move it away from ESD bench 4.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+          <td>Noise at Soldering station (fume extraction)<div class="muted small">About 69 dBA while equipment runs; loudest is HIL test bench (motor dyno) (66 dBA here).</div></td><td class="small">ANSI/ASA S12.2 room noise criteria; PAS 6463 acoustic zoning §</td>
+          <td class="small fix">Enclose HIL test bench (motor dyno) in an acoustic enclosure (-15 dB), or move it away from Soldering station (fume extraction).</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+          <td>Quiet retreat room<div class="muted small">There is nowhere to step away from noise, light and robot motion.</div></td><td class="small">BSI PAS 6463:2022 Design for the mind: neurodiversity and the built environment §</td>
+          <td class="small fix">Add an enclosed quiet room (about 2.4 x 2.4 m) near the entrance, away from fabrication.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Kitchenette (sink, dishwasher)<div class="muted small">Narrowest point is 17.7&quot; (0.45 m) between dining2 and mocap.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Dining table (4 seats, accessible end) 19&quot; (0.49 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Refrigerator<div class="muted small">Narrowest point is 17.7&quot; (0.45 m) between dining2 and mocap.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Dining table (4 seats, accessible end) 19&quot; (0.49 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Microwave<div class="muted small">Narrowest point is 17.7&quot; (0.45 m) between dining2 and mocap.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Dining table (4 seats, accessible end) 19&quot; (0.49 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Parts shelving<div class="muted small">Narrowest point is 17.7&quot; (0.45 m) between dining2 and mocap.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Dining table (4 seats, accessible end) 19&quot; (0.49 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Raw stock rack<div class="muted small">Narrowest point is 17.7&quot; (0.45 m) between dining2 and mocap.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Dining table (4 seats, accessible end) 19&quot; (0.49 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Flammable liquids cabinet<div class="muted small">Narrowest point is 17.7&quot; (0.45 m) between dining2 and mocap.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Dining table (4 seats, accessible end) 19&quot; (0.49 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Quadruped service stand<div class="muted small">Narrowest point is 21.0&quot; (0.53 m) between industrial and humanoid_stand.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Humanoid service stand (hoist) 16&quot; (0.41 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Spare actuators and sensors<div class="muted small">Narrowest point is 23.6&quot; (0.60 m) between humanoid_stand and spares.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Humanoid service stand (hoist) 14&quot; (0.34 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev major">major</span></td><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+          <td>Route to Robot parking<div class="muted small">Narrowest point is 21.0&quot; (0.53 m) between industrial and humanoid_stand.</div></td><td class="small">2010 ADA Standards for Accessible Design §403.5.1</td>
+          <td class="small fix">Move Humanoid service stand (hoist) 16&quot; (0.41 m) to widen the aisle to 36&quot;.</td></tr>
+<tr><td><span class="sev minor">minor</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Accessible restroom&quot;<div class="muted small">#ffffff on #2da44e is 3.2:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Accessible restroom&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr>
+<tr><td><span class="sev minor">minor</span></td><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+          <td>Sign contrast: &quot;Kitchenette&quot;<div class="muted small">#ffffff on #2da44e is 3.2:1. Hard to read with low contrast sensitivity.</div></td><td class="small">WCAG 2.2 §1.4.3 (and ADA 703.5.1)</td>
+          <td class="small fix">Reprint &quot;Kitchenette&quot; as white on a darker zone color (&gt;= 4.5:1).</td></tr></table></div></details></section>
+<section id="ch10"><div class="kicker">10</div><h2>Fix the design</h2><p class="lead">A remediation agent applies 50 validated changes and the agents re-audit. One program decision is left to the designer: the industrial arm moves to its own fenced bay.</p><video src="media/ch10.mp4" poster="media/ch10.jpg" autoplay muted loop playsinline preload="auto"></video><div class="ba" style="aspect-ratio:1600/1250;margin-top:16px"><img src="media/plan_b_findings.png" alt="Design B plan"><div class="ba-top"><img src="media/plan_a_findings.png" alt="Design A plan"></div><input type="range" min="0" max="100" value="50" aria-label="Design A vs B" oninput="this.parentNode.style.setProperty('--p', this.value + '%')"></div><div class="ba-label"><span>◀ Design A · 68 problems</span><span>Design B · 3 minor ▶</span></div><details><summary>All 50 changes</summary><div class="tablewrap"><table><tr><th>Agent</th><th>Finding</th><th>Change</th></tr><tr><td><span class="dot" style="background:#8b949e"></span>program</td>
+        <td class="small">Industrial arm cell (fenced): gap between arm and wall</td><td class="small">Dropped the fenced industrial arm cell (&#x27;could&#x27; priority): a 1.4 m reach needs a 3.8 m clear circle the room cannot give it. Recommended for a separate fenced bay.</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Zone colors Kitchenette, dining and restroom vs Fabrication</td><td class="small">Zone palette -&gt; color-blind-safe, darkened for white lettering (#0057a8, #747406, #1b5e53, #0a0acb, #060674, #1b315e, #740606, #077a91, #22763e); every sign gets a zone pictogram and one template (50 mm letters at 63&quot;)</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to E-stop ES1 on Cobot cell 1 (UR5e class)</td><td class="small">Moved Teach-pendant bench by (+0.12, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to E-stop ES2 on Cobot cell 2 (UR10e class)</td><td class="small">Moved Robot repair bench by (-0.61, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Exit D4</td><td class="small">Moved Humanoid service stand (hoist) by (-0.34, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Kitchenette (sink, dishwasher)</td><td class="small">Moved Dining table (4 seats, accessible end) by (-0.49, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+        <td class="small">Cobot cell 2 (UR10e class): gap between arm and wall</td><td class="small">Cobot cell 2 (UR10e class): safety-rated reach limit 0.75 m (ISO 10218 soft axis limiting)</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Reach to e-stop ES1 on Cobot cell 1 (UR5e class)</td><td class="small">Remounted ES1 on Cobot cell 1 (UR5e class) at 42&quot;</td></tr>
+<tr><td><span class="dot" style="background:#f59e0b"></span>motion</td>
+        <td class="small">Cobot cell 2 (UR10e class): arm sweep vs floor marking</td><td class="small">Cobot cell 2 (UR10e class): tape line moved out to 1.25 m from the base</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Tactile room sign: &quot;Accessible restroom&quot;</td><td class="small">Accessible restroom: sign tactile -&gt; True; Accessible restroom: sign mount_height -&gt; 1.372</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Laser cutter&quot;</td><td class="small">Laser cutter: sign fg -&gt; #ffffff; Laser cutter: sign bg -&gt; #1b315e</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;3D printer bank&quot;</td><td class="small">3D printer bank (HEPA + carbon): sign fg -&gt; #ffffff; 3D printer bank (HEPA + carbon): sign bg -&gt; #1b315e</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Benchtop CNC mill&quot;</td><td class="small">Benchtop CNC mill: sign fg -&gt; #ffffff; Benchtop CNC mill: sign bg -&gt; #1b315e</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Mechanical assembly bench&quot;</td><td class="small">Mechanical assembly bench: sign fg -&gt; #ffffff; Mechanical assembly bench: sign bg -&gt; #1b315e</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Emergency eyewash&quot;</td><td class="small">Emergency eyewash: sign fg -&gt; #ffffff; Emergency eyewash: sign bg -&gt; #1b315e</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Cobot cell 1&quot;</td><td class="small">Cobot cell 1 (UR5e class): sign fg -&gt; #ffffff; Cobot cell 1 (UR5e class): sign bg -&gt; #1b5e53</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Teach-pendant bench&quot;</td><td class="small">Teach-pendant bench: sign fg -&gt; #ffffff; Teach-pendant bench: sign bg -&gt; #1b5e53</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Test arena&quot;</td><td class="small">Test arena (netted, motion capture): sign fg -&gt; #ffffff; Test arena (netted, motion capture): sign bg -&gt; #0a0acb</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Mocap operator station&quot;</td><td class="small">Mocap operator station: sign fg -&gt; #ffffff; Mocap operator station: sign bg -&gt; #0a0acb</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Cobot cell 2&quot;</td><td class="small">Cobot cell 2 (UR10e class): sign fg -&gt; #ffffff; Cobot cell 2 (UR10e class): sign bg -&gt; #1b5e53</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Noise at ESD bench 4</td><td class="small">HIL test bench (motor dyno): attenuation_db -&gt; 15.0</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Accessible restroom&quot;</td><td class="small">Accessible restroom: sign fg -&gt; #ffffff; Accessible restroom: sign bg -&gt; #747406</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Kitchenette&quot;</td><td class="small">Kitchenette (sink, dishwasher): sign fg -&gt; #ffffff; Kitchenette (sink, dishwasher): sign bg -&gt; #747406</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Refrigerator&quot;</td><td class="small">Refrigerator: sign fg -&gt; #ffffff; Refrigerator: sign bg -&gt; #747406</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Microwave&quot;</td><td class="small">Microwave: sign fg -&gt; #ffffff; Microwave: sign bg -&gt; #747406</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Dining table&quot;</td><td class="small">Dining table (6 seats): sign fg -&gt; #ffffff; Dining table (6 seats): sign bg -&gt; #747406</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Dining table&quot;</td><td class="small">Dining table (4 seats, accessible end): sign fg -&gt; #ffffff; Dining table (4 seats, accessible end): sign bg -&gt; #747406</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Robot repair bench&quot;</td><td class="small">Robot repair bench: sign fg -&gt; #ffffff; Robot repair bench: sign bg -&gt; #740606</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Humanoid service stand&quot;</td><td class="small">Humanoid service stand (hoist): sign fg -&gt; #ffffff; Humanoid service stand (hoist): sign bg -&gt; #740606</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Quadruped service stand&quot;</td><td class="small">Quadruped service stand: sign fg -&gt; #ffffff; Quadruped service stand: sign bg -&gt; #740606</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Spare actuators and sensors&quot;</td><td class="small">Spare actuators and sensors: sign fg -&gt; #ffffff; Spare actuators and sensors: sign bg -&gt; #740606</td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>low vision</td>
+        <td class="small">Sign contrast: &quot;Robot parking&quot;</td><td class="small">Robot parking: sign fg -&gt; #ffffff; Robot parking: sign bg -&gt; #740606</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Noise at Dining table (6 seats)</td><td class="small">Test arena (netted, motion capture): attenuation_db -&gt; 15.0</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Robot motion in view at Dining table (4 seats, accessible end)</td><td class="small">Dining table (4 seats, accessible end): screen_height -&gt; 1.5</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Robot motion in view at ESD bench 1</td><td class="small">ESD bench 1: screen_height -&gt; 1.5</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Robot motion in view at ESD bench 2</td><td class="small">ESD bench 2: screen_height -&gt; 1.5</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Robot motion in view at Software desks (3 seats)</td><td class="small">Software desks (3 seats): screen_height -&gt; 1.5</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Exit D4</td><td class="small">Moved Robot repair bench by (+0.00, -0.24) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Kitchenette (sink, dishwasher)</td><td class="small">Moved Dining table (6 seats) by (-0.09, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Parts shelving</td><td class="small">Moved Test arena (netted, motion capture) by (+0.00, -0.39) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Quadruped service stand</td><td class="small">Moved Humanoid service stand (hoist) by (+0.26, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Noise at Soldering station (fume extraction)</td><td class="small">Mechanical assembly bench: attenuation_db -&gt; 15.0</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Exit D4</td><td class="small">Moved Spare actuators and sensors by (+0.26, +0.00) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Kitchenette (sink, dishwasher)</td><td class="small">Moved Dining table (6 seats) by (+0.00, -0.09) m</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Raw stock rack</td><td class="small">Moved Test arena (netted, motion capture) by (+0.00, -0.10) m</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Noise at ESD bench 3 (height-adjustable)</td><td class="small">Benchtop CNC mill: attenuation_db -&gt; 15.0</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Noise at Soldering station (fume extraction)</td><td class="small">Laser cutter: attenuation_db -&gt; 15.0</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Noise at Software desks (3 seats)</td><td class="small">Cobot cell 1 (UR5e class): attenuation_db -&gt; 15.0</td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>neurodivergent</td>
+        <td class="small">Quiet retreat room</td><td class="small">Added a 2.2 x 2.0 m quiet room at (16.2, 10.2), 48 dBA</td></tr>
+<tr><td><span class="dot" style="background:#3b82f6"></span>wheelchair</td>
+        <td class="small">Route to Robot parking</td><td class="small">Moved Quadruped service stand by (-0.29, +0.00) m</td></tr></table></div></details></section>
+<section id="ch11"><div class="kicker">11</div><h2>The results</h2><p class="lead">Design A versus Design B: same room, same agents.</p><video src="media/ch11.mp4" poster="media/ch11.jpg" autoplay muted loop playsinline preload="auto"></video><div class="stats"><div class="stat"><span class="muted">Score</span><b><span class="bad">70%</span> → <span class="good">99%</span></b></div>
+          <div class="stat"><span class="muted">Problems</span><b><span class="bad">68</span> → <span class="good">3</span></b></div>
+          <div class="stat"><span class="muted">Blocking</span><b><span class="bad">10</span> → <span class="good">0</span></b></div>
+          <div class="stat"><span class="muted">Checks</span><b>234</b></div></div>
+          <div class="tablewrap" style="margin-top:16px"><table><tr><th>Agent</th><th style="text-align:right">Checks</th><th style="text-align:right">A failed</th><th style="text-align:right">A blocking</th><th>A score</th><th style="text-align:right">B failed</th><th style="text-align:right">B blocking</th><th>B score</th></tr><tr><td><span class="dot" style="background:#3b82f6"></span>Wheelchair user</td>
+          <td class="n">66</td><td class="n bad">14</td><td class="n">5</td>
+          <td><div class="bar"><i style="width:77.2%;background:#3b82f6;opacity:.55"></i></div><b>77%</b></td>
+          <td class="n good">0</td><td class="n">0</td>
+          <td><div class="bar"><i style="width:100.0%;background:#3b82f6"></i></div><b>100%</b></td></tr>
+<tr><td><span class="dot" style="background:#a855f7"></span>Low vision / color-blind</td>
+          <td class="n">110</td><td class="n bad">29</td><td class="n">0</td>
+          <td><div class="bar"><i style="width:74.1%;background:#a855f7;opacity:.55"></i></div><b>74%</b></td>
+          <td class="n good">0</td><td class="n">0</td>
+          <td><div class="bar"><i style="width:100.0%;background:#a855f7"></i></div><b>100%</b></td></tr>
+<tr><td><span class="dot" style="background:#14b8a6"></span>Neurodivergent worker</td>
+          <td class="n">49</td><td class="n bad">20</td><td class="n">0</td>
+          <td><div class="bar"><i style="width:55.8%;background:#14b8a6;opacity:.55"></i></div><b>56%</b></td>
+          <td class="n good">3</td><td class="n">0</td>
+          <td><div class="bar"><i style="width:94.0%;background:#14b8a6"></i></div><b>94%</b></td></tr>
+<tr><td><span class="dot" style="background:#f59e0b"></span>Motion clearance</td>
+          <td class="n">9</td><td class="n bad">5</td><td class="n">5</td>
+          <td><div class="bar"><i style="width:35.9%;background:#f59e0b;opacity:.55"></i></div><b>36%</b></td>
+          <td class="n good">0</td><td class="n">0</td>
+          <td><div class="bar"><i style="width:100.0%;background:#f59e0b"></i></div><b>100%</b></td></tr></table></div>
+          <p><a class="btn" href="media/twin_design_a.html" target="_blank">Explore Design A in 3D</a><a class="btn ghost" href="media/twin_design_b.html" target="_blank">Design B</a></p>
+          <h3 style="margin:28px 0 10px">Photoreal worlds · World Labs Marble</h3><div class="grid g3"><a class="world" href="https://marble.worldlabs.ai/world/fa8e4d4b-1460-4a79-9348-c13828cdc525" target="_blank" rel="noopener"><img src="media/venue_thumb.jpg" alt=""><span>The real venue, emptied (people and furniture removed from the LiDAR scan)</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/204b3fae-e96b-4788-8dbe-7c07329ec6ec" target="_blank" rel="noopener"><img src="media/a_thumb.jpg" alt=""><span>Design A, from twin renders</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/eec1ba7f-9735-4127-b9e2-040207e1e036" target="_blank" rel="noopener"><img src="media/hero_00_photo.jpg" alt=""><span>Finding: Reach to e-stop ES1 on Cobot cell 1 (UR5e class)</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/4d4c7ab4-26f6-4b0f-b248-b578512d58e7" target="_blank" rel="noopener"><img src="media/hero_01_photo.jpg" alt=""><span>Finding: Route to E-stop ES2 on Cobot cell 2 (UR10e class)</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/fa515d98-fb25-4266-bc7b-a50da1ab461e" target="_blank" rel="noopener"><img src="media/hero_02_photo.jpg" alt=""><span>Finding: Letter height: &quot;ESD bench 1&quot;</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/b27aa033-6df7-4464-9ca1-1122f1719a1c" target="_blank" rel="noopener"><img src="media/hero_03_photo.jpg" alt=""><span>Finding: Zones identified by color alone</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/b71deb99-60af-4466-ba9a-cbc4a81b8225" target="_blank" rel="noopener"><img src="media/hero_04_photo.jpg" alt=""><span>Finding: Quiet retreat room</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/e45d4690-1041-4660-9faa-4ca22fb8f9b4" target="_blank" rel="noopener"><img src="media/hero_05_photo.jpg" alt=""><span>Finding: Noise at ESD bench 4</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/c72a90b7-64d6-40d7-8b8d-14a02798a76c" target="_blank" rel="noopener"><img src="media/hero_06_photo.jpg" alt=""><span>Finding: Cobot cell 2 (UR10e class): gap between arm and wall</span></a>
+<a class="world" href="https://marble.worldlabs.ai/world/affb415f-85e2-4e30-ac7c-5aa85b5a9ff7" target="_blank" rel="noopener"><img src="media/hero_07_photo.jpg" alt=""><span>Finding: Industrial arm cell (fenced): arm sweep vs fence</span></a></div></section>
+<footer>Built with iPhone RoomPlan + ARKit LiDAR · Python metric twin and agents (shapely, numpy) · three.js · Stable Diffusion 1.5 + ControlNet depth on Apple Silicon · World Labs Marble API · Spark · Playwright + ffmpeg · macOS neural voice. Every number on this page comes from the metric twin; world models are used only for visuals.</footer>
+</body></html>
