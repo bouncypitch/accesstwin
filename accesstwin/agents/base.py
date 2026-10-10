@@ -24,6 +24,7 @@ class Persona:
     id: str = ""
     name: str = ""
     summary: str = ""
+    criteria: list[tuple[str, str]] = []  # (what is checked, citation), shown on walkthrough title cards
     body: Body
 
     def audit(self, space: Space, ctx: "AuditContext") -> list[Finding]:

@@ -64,8 +64,8 @@ def test_door_width(width_in, ok):
     assert f.passed is ok
 
 
-def test_design_a_seeded_issues():
-    report = audit(Space.load("specs/test_room.json"))
+def test_test_room_seeded_issues():
+    report = audit(Space.load("specs/test_room.json"), [Wheelchair()])
     failed = {(f.rule_id, f.element_id) for f in report.failures()}
     assert failed == {
         ("door-clear-width", "D2"), ("door-opening-force", "D2"),

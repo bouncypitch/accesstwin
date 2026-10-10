@@ -171,7 +171,7 @@
         "fg": "#ffffff",
         "bg": "#8250df",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -207,7 +207,7 @@
         "fg": "#ffffff",
         "bg": "#8250df",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -294,7 +294,7 @@
         "fg": "#ffffff",
         "bg": "#2da44e",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -345,7 +345,7 @@
         "fg": "#ffffff",
         "bg": "#2da44e",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -396,7 +396,7 @@
         "fg": "#ffffff",
         "bg": "#2da44e",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -436,7 +436,7 @@
         "fg": "#ffffff",
         "bg": "#2da44e",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -476,7 +476,7 @@
         "fg": "#ffffff",
         "bg": "#2da44e",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -527,7 +527,7 @@
         "fg": "#ffffff",
         "bg": "#6e7781",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -639,7 +639,7 @@
         "fg": "#ffffff",
         "bg": "#0969da",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -675,7 +675,7 @@
         "fg": "#ffffff",
         "bg": "#0969da",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -726,7 +726,7 @@
         "fg": "#ffffff",
         "bg": "#0969da",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -762,7 +762,7 @@
         "fg": "#ffffff",
         "bg": "#0969da",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -813,7 +813,7 @@
         "fg": "#ffffff",
         "bg": "#fb8f44",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -849,7 +849,7 @@
         "fg": "#ffffff",
         "bg": "#fb8f44",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -900,7 +900,7 @@
         "fg": "#ffffff",
         "bg": "#fb8f44",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -936,7 +936,7 @@
         "fg": "#ffffff",
         "bg": "#fb8f44",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -987,7 +987,7 @@
         "fg": "#ffffff",
         "bg": "#fb8f44",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1038,7 +1038,7 @@
         "fg": "#ffffff",
         "bg": "#0969da",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1089,7 +1089,7 @@
         "fg": "#ffb3b3",
         "bg": "#ffffff",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1125,7 +1125,7 @@
         "fg": "#ffb3b3",
         "bg": "#ffffff",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1165,7 +1165,7 @@
         "fg": "#ffffff",
         "bg": "#1b7c83",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1241,7 +1241,7 @@
         "fg": "#fff1a8",
         "bg": "#ffffff",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1277,7 +1277,7 @@
         "fg": "#ffffff",
         "bg": "#6e7781",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1313,7 +1313,7 @@
         "fg": "#ffffff",
         "bg": "#6e7781",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1349,7 +1349,7 @@
         "fg": "#ffffff",
         "bg": "#6e7781",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1385,7 +1385,7 @@
         "fg": "#ffffff",
         "bg": "#e85aad",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1421,7 +1421,7 @@
         "fg": "#ffffff",
         "bg": "#e85aad",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1457,7 +1457,7 @@
         "fg": "#ffffff",
         "bg": "#e85aad",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1508,7 +1508,7 @@
         "fg": "#ffffff",
         "bg": "#e85aad",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1544,7 +1544,7 @@
         "fg": "#ffffff",
         "bg": "#e85aad",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1595,7 +1595,7 @@
         "fg": "#ffb3b3",
         "bg": "#ffffff",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },
@@ -1660,7 +1660,7 @@
         "fg": "#ffb3b3",
         "bg": "#ffffff",
         "text_height": 0.05,
-        "mount_height": 1.8,
+        "mount_height": 1.6,
         "tactile": false,
         "pictogram": false
       },

@@ -5,6 +5,9 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from .agents.base import AuditContext, Persona
+from .agents.low_vision import LowVision
+from .agents.motion import MotionClearance
+from .agents.neurodivergent import Neurodivergent
 from .agents.wheelchair import Wheelchair
 from .findings import Finding
 from .spec import Space
@@ -13,7 +16,7 @@ WEIGHTS = {"blocking": 5, "major": 2, "minor": 1}
 
 
 def personas() -> list[Persona]:
-    return [Wheelchair()]
+    return [Wheelchair(), LowVision(), Neurodivergent(), MotionClearance()]
 
 
 class AgentScore(BaseModel):

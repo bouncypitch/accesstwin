@@ -52,6 +52,13 @@ class Wheelchair(Persona):
     name = "Wheelchair user"
     summary = "Manual or power wheelchair; seated eye height ~1.2 m; needs 36\" routes and 60\" turning space."
     body = Body(path_width=CLEAR_PATH, turn_diameter=TURN, eye_height=1.2)
+    criteria = [
+        ("36\" clear route from the entrance to every station, e-stop and exit", "ADA 403.5.1"),
+        ("60\" turning circle at the accessible station", "ADA 304.3"),
+        ("Doors: 32\" clear opening, opening force 5 lbf or less", "ADA 404.2.3, 404.2.9"),
+        ("Controls and e-stops reachable seated: 15-48\" (less over obstructions)", "ADA 308"),
+        ("Work surfaces 28-34\" high with knee clearance", "ADA 902.3, 306"),
+    ]
 
     def audit(self, space: Space, ctx: AuditContext) -> list[Finding]:
         out: list[Finding] = []

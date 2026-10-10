@@ -30,6 +30,7 @@ LIGHT = {"break": "#a7f3b5", "robots": "#ffb3b3", "arena": "#fff1a8"}  # pastel 
 
 def sign(zone: str, text: str, style: str = "solid", **kw) -> Sign:
     """solid: white on the zone color. pastel: light zone tint on white (low contrast)."""
+    kw = {"mount_height": 1.6, **kw}
     if style == "pastel":
         return Sign(text=text, fg=LIGHT.get(zone, "#d0d7de"), bg="#ffffff", **kw)
     return Sign(text=text, fg="#ffffff", bg=ZC[zone], **kw)
