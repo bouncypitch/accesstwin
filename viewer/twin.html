@@ -599,6 +599,14 @@ const views = {
   "Kitchen & restroom": [[6.2, 6.0, 2.6], [2.5, 10.2, 0.8]],
   "Top-down plan": [[W / 2, D / 2 - 0.01, 24], [W / 2, D / 2, 0]],
 };
+// Overview: aim at the room's center and back off just enough to fit the whole room in this window.
+function fitOverview() {
+  const fv = THREE.MathUtils.degToRad(camera.fov), fh = 2 * Math.atan(Math.tan(fv / 2) * (innerWidth / innerHeight));
+  const r = 0.5 * Math.hypot(W, D, WALL_H), dist = (r / Math.sin(Math.min(fv, fh) / 2)) * 1.0;
+  const dir = [-0.42, -0.62, 0.66], n = Math.hypot(...dir), c = [W / 2, D / 2, 0.6];
+  return [[c[0] + dir[0] / n * dist, c[1] + dir[1] / n * dist, c[2] + dir[2] / n * dist], c];
+}
+views.Overview = fitOverview();
 let fly = null;
 for (const [name, [pos, tgt]] of Object.entries(views)) {
   const b = document.createElement("button"); b.textContent = name; document.getElementById("views").append(b);
