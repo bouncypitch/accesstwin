@@ -1,5 +1,7 @@
 # AccessTwin
 
+![AccessTwin](docs/social-preview.png)
+
 Walk a workplace before it is built, as the people it might shut out.
 Track 1 (Accessible Workplace Twin), Future of Work Hackathon @ Stanford.
 
