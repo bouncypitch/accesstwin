@@ -46,9 +46,28 @@ await page.waitForFunction(() => typeof window.renderAt === "function", null, { 
 await page.evaluate(() => window.splatsReady);
 await page.evaluate(() => document.fonts.ready);
 
+// After a switch to a new splat world, re-render the same moment until Spark's async sort has settled.
+async function renderSettled(t) {
+  await page.evaluate(t => window.renderAt(t), t);
+  let n = await page.evaluate(() => window.__settle || 0);
+  while (n > 0) {
+    await page.waitForTimeout(40);
+    await page.evaluate(t => { window.__settle--; window.renderAt(t); window.__settle = Math.max(0, window.__settle); }, t);
+    n = await page.evaluate(() => window.__settle || 0);
+  }
+}
+const stills = opt("--stills", null);  // comma-separated times: write PNGs instead of a video
+if (stills) {
+  for (const t of stills.split(",").map(Number)) {
+    await renderSettled(t);
+    await page.screenshot({ path: join(dir, `still_${t.toFixed(1)}.png`) });
+  }
+  ff.kill(); await browser.close(); server.close();
+  console.log("stills written"); process.exit(0);
+}
 const n = Math.round((to - from) * fps), t0 = Date.now();
 for (let f = 0; f < n; f++) {
-  await page.evaluate(t => window.renderAt(t), from + f / fps);
+  await renderSettled(from + f / fps);
   const jpg = await page.screenshot({ type: "jpeg", quality: 90 });
   if (!ff.stdin.write(jpg)) await new Promise(r => ff.stdin.once("drain", r));
   if (f % (fps * 10) === 0) process.stdout.write(`\r${(f / fps).toFixed(0)}s / ${(n / fps).toFixed(0)}s  (${((Date.now() - t0) / Math.max(1, f)).toFixed(0)} ms/frame)   `);

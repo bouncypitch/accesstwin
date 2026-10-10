@@ -55,7 +55,7 @@ def generate(seg: dict) -> tuple[int, dict | None]:
     return i, info
 
 
-with ThreadPoolExecutor(4) as ex:
+with ThreadPoolExecutor(2) as ex:
     results = dict(ex.map(generate, stops))
 for s in stops:
     if results.get(s["hero"]["index"]):

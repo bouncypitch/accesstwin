@@ -10,6 +10,7 @@ Marble worlds are visualization only: every accessibility check runs on the metr
 import argparse
 import json
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -23,11 +24,17 @@ def key() -> str:
     raise SystemExit("WORLDLABS_API_KEY missing from .env")
 
 
-def call(method: str, path: str, body: dict | None = None) -> dict:
-    req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body else None,
-                                 headers={"WLT-Api-Key": key(), "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return json.loads(r.read() or b"{}")
+def call(method: str, path: str, body: dict | None = None, tries: int = 6) -> dict:
+    for attempt in range(tries):
+        req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body else None,
+                                     headers={"WLT-Api-Key": key(), "Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                return json.loads(r.read() or b"{}")
+        except urllib.error.HTTPError as e:
+            if e.code not in (429, 500, 502, 503) or attempt == tries - 1:
+                raise
+            time.sleep(10 * 2 ** attempt)  # rate limited: back off
 
 
 def upload(path: Path) -> str:

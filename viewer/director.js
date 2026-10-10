@@ -64,7 +64,7 @@ function director(tour) {
     .row { display:grid; grid-template-columns:150px 1fr; gap:8px 16px; margin-top:14px; font-size:23px; }
     .row b { color:#8b949e; font-weight:600; }
     .fix { color:#7ee787; }
-    .cap { position:absolute; left:50%; bottom:40px; transform:translateX(-50%); background:rgba(13,17,23,.85); border:1px solid #30363d; border-radius:12px; padding:14px 22px; font-size:28px; white-space:nowrap; }
+    .cap { position:absolute; left:50%; bottom:92px; transform:translateX(-50%); background:rgba(13,17,23,.85); border:1px solid #30363d; border-radius:12px; padding:14px 22px; font-size:28px; white-space:nowrap; }
     table.sum { width:100%; border-collapse:collapse; margin-top:26px; font-size:24px; }
     table.sum th { text-align:left; color:#8b949e; font-weight:600; font-size:19px; text-transform:uppercase; letter-spacing:.06em; padding:10px 12px; border-bottom:1px solid #30363d; }
     table.sum td { padding:14px 12px; border-bottom:1px solid #21262d; vertical-align:top; }
@@ -234,9 +234,9 @@ function director(tour) {
 
   // Photoreal worlds (World Labs Marble splats), one per finding ---------------------------------
   const worldStops = tour.segments.filter(s => s.world);
-  const procedural = scene.children.slice();  // everything built so far is the procedural twin
+  const procedural = scene.children.filter(o => o !== fx);  // the procedural twin (not the finding markers)
   const splatGroups = {};
-  let pointsObj = null;
+  let pointsObj = null, lastWorld = null;
   window.splatsReady = (async () => {
     if (!worldStops.length) return;
     const { SplatMesh, SparkRenderer } = await import("@sparkjsdev/spark");
@@ -297,7 +297,7 @@ function director(tour) {
     geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
     geo.setAttribute("flag", new THREE.BufferAttribute(flg, 1));
     const m = new THREE.ShaderMaterial({
-      uniforms: { uClean: { value: 0 }, uRefill: { value: 0 }, uSize: { value: 0.045 }, uScale: { value: innerHeight / 2 } },
+      uniforms: { uClean: { value: 0 }, uRefill: { value: 0 }, uSize: { value: 0.075 }, uScale: { value: innerHeight / 2 } },
       vertexShader: `attribute vec3 color; attribute float flag; uniform float uClean, uRefill, uSize, uScale; varying vec3 vC; varying float vA;
         void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv;
           vC = color; vA = 1.0; float s = uSize;
@@ -393,10 +393,12 @@ function director(tour) {
     const worldSeg = seg.world ? seg : (seg.type === "walk" && next?.world ? next : null);
     const pointsMode = seg.type === "scan" || seg.type === "clean" || (seg.type === "card" && seg.backdrop === "points");
     const wg = showWorld(worldSeg, pointsMode ? "points" : null);
+    if (wg !== lastWorld) { window.__settle = 20; lastWorld = wg; }  // Spark sorts splats asynchronously
     const fadeIn = seg.fade ? Math.max(0, 1 - tl / 0.6) : 0, fadeOut = seg.fadeOut ? Math.max(0, 1 - (seg.dur - tl) / 0.6) : 0;
     const fadeHTML = (fadeIn || fadeOut) ? `<div class="fade" style="opacity:${Math.max(fadeIn, fadeOut).toFixed(3)}"></div>` : "";
     if (["scan", "clean", "build", "morph"].includes(seg.type) || (seg.type === "card" && seg.backdrop)) {
-      if (seg.type === "build" || (seg.type === "card" && seg.backdrop === "build")) { resetA(); buildUp(seg.type === "build" ? u : 0); }
+      if (pointsMode) twinVisible(false);
+      else if (seg.type === "build" || (seg.type === "card" && seg.backdrop === "build")) { resetA(); buildUp(seg.type === "build" ? u : 0); }
       else if (seg.type === "morph") { resetA(); morph(u); }
       else if (seg.backdrop === "designB") { resetA(); morph(1); }
       else resetA();
@@ -416,21 +418,17 @@ function director(tour) {
     if (wg) {
       const h = worldSeg.hero, eye = P(...h.eye), tgt = P(...h.target), f = worldSeg.finding;
       const dir = tgt.clone().sub(eye).setY(0).normalize();
-      const av = avatarFor(worldSeg); av.visible = true;
+      // Photoreal shots stay on the Marble capture camera (the splat is only valid near it), with a slow push-in.
       if (seg.type === "walk") {
-        // The agent covers the last few meters of its route inside the photoreal shot.
-        const d0 = Math.max(0, seg.len - 3.5), d = d0 + (seg.len - d0) * ease(u);
-        const [x, y, hd] = along(seg.path, d); av.position.copy(P(x, y, 0)); av.rotation.y = hd; pose(av, d);
-        overlay(`<div class="hud"><span class="dot" style="width:22px;height:22px;background:${seg.color}"></span><div>${esc(agentName(seg.agent))}<small>${esc(seg.label.split(": ")[1] || "")}</small></div></div><div class="filterlabel" style="background:#1f6feb">Photoreal world · World Labs Marble</div>`);
-        cam = [eye.clone().addScaledVector(dir, -0.4), tgt];
+        overlay(`<div class="hud"><span class="dot" style="width:22px;height:22px;background:${seg.color}"></span><div>${esc(agentName(seg.agent))}<small>${esc(seg.label.split(": ")[1] || "")}</small></div></div><div class="filterlabel" style="background:#1f6feb">Photoreal world · World Labs Marble</div>` + chrome(T, seg) + fadeHTML);
+        cam = [eye.clone().addScaledVector(dir, 0.25 * ease(u)), tgt];
       } else {
-        av.position.copy(P(seg.at[0], seg.at[1], 0)); av.rotation.y = Math.atan2(f.location[1] - seg.at[1], f.location[0] - seg.at[0]); pose(av, 0);
         if (f.element_id) outlineBox(f.element_id);
         if (seg.noise) { outlineBox(seg.noise.source_id); noiseViz(seg.noise, T); }
         if (seg.reach) reachViz(seg.reach);
         marker(f.location, T);
-        cam = [eye.clone().addScaledVector(dir, 0.6 * ease(u)), tgt];
-        overlay(stopHTML(seg) + `<div class="filterlabel" style="background:#1f6feb;top:${seg.filter ? 86 : 32}px">Photoreal world · World Labs Marble</div>`);
+        cam = [eye.clone().addScaledVector(dir, 0.25 + 0.45 * ease(u)), tgt];
+        overlay(stopHTML(seg) + `<div class="filterlabel" style="background:#1f6feb;top:${seg.filter ? 86 : 32}px">Photoreal world · World Labs Marble</div>` + chrome(T, seg) + fadeHTML);
         if (seg.filter) renderer.domElement.style.filter = "url(#deutan)";
       }
       setCam(cam); lastCam = cam;

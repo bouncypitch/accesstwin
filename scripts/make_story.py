@@ -264,6 +264,10 @@ def main() -> None:
                     stop[key] = old[key]
             if old.get("at"):
                 stop["at"] = old["at"]
+            if "hero" in stop:  # photoreal world generated for this hero view
+                w = reuse / "hero" / f"stop_{stop['hero']['index']:02d}_world.json"
+                if w.exists() and w.with_suffix(".spz").exists():
+                    stop["world"] = json.loads(w.read_text())
             add(stop, natural(f, A), 6)
 
     # 10: fixes -> Design B
