@@ -76,7 +76,7 @@ class Wheelchair(Persona):
                 fix=None if ok else Fix(summary=f"Widen door {d.id} to at least 32\" clear (a 36\" leaf gives ~34\").",
                                         op="set", element_id=d.id, params={"clear_width": round(34 * IN, 3)}),
             ))
-            if d.hardware != "automatic":
+            if d.hardware not in ("automatic", "none"):
                 ok = d.opening_force_lbf <= DOOR_FORCE_LBF
                 out.append(Finding(
                     agent=ID, rule_id="door-opening-force", title=f"Door {d.id} opening force", passed=ok,

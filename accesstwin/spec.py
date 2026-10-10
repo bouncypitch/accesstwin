@@ -86,7 +86,7 @@ class Door(BaseModel):
     inward: Vec2  # unit vector pointing into the room
     clear_width: float
     opening_force_lbf: float = 5.0
-    hardware: Literal["lever", "push_bar", "knob", "automatic"] = "lever"
+    hardware: Literal["lever", "push_bar", "knob", "automatic", "none"] = "lever"  # none: open doorway
     role: Literal["entrance", "exit", "both"] = "both"
     source: Source = Field(default_factory=Source)
 
