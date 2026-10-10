@@ -36,7 +36,7 @@ def level_at(space: Space, at: tuple[float, float]) -> tuple[float, list[tuple[s
         if L1 is None:
             continue
         r = max(1.0, e.footprint().distance(LineString([at, at]).centroid) + 0.3)
-        parts.append((e.label or e.id, L1 - 20 * math.log10(r)))
+        parts.append((e.label or e.id, L1 - e.attenuation_db - 20 * math.log10(r)))
     total = 10 * math.log10(sum(10 ** (lv / 10) for _, lv in parts)) if parts else 0.0
     return total, sorted(parts, key=lambda p: -p[1])
 
@@ -87,7 +87,9 @@ class Neurodivergent(Persona):
                 severity="major" if total > QUIET_LIMIT + 10 else "minor", element_id=e.id, location=at,
                 measured=round(total, 1), required=f"<= {QUIET_LIMIT:.0f} dBA from lab equipment", citation=S12,
                 detail=(f"About {total:.0f} dBA while equipment runs; loudest is {top[0]} ({top[1]:.0f} dBA here)."),
-                fix=None if ok else Fix(summary=f"Move {top[0]} away from {e.label}, or enclose it (acoustic enclosure, -15 dB)."),
+                fix=None if ok else Fix(summary=f"Enclose {top[0]} in an acoustic enclosure (-15 dB), or move it away from {e.label}.",
+                                        op="set", element_id=next(x.id for x in space.elements if (x.label or x.id) == top[0]),
+                                        params={"attenuation_db": 15.0}),
             ))
         return out
 
@@ -100,13 +102,14 @@ class Neurodivergent(Persona):
             at = self.seat(e)
             near = min(((m.obstacle().distance(LineString([at, at]).centroid), m) for m in movers),
                        key=lambda t: t[0], default=(99, None))
-            ok = near[0] >= MOTION_DIST
+            ok = near[0] >= MOTION_DIST or e.screen_height >= 1.4
             out.append(Finding(
                 agent=ID, rule_id="visual-motion", title=f"Robot motion in view at {e.label}", passed=ok,
                 severity="minor", element_id=e.id, location=at, measured=round(near[0], 2),
                 required=f">= {MOTION_DIST:.1f} m from moving robots, or a visual screen", citation=PAS,
                 detail=(f"{near[1].label} moves {near[0]:.1f} m from the seat." if near[1] else ""),
-                fix=None if ok else Fix(summary=f"Add a 1.5 m visual screen between {e.label} and {near[1].label}, or move the seats."),
+                fix=None if ok else Fix(summary=f"Add a 1.5 m visual screen between {e.label} and {near[1].label}, or move the seats.",
+                                        op="set", element_id=e.id, params={"screen_height": 1.5}),
             ))
         return out
 

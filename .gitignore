@@ -9,3 +9,5 @@ capture/
 .env
 demo/assets/**/*.rrd
 demo/assets/**/*.ply
+recorder/node_modules/
+tools/photoreal/.venv/

@@ -43,6 +43,8 @@ class MotionClearance(Persona):
             reach = REACH.get(e.model or "")
             if reach is None:
                 continue
+            if e.reach_limit:
+                reach = min(reach, e.reach_limit)
             sweep = Point(e.center).buffer(reach, 64)
             zone = e.obstacle()
             fenced = e.model == "industrial_cage"

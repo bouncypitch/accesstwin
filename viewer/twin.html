@@ -45,6 +45,7 @@
 } }
 </script>
 <script id="spec" type="application/json">/*SPEC*/</script>
+<script id="tour" type="application/json">/*TOUR*/</script>
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -472,11 +473,11 @@ for (const [frame, d] of exitSigns) {
 }
 const ZC = Object.fromEntries((spec.zones || []).map(z => [z.id, z.color]));
 const zoneFloors = new THREE.Group(); scene.add(zoneFloors);
-const pickables = [];
+const pickables = [], groups = {};
 for (const e of spec.elements) {
   const [w, d] = e.size, h = e.height, top = e.work_surface_height ?? h;
   const g = new THREE.Group(); g.position.copy(P(e.center[0], e.center[1], 0)); g.rotation.y = THREE.MathUtils.degToRad(e.rotation_deg); scene.add(g);
-  g.userData.el = e;
+  g.userData.el = e; groups[e.id] = g;
   const m = e.model || e.kind;
   switch (m) {
     case "esd_bench": bench(g, w, d, top, "esd"); benchKit(g, w, d, top, ["scope", "psu"]); chair(g, 0, d / 2 + 0.35, 0); break;
@@ -582,7 +583,30 @@ for (const [name, [pos, tgt]] of Object.entries(views)) {
   const b = document.createElement("button"); b.textContent = name; document.getElementById("views").append(b);
   b.onclick = () => { fly = { p0: camera.position.clone(), t0: controls.target.clone(), p1: P(...pos), t1: P(...tgt), t: 0 }; };
 }
-const v0 = views[decodeURIComponent(location.hash.replace("#view=", ""))] || views.Overview;
+const camHash = /#cam=([-\d.,]+)/.exec(location.hash);  // #cam=x,y,z,tx,ty,tz in plan coordinates
+const v0 = camHash ? (n => [n.slice(0, 3), n.slice(3, 6)])(camHash[1].split(",").map(Number))
+  : views[decodeURIComponent(location.hash.replace("#view=", ""))] || views.Overview;
+if (/ceil/.test(location.hash)) {  // photo-style renders: ceiling with recessed lights, like the real venue
+  const ceil = new THREE.Mesh(new THREE.ShapeGeometry(shape), new THREE.MeshStandardMaterial({ color: 0xf4f2ec, roughness: 0.9, side: THREE.DoubleSide }));
+  ceil.rotation.x = -Math.PI / 2; ceil.position.y = WALL_H; scene.add(ceil);
+  for (let x = 1.5; x < W; x += 2.4) for (let y = 1.2; y < D; y += 2.4) {
+    const l = new THREE.Mesh(new THREE.CircleGeometry(0.12, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    l.rotation.x = Math.PI / 2; l.position.copy(P(x, y, WALL_H - 0.01)); scene.add(l);
+  }
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+}
+if (/depth/.test(location.hash)) {  // linear depth (near = white) for ControlNet-depth photorealization
+  scene.overrideMaterial = new THREE.ShaderMaterial({
+    uniforms: { near: { value: 0.3 }, far: { value: 14.0 } },
+    vertexShader: "varying float vz; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vz = -mv.z; gl_Position = projectionMatrix * mv; }",
+    fragmentShader: "uniform float near; uniform float far; varying float vz; void main(){ float d = clamp((vz-near)/(far-near),0.0,1.0); float v = pow(1.0-d, 1.4); gl_FragColor = vec4(v,v,v,1.0); }",
+  });
+  scene.background = new THREE.Color(0x000000); scene.environment = null;
+  addEventListener("load", () => { signs.forEach(s => (s.visible = false)); callouts.forEach(c => (c.visible = false)); });
+  for (const f of fadeWalls) f.mesh.material.opacity = 1;
+}
+if (/clean/.test(location.hash)) for (const id of ["views", "toggles", "legend", "title"]) document.getElementById(id).style.display = "none";
+if (/fov=(\d+)/.test(location.hash)) { camera.fov = Number(/fov=(\d+)/.exec(location.hash)[1]); camera.updateProjectionMatrix(); }
 camera.position.copy(P(...v0[0])); controls.target.copy(P(...v0[1]));
 document.getElementById("tSigns").onchange = ev => signs.forEach(s => (s.visible = ev.target.checked));
 document.getElementById("tCallouts").onchange = ev => callouts.forEach(s => (s.visible = ev.target.checked));
@@ -605,33 +629,7 @@ canvas.addEventListener("pointermove", ev => {
 
 function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); }
 addEventListener("resize", resize); resize();
-const clock = new THREE.Clock();
-renderer.setAnimationLoop(() => {
-  const t = clock.getElapsedTime(), dt = clock.getDelta();
-  for (const a of animated) {
-    if (a.kind === "arm") { const j = a.obj.userData.joints, s = a.speed ?? 0.8, p = a.phase; j.yaw.rotation.y = j.pose[0] + Math.sin(t * s + p) * 0.9; j.sh.rotation.z = j.pose[1] + Math.sin(t * s * 1.3 + p) * 0.25; j.el.rotation.z = j.pose[2] + Math.sin(t * s * 1.1 + p + 1) * 0.3; }
-    if (a.kind === "hover") { a.obj.position.set(a.base[0] + Math.sin(t * 0.7 + a.phase) * 0.6, a.base[1] + Math.sin(t * 1.7 + a.phase) * 0.12, a.base[2] + Math.cos(t * 0.5 + a.phase) * 0.6); a.obj.rotation.y = t * 0.4; }
-    if (a.kind === "patrol") { const ang = t * 0.35 + a.phase; a.obj.position.set(a.c[0] + Math.cos(ang) * a.r, 0, a.c[1] + Math.sin(ang) * a.r); a.obj.rotation.y = -ang; }
-    if (a.kind === "route") {
-      const L = a.pts.length; let seg = a.seg ?? 0, u = (a.u ?? 0) + 0.016 * a.speed / a.pts[seg].distanceTo(a.pts[(seg + 1) % L]);
-      if (u >= 1) { u = 0; seg = (seg + 1) % L; } a.seg = seg; a.u = u;
-      const p0 = a.pts[seg], p1 = a.pts[(seg + 1) % L]; a.obj.position.lerpVectors(p0, p1, u);
-      a.obj.rotation.y = Math.atan2(-(p1.z - p0.z), p1.x - p0.x);
-    }
-    if (a.kind === "sway") a.obj.rotation.z = Math.sin(t * 1.2) * 0.02;
-  }
-  if (fly) {
-    fly.t = Math.min(1, fly.t + 0.012); const k = fly.t * fly.t * (3 - 2 * fly.t);
-    camera.position.lerpVectors(fly.p0, fly.p1, k); controls.target.lerpVectors(fly.t0, fly.t1, k); if (fly.t >= 1) fly = null;
-  }
-  for (const f of fadeWalls) {
-    const toCam = camera.position.clone().sub(f.mid); toCam.y = 0;
-    const facing = toCam.dot(f.n) > 0 && camera.position.y < 20;
-    const target = facing ? 0.1 : 1; f.mesh.material.opacity += (target - f.mesh.material.opacity) * 0.15;
-    f.mesh.material.depthWrite = f.mesh.material.opacity > 0.9; f.mesh.castShadow = !facing;
-  }
-  controls.update(); renderer.render(scene, camera);
-});
+/*DIRECTOR*/
 window.__twin = { scene, camera, controls, P, views, renderer };
 </script>
 </body>

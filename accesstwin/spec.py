@@ -74,6 +74,9 @@ class Element(BaseModel):
     parts: list[OperablePart] = Field(default_factory=list)
     zone: str | None = None
     sign: Sign | None = None
+    attenuation_db: float = 0.0  # acoustic enclosure or treatment around a noise source
+    reach_limit: float | None = None  # robot cells: safety-rated soft axis limit on the arm's reach (m)
+    screen_height: float = 0.0  # privacy / visual screen on a seat or bench
     model: str | None = None  # 3D viewer hint (e.g. "cobot", "cage", "esd_bench"); never used by the checks
     source: Source = Field(default_factory=Source)
 

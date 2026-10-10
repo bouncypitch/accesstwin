@@ -171,7 +171,8 @@ class Wheelchair(Persona):
             dx, dy = 0.0, math.copysign(shortfall, dy)
         return Fix(
             summary=f"Move {el.label or name} {inches(shortfall):.0f}\" ({shortfall:.2f} m) to widen the aisle to 36\".",
-            op="move", element_id=name, params={"dx": round(dx, 3), "dy": round(dy, 3)},
+            op="move", element_id=name, params={"dx": round(dx, 3), "dy": round(dy, 3), "shortfall": round(shortfall, 3),
+                                                "away_from": next((n for n in bn.between if n != name), "wall")},
         )
 
     # 308: reach ranges ---------------------------------------------------------------------------

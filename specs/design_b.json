@@ -1,0 +1,1806 @@
+{
+  "name": "Design B: robotics lab in the hackathon venue",
+  "outline": [
+    [
+      0.0098,
+      11.3586
+    ],
+    [
+      18.3863,
+      11.3586
+    ],
+    [
+      18.3863,
+      10.4438
+    ],
+    [
+      17.3915,
+      10.4438
+    ],
+    [
+      17.3915,
+      9.8566
+    ],
+    [
+      18.3341,
+      9.8566
+    ],
+    [
+      18.3341,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      9.8692
+    ],
+    [
+      0.0098,
+      10.7581
+    ]
+  ],
+  "ceiling_height": 3.651,
+  "doors": [
+    {
+      "id": "D1",
+      "position": [
+        0.0,
+        7.3764
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.333,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "entrance",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.77 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D2",
+      "position": [
+        0.0,
+        1.8094
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.09,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "1.14 m opening; clear width estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D3",
+      "position": [
+        18.3341,
+        2.5081
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.402,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 2.90 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D4",
+      "position": [
+        18.3341,
+        7.3704
+      ],
+      "inward": [
+        -1.0,
+        -0.0
+      ],
+      "clear_width": 1.468,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "double door, 3.04 m opening; clear width per leaf estimated, verify with tape"
+      }
+    },
+    {
+      "id": "D5",
+      "position": [
+        0.0,
+        3.2008
+      ],
+      "inward": [
+        1.0,
+        0.0
+      ],
+      "clear_width": 1.643,
+      "opening_force_lbf": 5.0,
+      "hardware": "none",
+      "role": "both",
+      "source": {
+        "kind": "lidar",
+        "confidence": 0.9,
+        "note": "open doorway; width from LiDAR"
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "lockers",
+      "kind": "storage",
+      "label": "Day lockers",
+      "center": [
+        0.225,
+        4.85
+      ],
+      "size": [
+        1.5,
+        0.45
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "Day lockers",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "lockers",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "ppe",
+      "kind": "storage",
+      "label": "PPE station (glasses, hearing, coats)",
+      "center": [
+        0.2,
+        6.2
+      ],
+      "size": [
+        1.0,
+        0.4
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "PPE station",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "ppe_rack",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "restroom",
+      "kind": "partition",
+      "label": "Accessible restroom",
+      "center": [
+        1.2,
+        10.15
+      ],
+      "size": [
+        2.3,
+        2.4
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Accessible restroom",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.372,
+        "tactile": true,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "restroom",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "kitchen",
+      "kind": "equipment",
+      "label": "Kitchenette (sink, dishwasher)",
+      "center": [
+        3.75,
+        11.030000000000001
+      ],
+      "size": [
+        2.4,
+        0.65
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.91,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "SINK",
+          "kind": "control_panel",
+          "position": [
+            3.75,
+            11.030000000000001
+          ],
+          "height": 0.86,
+          "approach": "forward",
+          "obstruction_depth": 0.6,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Kitchenette",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "kitchen_counter",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "fridge",
+      "kind": "equipment",
+      "label": "Refrigerator",
+      "center": [
+        5.45,
+        10.98
+      ],
+      "size": [
+        0.8,
+        0.75
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FRIDGE",
+          "kind": "handle",
+          "position": [
+            5.45,
+            10.98
+          ],
+          "height": 1.1,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Refrigerator",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "fridge",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "microwave",
+      "kind": "equipment",
+      "label": "Microwave",
+      "center": [
+        6.3,
+        11.105
+      ],
+      "size": [
+        0.6,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.2,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "MW",
+          "kind": "control_panel",
+          "position": [
+            6.3,
+            11.105
+          ],
+          "height": 1.15,
+          "approach": "forward",
+          "obstruction_depth": 0.3,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "break",
+      "sign": {
+        "text": "Microwave",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "microwave",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "dining1",
+      "kind": "table",
+      "label": "Dining table (6 seats)",
+      "center": [
+        3.511,
+        9.311
+      ],
+      "size": [
+        1.8,
+        0.9
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 1.5,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Dining table",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "dining_table",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "dining2",
+      "kind": "table",
+      "label": "Dining table (4 seats, accessible end)",
+      "center": [
+        4.506,
+        8.3
+      ],
+      "size": [
+        1.2,
+        0.9
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 0.9,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "break",
+      "sign": {
+        "text": "Dining table",
+        "fg": "#ffffff",
+        "bg": "#747406",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "dining_table",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "battery",
+      "kind": "cabinet",
+      "label": "Lithium battery cabinet (charging)",
+      "center": [
+        0.3,
+        0.7
+      ],
+      "size": [
+        1.2,
+        0.6
+      ],
+      "rotation_deg": 90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "BATT",
+          "kind": "handle",
+          "position": [
+            0.3,
+            0.7
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "storage",
+      "sign": {
+        "text": "Lithium battery cabinet",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "battery_cabinet",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd1",
+      "kind": "workbench",
+      "label": "ESD bench 1",
+      "center": [
+        3.2,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 1",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd2",
+      "kind": "workbench",
+      "label": "ESD bench 2",
+      "center": [
+        5.1,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 2",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd3",
+      "kind": "workbench",
+      "label": "ESD bench 3 (height-adjustable)",
+      "center": [
+        7.0,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.86,
+      "work_surface_height": 0.81,
+      "knee_clearance": {
+        "height": 0.7,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "accessible_station": true,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 3",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "esd4",
+      "kind": "workbench",
+      "label": "ESD bench 4",
+      "center": [
+        8.9,
+        0.375
+      ],
+      "size": [
+        1.8,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD bench 4",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "esd_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "solder",
+      "kind": "workbench",
+      "label": "Soldering station (fume extraction)",
+      "center": [
+        10.6,
+        0.375
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FUME",
+          "kind": "switch",
+          "position": [
+            10.6,
+            0.375
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.6,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "electronics",
+      "sign": {
+        "text": "Soldering station",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "solder_station",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "components",
+      "kind": "storage",
+      "label": "ESD component drawers",
+      "center": [
+        12.1,
+        0.25
+      ],
+      "size": [
+        1.2,
+        0.5
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.5,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "electronics",
+      "sign": {
+        "text": "ESD component drawers",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "drawers",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "laser",
+      "kind": "equipment",
+      "label": "Laser cutter",
+      "center": [
+        13.6,
+        0.5
+      ],
+      "size": [
+        1.4,
+        1.0
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.1,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "LASER",
+          "kind": "control_panel",
+          "position": [
+            13.6,
+            0.5
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Laser cutter",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "laser_cutter",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "printers",
+      "kind": "equipment",
+      "label": "3D printer bank (HEPA + carbon)",
+      "center": [
+        15.7,
+        0.4
+      ],
+      "size": [
+        2.4,
+        0.8
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.9,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "fab",
+      "sign": {
+        "text": "3D printer bank",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "printer_bank",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cnc",
+      "kind": "equipment",
+      "label": "Benchtop CNC mill",
+      "center": [
+        17.65,
+        0.45
+      ],
+      "size": [
+        1.2,
+        0.9
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.6,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "CNC",
+          "kind": "e_stop",
+          "position": [
+            17.65,
+            0.45
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Benchtop CNC mill",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "cnc",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "mech",
+      "kind": "workbench",
+      "label": "Mechanical assembly bench",
+      "center": [
+        14.2,
+        2.4
+      ],
+      "size": [
+        2.0,
+        0.8
+      ],
+      "rotation_deg": 180.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "fab",
+      "sign": {
+        "text": "Mechanical assembly bench",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "mech_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "eyewash",
+      "kind": "equipment",
+      "label": "Emergency eyewash",
+      "center": [
+        12.3,
+        2.4
+      ],
+      "size": [
+        0.5,
+        0.4
+      ],
+      "rotation_deg": 180.0,
+      "height": 1.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "EYE",
+          "kind": "handle",
+          "position": [
+            12.3,
+            2.4
+          ],
+          "height": 0.9,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "fab",
+      "sign": {
+        "text": "Emergency eyewash",
+        "fg": "#ffffff",
+        "bg": "#1b315e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "eyewash",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "hil",
+      "kind": "workbench",
+      "label": "HIL test bench (motor dyno)",
+      "center": [
+        10.4,
+        3.3
+      ],
+      "size": [
+        1.8,
+        0.8
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "HIL",
+          "kind": "e_stop",
+          "position": [
+            10.4,
+            3.3
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.5,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "electronics",
+      "sign": {
+        "text": "HIL test bench",
+        "fg": "#ffffff",
+        "bg": "#060674",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "hil_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cobot1",
+      "kind": "robot_cell",
+      "label": "Cobot cell 1 (UR5e class)",
+      "center": [
+        4.0,
+        3.3
+      ],
+      "size": [
+        1.2,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "ES1",
+          "kind": "e_stop",
+          "position": [
+            5.1,
+            3.3
+          ],
+          "height": 1.067,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "robots",
+      "sign": {
+        "text": "Cobot cell 1",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "cobot_small",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "teach",
+      "kind": "workbench",
+      "label": "Teach-pendant bench",
+      "center": [
+        6.419,
+        3.3
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.9,
+      "work_surface_height": 0.86,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "robots",
+      "sign": {
+        "text": "Teach-pendant bench",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "teach_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "desks",
+      "kind": "table",
+      "label": "Software desks (3 seats)",
+      "center": [
+        3.4,
+        5.6
+      ],
+      "size": [
+        3.6,
+        0.8
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.69,
+        "width": 1.0,
+        "depth": 0.5
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "desks",
+      "sign": {
+        "text": "Software desks",
+        "fg": "#ffffff",
+        "bg": "#22763e",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 1.5,
+      "model": "desk_row",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "arena",
+      "kind": "amr_track",
+      "label": "Test arena (netted, motion capture)",
+      "center": [
+        10.0,
+        6.811
+      ],
+      "size": [
+        6.0,
+        6.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 3.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "arena",
+      "sign": {
+        "text": "Test arena",
+        "fg": "#ffffff",
+        "bg": "#0a0acb",
+        "text_height": 0.15,
+        "mount_height": 2.55,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 15.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "arena",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "mocap",
+      "kind": "workstation",
+      "label": "Mocap operator station",
+      "center": [
+        6.4,
+        7.3
+      ],
+      "size": [
+        1.4,
+        0.7
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.75,
+      "work_surface_height": 0.74,
+      "knee_clearance": {
+        "height": 0.69,
+        "width": 0.8,
+        "depth": 0.48
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "arena",
+      "sign": {
+        "text": "Mocap operator station",
+        "fg": "#ffffff",
+        "bg": "#0a0acb",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "mocap_station",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "shelving",
+      "kind": "shelf",
+      "label": "Parts shelving",
+      "center": [
+        8.0,
+        11.105
+      ],
+      "size": [
+        2.4,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Parts shelving",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "shelving",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "rawstock",
+      "kind": "shelf",
+      "label": "Raw stock rack",
+      "center": [
+        10.2,
+        11.055
+      ],
+      "size": [
+        1.8,
+        0.6
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Raw stock rack",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "raw_stock",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "flammables",
+      "kind": "cabinet",
+      "label": "Flammable liquids cabinet",
+      "center": [
+        11.8,
+        11.105
+      ],
+      "size": [
+        1.1,
+        0.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 1.7,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "storage",
+      "sign": {
+        "text": "Flammable liquids cabinet",
+        "fg": "#ffffff",
+        "bg": "#077a91",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "flammables",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "repair",
+      "kind": "workbench",
+      "label": "Robot repair bench",
+      "center": [
+        14.486,
+        4.756
+      ],
+      "size": [
+        2.0,
+        0.8
+      ],
+      "rotation_deg": -90.0,
+      "height": 0.9,
+      "work_surface_height": 0.9,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Robot repair bench",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "repair_bench",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "humanoid_stand",
+      "kind": "equipment",
+      "label": "Humanoid service stand (hoist)",
+      "center": [
+        14.015,
+        7.3
+      ],
+      "size": [
+        1.2,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Humanoid service stand",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "humanoid_stand",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "quad_stand",
+      "kind": "equipment",
+      "label": "Quadruped service stand",
+      "center": [
+        13.806,
+        8.7
+      ],
+      "size": [
+        1.2,
+        0.7
+      ],
+      "rotation_deg": 90.0,
+      "height": 0.7,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Quadruped service stand",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "quad_stand",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "spares",
+      "kind": "cabinet",
+      "label": "Spare actuators and sensors",
+      "center": [
+        15.809,
+        7.0
+      ],
+      "size": [
+        1.2,
+        0.5
+      ],
+      "rotation_deg": -90.0,
+      "height": 1.9,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "SPARE",
+          "kind": "handle",
+          "position": [
+            15.809000000000001,
+            7.0
+          ],
+          "height": 1.0,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Spare actuators and sensors",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "spares",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "parking",
+      "kind": "storage",
+      "label": "Robot parking",
+      "center": [
+        13.85,
+        10.75
+      ],
+      "size": [
+        1.8,
+        1.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.6,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "maintenance",
+      "sign": {
+        "text": "Robot parking",
+        "fg": "#ffffff",
+        "bg": "#740606",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "robot_parking",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "cobot2",
+      "kind": "robot_cell",
+      "label": "Cobot cell 2 (UR10e class)",
+      "center": [
+        17.08,
+        4.92
+      ],
+      "size": [
+        1.5,
+        1.5
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "ES2",
+          "kind": "e_stop",
+          "position": [
+            15.78,
+            4.92
+          ],
+          "height": 1.07,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "zone": "robots",
+      "sign": {
+        "text": "Cobot cell 2",
+        "fg": "#ffffff",
+        "bg": "#1b5e53",
+        "text_height": 0.05,
+        "mount_height": 1.6,
+        "tactile": false,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": 0.75,
+      "screen_height": 0.0,
+      "model": "cobot_large",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design A"
+      }
+    },
+    {
+      "id": "quiet",
+      "kind": "partition",
+      "label": "Quiet room",
+      "center": [
+        16.2,
+        10.200000000000001
+      ],
+      "size": [
+        2.2,
+        2.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.4,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "zone": "welcome",
+      "sign": {
+        "text": "Quiet room",
+        "fg": "#ffffff",
+        "bg": "#0057a8",
+        "text_height": 0.05,
+        "mount_height": 1.3716,
+        "tactile": true,
+        "pictogram": true
+      },
+      "attenuation_db": 0.0,
+      "reach_limit": null,
+      "screen_height": 0.0,
+      "model": "quiet_room",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": "Design B"
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "welcome",
+      "label": "Entry, PPE and lockers",
+      "color": "#0057a8"
+    },
+    {
+      "id": "break",
+      "label": "Kitchenette, dining and restroom",
+      "color": "#747406"
+    },
+    {
+      "id": "robots",
+      "label": "Robot cells",
+      "color": "#1b5e53"
+    },
+    {
+      "id": "arena",
+      "label": "Test arena",
+      "color": "#0a0acb"
+    },
+    {
+      "id": "electronics",
+      "label": "Electronics and soldering (ESD)",
+      "color": "#060674"
+    },
+    {
+      "id": "fab",
+      "label": "Fabrication",
+      "color": "#1b315e"
+    },
+    {
+      "id": "maintenance",
+      "label": "Maintenance and repair",
+      "color": "#740606"
+    },
+    {
+      "id": "storage",
+      "label": "Storage",
+      "color": "#077a91"
+    },
+    {
+      "id": "desks",
+      "label": "Software desks",
+      "color": "#22763e"
+    }
+  ],
+  "source": {
+    "kind": "design",
+    "confidence": 1.0,
+    "note": "Layout over the RoomPlan scan of the venue; program from knowledge/robotics_lab.json"
+  }
+}
