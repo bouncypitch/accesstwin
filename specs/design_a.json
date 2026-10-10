@@ -1,0 +1,339 @@
+{
+  "name": "Design A: first-pass robotics lab",
+  "outline": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      12.19,
+      0.0
+    ],
+    [
+      12.19,
+      8.53
+    ],
+    [
+      0.0,
+      8.53
+    ]
+  ],
+  "ceiling_height": 3.4,
+  "doors": [
+    {
+      "id": "D1",
+      "position": [
+        1.5,
+        0.0
+      ],
+      "inward": [
+        0.0,
+        1.0
+      ],
+      "clear_width": 0.8635999999999999,
+      "opening_force_lbf": 5.0,
+      "hardware": "lever",
+      "role": "entrance",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "D2",
+      "position": [
+        12.19,
+        6.5
+      ],
+      "inward": [
+        -1.0,
+        0.0
+      ],
+      "clear_width": 0.762,
+      "opening_force_lbf": 8.0,
+      "hardware": "knob",
+      "role": "exit",
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "cell1",
+      "kind": "robot_cell",
+      "label": "Cobot cell 1 (UR10e)",
+      "center": [
+        4.0,
+        6.0
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "E1",
+          "kind": "e_stop",
+          "position": [
+            5.0,
+            4.5
+          ],
+          "height": 1.3716,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "cell2",
+      "kind": "robot_cell",
+      "label": "Cobot cell 2 (Franka FR3)",
+      "center": [
+        8.5,
+        6.0
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "rotation_deg": 0.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.5,
+      "parts": [
+        {
+          "id": "E2",
+          "kind": "e_stop",
+          "position": [
+            8.5,
+            4.5
+          ],
+          "height": 1.0668,
+          "approach": "side",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "bench1",
+      "kind": "workbench",
+      "label": "Electronics bench 1",
+      "center": [
+        3.0,
+        3.3122
+      ],
+      "size": [
+        3.0,
+        0.75
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.91,
+      "work_surface_height": 0.9144,
+      "knee_clearance": null,
+      "accessible_station": true,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "bench2",
+      "kind": "workbench",
+      "label": "Electronics bench 2",
+      "center": [
+        7.2,
+        3.3122
+      ],
+      "size": [
+        3.0,
+        0.75
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.91,
+      "work_surface_height": 0.9144,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "solder",
+      "kind": "workstation",
+      "label": "Soldering station",
+      "center": [
+        11.0,
+        1.5
+      ],
+      "size": [
+        1.5,
+        0.75
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.76,
+      "work_surface_height": 0.762,
+      "knee_clearance": {
+        "height": 0.7111999999999999,
+        "width": 0.8635999999999999,
+        "depth": 0.508
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "FX1",
+          "kind": "switch",
+          "position": [
+            11.0,
+            1.2
+          ],
+          "height": 0.9144,
+          "approach": "forward",
+          "obstruction_depth": 0.0,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "table",
+      "kind": "table",
+      "label": "Teaching table",
+      "center": [
+        6.0,
+        1.2
+      ],
+      "size": [
+        3.0,
+        1.2
+      ],
+      "rotation_deg": 0.0,
+      "height": 0.74,
+      "work_surface_height": 0.7365999999999999,
+      "knee_clearance": {
+        "height": 0.7111999999999999,
+        "width": 1.524,
+        "depth": 0.6095999999999999
+      },
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "shelf",
+      "kind": "shelf",
+      "label": "Parts shelving",
+      "center": [
+        0.25,
+        6.0
+      ],
+      "size": [
+        2.5,
+        0.5
+      ],
+      "rotation_deg": 90.0,
+      "height": 2.0,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    },
+    {
+      "id": "cabinet",
+      "kind": "cabinet",
+      "label": "Tool cabinet",
+      "center": [
+        11.6,
+        4.5
+      ],
+      "size": [
+        1.2,
+        0.6
+      ],
+      "rotation_deg": -90.0,
+      "height": 1.8,
+      "work_surface_height": null,
+      "knee_clearance": null,
+      "accessible_station": false,
+      "safeguard_margin": 0.0,
+      "parts": [
+        {
+          "id": "K1",
+          "kind": "keypad",
+          "position": [
+            11.3,
+            4.5
+          ],
+          "height": 1.3,
+          "approach": "forward",
+          "obstruction_depth": 0.30479999999999996,
+          "one_hand": true,
+          "tight_grasp": false,
+          "force_lbf": 2.0
+        }
+      ],
+      "source": {
+        "kind": "design",
+        "confidence": 1.0,
+        "note": ""
+      }
+    }
+  ],
+  "source": {
+    "kind": "design",
+    "confidence": 1.0,
+    "note": "Hand-built test room; replaced by the reconstruction of the real venue."
+  }
+}
