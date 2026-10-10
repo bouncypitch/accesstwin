@@ -80,6 +80,7 @@ struct CaptureView: UIViewRepresentable {
 struct ContentView: View {
     @StateObject private var scanner = Scanner()
     @State private var name = "venue"
+    @State private var recordingRGBD = false
 
     var body: some View {
         if !RoomCaptureSession.isSupported {
@@ -106,8 +107,16 @@ struct ContentView: View {
                 Button("Start scan") { scanner.start() }
                     .font(.title2.bold())
                     .buttonStyle(.borderedProminent)
+                if RGBDRecorder.supported {
+                    Button("Record RGB-D walkthrough") { recordingRGBD = true }
+                        .font(.title3.bold())
+                        .buttonStyle(.bordered)
+                }
             }
             .padding(32)
+            .fullScreenCover(isPresented: $recordingRGBD) {
+                RecorderView(name: name) { recordingRGBD = false }
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 """accesstwin audit <spec.json> [--json out.json] [--svg out.svg]
-accesstwin import-roomplan <roomplan.json> <out_dir>   writes as_is.json, shell.json and plan SVGs"""
+accesstwin import-roomplan <roomplan.json> <out_dir>   writes as_is.json, shell.json and plan SVGs
+accesstwin rgbd <recording_dir> <out_dir> [--roomplan roomplan.json]   fused cloud, alignment, Rerun walkthrough"""
 
 from __future__ import annotations
 
 import argparse
+import math
 from pathlib import Path
 
 from .audit import audit
@@ -23,8 +25,16 @@ def main() -> None:
     r = sub.add_parser("import-roomplan", help="turn a RoomScan export into SpaceSpecs")
     r.add_argument("roomplan")
     r.add_argument("out_dir")
+    g = sub.add_parser("rgbd", help="fuse an RGB-D walkthrough and align it to the RoomPlan scan")
+    g.add_argument("recording")
+    g.add_argument("out_dir")
+    g.add_argument("--roomplan")
+    g.add_argument("--voxel", type=float, default=0.02)
+    g.add_argument("--stride", type=int, default=2, help="use every Nth frame for fusion")
     args = ap.parse_args()
 
+    if args.cmd == "rgbd":
+        return rgbd_cmd(args)
     if args.cmd == "import-roomplan":
         return import_roomplan(args.roomplan, args.out_dir)
 
@@ -68,3 +78,74 @@ def import_roomplan(src: str, out_dir: str) -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def rgbd_cmd(args) -> None:
+    import json
+    import time
+
+    from . import rgbd
+
+    out = Path(args.out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    t0 = time.time()
+    frames = rgbd.load(args.recording)
+    ok = sum(f.tracking == "normal" for f in frames)
+    print(f"{len(frames)} frames ({frames[-1].timestamp - frames[0].timestamp:.0f} s), {ok} with normal tracking")
+    pts, cols = rgbd.fuse(frames, voxel=args.voxel, stride=args.stride)
+    print(f"fused {len(pts):,} points at {args.voxel * 100:.0f} cm voxels in {time.time() - t0:.0f} s")
+    al = None
+    if args.roomplan:
+        al = rgbd.align(pts, args.roomplan)
+        print(f"aligned to RoomPlan walls: yaw {math.degrees(al.yaw):.1f} deg, shift {al.t.round(2).tolist()} m")
+        pts_out = al.apply(pts)
+        offsets = rgbd.wall_offsets(pts_out, args.roomplan)
+        print("LiDAR wall surface vs RoomPlan wall (+ = inside the room):")
+        for o in offsets:
+            print(f"  {o['length']:6.2f} m wall: {o['offset'] * 100:+5.1f} cm  ({o['points']:,} points)")
+        (out / "alignment.json").write_text(json.dumps({"yaw": al.yaw, "t": al.t.tolist(), "fit_rms": al.rms,
+                                                         "matrix": al.matrix().tolist(), "wall_offsets": offsets},
+                                                        indent=2))
+        overlay(pts_out, cols, args.roomplan, out / "overlay.png")
+        print(f"wrote {out}/overlay.png (fused points over the RoomPlan floor plan)")
+    else:
+        pts_out = pts
+    rgbd.save_ply(out / "fused.ply", pts_out, cols)
+    rgbd.to_rerun(frames, pts, cols, out / "walkthrough.rrd", roomplan_path=args.roomplan, alignment=al,
+                  stride=args.stride)
+    print(f"wrote {out}/fused.ply and {out}/walkthrough.rrd  (view: uv run rerun {out}/walkthrough.rrd)")
+
+
+def overlay(points, colors, roomplan_path, dest, px_per_m: int = 60) -> None:
+    """Top-down image: fused points (colored, mid-height slice darker) with the RoomPlan floor outline."""
+    import json
+
+    import numpy as np
+    from PIL import Image, ImageDraw
+
+    d = json.loads(Path(roomplan_path).read_text())
+    frame = roomplan.plan_frame(d)
+    shell = roomplan.load(roomplan_path, remove="empty")
+    uv = np.array([frame(x, z) for x, z in points[:, [0, 2]]]) if len(points) < 200_000 else None
+    if uv is None:  # vectorised version of frame(x, z) for big clouds
+        u, v = points[:, 0], -points[:, 2]
+        uu = u * frame.c - v * frame.s - frame.offset[0]
+        vv = u * frame.s + v * frame.c - frame.offset[1]
+        uv = np.c_[uu, vv]
+    minx, miny, maxx, maxy = shell.floor().bounds
+    pad = 1.0
+    w = int((maxx - minx + 2 * pad) * px_per_m)
+    h = int((maxy - miny + 2 * pad) * px_per_m)
+    img = Image.new("RGB", (w, h), (251, 250, 247))
+    X = ((uv[:, 0] - minx + pad) * px_per_m).astype(int)
+    Y = ((maxy - uv[:, 1] + pad) * px_per_m).astype(int)
+    ok = (X >= 0) & (X < w) & (Y >= 0) & (Y < h)
+    # Draw low points first so walls (tall) end up on top.
+    order = np.argsort(points[ok, 1])
+    arr = np.asarray(img).copy()
+    arr[Y[ok][order], X[ok][order]] = colors[ok][order]
+    img = Image.fromarray(arr)
+    draw = ImageDraw.Draw(img)
+    outline = [((x - minx + pad) * px_per_m, (maxy - y + pad) * px_per_m) for x, y in shell.outline]
+    draw.line(outline + outline[:1], fill=(46, 160, 67), width=3)
+    img.save(dest)

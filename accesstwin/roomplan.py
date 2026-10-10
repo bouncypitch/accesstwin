@@ -61,21 +61,27 @@ class _Frame:
         return math.degrees(math.atan2(v, u))
 
 
+def plan_frame(d: dict) -> _Frame:
+    """The world-to-plan mapping for a RoomPlan scan: longest wall along +x, room starting at (0, 0)."""
+    longest = max(d["walls"], key=lambda w: w["dimensions"][0])
+    lw = _matrix(longest)[:3, 0]
+    frame = _Frame(math.atan2(-lw[2], lw[0]), (0.0, 0.0))
+    floor = d["floors"][0]
+    fm = _matrix(floor)
+    raw = [frame.raw(*(fm @ np.array([*c, 1.0]))[[0, 2]]) for c in floor["polygonCorners"]]
+    frame.offset = (min(p[0] for p in raw), min(p[1] for p in raw))
+    return frame
+
+
 def load(path: str | Path, remove: str = "empty", name: str | None = None) -> Space:
     assert remove in ("empty", "movable", "none")
     d = json.loads(Path(path).read_text())
     walls = d["walls"]
-    longest = max(walls, key=lambda w: w["dimensions"][0])
-    lw = _matrix(longest)[:3, 0]
-    theta = math.atan2(-lw[2], lw[0])
-
+    frame = plan_frame(d)
     floor = d["floors"][0]
     fm = _matrix(floor)
     corners = [fm @ np.array([*c, 1.0]) for c in floor["polygonCorners"]]
     floor_y = float(np.mean([c[1] for c in corners]))
-    frame = _Frame(theta, (0.0, 0.0))
-    raw = [frame.raw(c[0], c[2]) for c in corners]
-    frame.offset = (min(p[0] for p in raw), min(p[1] for p in raw))
     outline = [frame(c[0], c[2]) for c in corners]
     poly = make_valid(Polygon(outline))
     if poly.geom_type != "Polygon":
