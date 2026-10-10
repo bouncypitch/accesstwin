@@ -8,8 +8,13 @@ SITE="$ROOT/demo/site"
 # Warm up Python so the live commands start instantly on stage.
 (cd "$ROOT" && uv run accesstwin audit specs/design_a.json >/dev/null 2>&1 &)
 
+# The website first: the live GitHub Pages site, or the local copy when offline.
+WEB="https://bouncypitch.github.io/accesstwin/"
+curl -sf -m 3 -o /dev/null "$WEB" || WEB="file://$SITE/index.html"
+
 # One new Chrome window, tabs in demo order (local files work offline).
 open -na "Google Chrome" --args --new-window \
+  "$WEB" \
   "file://$SITE/scan.html" \
   "file://$SITE/media/twin_design_a.html#build" \
   "file://$SITE/media/twin_design_a.html#agents" \
@@ -28,4 +33,4 @@ tell application "Terminal"
   set font size of selected tab of front window to 20
 end tell
 EOF
-echo "Demo ready. Rerun: RGB-D walkthrough. Chrome tabs: scan · build · agents · photoreal finding · fixes · results"
+echo "Demo ready. Rerun: RGB-D walkthrough. Chrome tabs: website · scan · build · agents · photoreal finding · fixes · results"
