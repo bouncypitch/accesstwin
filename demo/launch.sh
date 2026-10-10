@@ -11,11 +11,14 @@ SITE="$ROOT/demo/site"
 # One new Chrome window, tabs in demo order (local files work offline).
 open -na "Google Chrome" --args --new-window \
   "file://$SITE/scan.html" \
-  "file://$SITE/media/twin_design_a.html" \
+  "file://$SITE/media/twin_design_a.html#build" \
+  "file://$SITE/media/twin_design_a.html#agents" \
   "https://marble.worldlabs.ai/world/b27aa033-6df7-4464-9ca1-1122f1719a1c" \
-  "file://$SITE/media/twin_design_b.html" \
-  "file://$SITE/index.html#ch10" \
-  "file://$SITE/index.html"
+  "file://$SITE/media/twin_design_a.html#fix" \
+  "file://$SITE/index.html#ch11"
+
+# Rerun: the RGB-D walkthrough playback (camera path, color + depth, room building up).
+(cd "$ROOT" && uv run rerun demo/assets/02_rgbd_venue/walkthrough.rrd >/dev/null 2>&1 &)
 
 # A terminal in the project with the two live commands ready to paste.
 osascript <<EOF
@@ -25,4 +28,4 @@ tell application "Terminal"
   set font size of selected tab of front window to 20
 end tell
 EOF
-echo "Demo ready: Chrome tabs = scan · Design A · photoreal finding · Design B · before/after · site"
+echo "Demo ready. Rerun: RGB-D walkthrough. Chrome tabs: scan · build · agents · photoreal finding · fixes · results"

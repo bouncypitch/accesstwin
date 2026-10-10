@@ -1853,6 +1853,7 @@
 }</script>
 <script id="tour" type="application/json">null</script>
 <script id="specB" type="application/json">null</script>
+<script id="audit" type="application/json">null</script>
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -2387,7 +2388,7 @@ if (specB) {
   for (const s of signs.slice(nSigns)) s.userData.designB = true;
 }
 // A delivery AMR runs laps of the main aisle between the desks and the arena.
-{ const rover = amr(scene, 0, 0); const tote = box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
+const rover = amr(scene, 0, 0); { box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
   animated.push({ obj: rover, kind: "route", pts: [[1.8, 4.6], [6.6, 4.6], [6.6, 1.9], [12.6, 1.9], [12.6, 3.3], [6.6, 3.3], [6.6, 4.6]].map(([x, y]) => P(x, y, 0)), speed: 0.6 }); }
 // The per-element zone planes live in their groups; drop the stray clones.
 zoneFloors.clear();
@@ -2496,10 +2497,79 @@ if (!TOUR) {
       fly.t = Math.min(1, fly.t + 0.012); const k = fly.t * fly.t * (3 - 2 * fly.t);
       camera.position.lerpVectors(fly.p0, fly.p1, k); controls.target.lerpVectors(fly.t0, fly.t1, k); if (fly.t >= 1) fly = null;
     }
+    if (build) build.tick(t);
     tick(t); controls.update(); renderer.render(scene, camera);
   });
 } else {
   director(TOUR);
+}
+
+// ---------- build mode (#build): the design agent places the lab zone by zone ----------
+var AUDIT = JSON.parse(document.getElementById("audit")?.textContent || "null");
+var build = null;  // set at the end of this file, once every helper is defined
+function buildMode() {
+  const WHY = {
+    welcome: "At the main entrance, so people put on PPE on the way in.",
+    break: "Kitchen, dining and restroom kept apart from lab hazards (no food in work areas).",
+    electronics: "ESD benches and soldering on the quiet south wall, away from fabrication noise.",
+    fab: "Laser, printers and CNC grouped near exhaust where access can be controlled.",
+    arena: "The netted mocap arena takes the largest clear rectangle in the room.",
+    robots: "Robot cells against walls with power drops, off the main walkway, with safety zones.",
+    maintenance: "Repair bay between the arena and the robot cells, so robots roll straight in.",
+    storage: "Shelving and the flammables cabinet along walls, away from the battery cabinet.",
+    desks: "Software desks in the open floor near the entrance.",
+  };
+  const order = ["welcome", "break", "electronics", "fab", "arena", "robots", "maintenance", "storage", "desks"]
+    .filter(z => (spec.zones || []).some(x => x.id === z));
+  const zinfo = Object.fromEntries((spec.zones || []).map(z => [z.id, z]));
+  const byZone = Object.fromEntries(order.map(z => [z, Object.values(groups).filter(g => g.userData.el.zone === z)]));
+  const PER = 1.6, T0 = 0.4;  // seconds per zone, lead-in
+  let start = null, done = false;
+  const css = document.createElement("style");
+  css.textContent = `#bp{position:fixed;right:16px;top:16px;width:min(380px,calc(100vw - 32px));padding:16px 18px;background:rgba(16,22,30,.92);border:1px solid #30363d;border-radius:12px;color:#e6edf3;font:14px/1.4 Inter,-apple-system,Helvetica,Arial,sans-serif;z-index:6}
+    #bp h2{margin:0 0 4px;font-size:17px} #bp .now{margin:10px 0;padding:10px 12px;border-radius:10px;background:#0d1117;border:1px solid #30363d;min-height:64px}
+    #bp .now b{display:block;font-size:16px;margin-bottom:3px} #bp ol{margin:8px 0 0;padding-left:0;list-style:none} #bp li{display:flex;align-items:center;gap:8px;padding:3px 0;color:#6e7681}
+    #bp li.done{color:#e6edf3} #bp li i{width:12px;height:12px;border-radius:3px;flex:none} #bp li .c{margin-left:auto;font-size:12.5px;color:#8b949e}
+    #bp button{font:inherit;font-weight:650;font-size:15px;width:100%;margin-top:12px;padding:11px;border-radius:9px;border:1px solid #1f6feb;background:#1f6feb;color:#fff;cursor:pointer}`;
+  document.head.append(css);
+  for (const id of ["views", "legend"]) document.getElementById(id).style.display = "none";
+  document.body.insertAdjacentHTML("beforeend", `<div id="bp"><h2>Design agent</h2><div style="color:#8b949e">Laying the robotics-lab program into the scanned room.</div>
+    <div class="now" id="bnow"><b>Empty shell</b><span style="color:#8b949e">${spec.elements.length} stations · ${order.length} zones to place</span></div>
+    <ol id="blist">${order.map(z => `<li data-z="${z}"><i style="background:${zinfo[z].color}"></i>${zinfo[z].label}<span class="c">${byZone[z].length}</span></li>`).join("")}</ol>
+    <button id="bgo">▶ Build the lab</button></div>`);
+  const groupsList = Object.values(groups);
+  function hideAll() { for (const g of groupsList) { g.visible = false; g.scale.set(1, 0.001, 1); } rover.visible = false; }
+  hideAll();
+  controls.autoRotateSpeed = 0.6;
+  document.getElementById("bgo").onclick = () => { hideAll(); start = null; done = false; started = true; controls.autoRotate = true;
+    document.querySelectorAll("#blist li").forEach(li => li.classList.remove("done")); };
+  let started = false;
+  return {
+    tick(t) {
+      if (!started) return;
+      if (start === null) start = t;
+      const e = t - start;
+      order.forEach((z, zi) => {
+        const zs = T0 + zi * PER, items = byZone[z];
+        items.forEach((g, k) => {
+          const t0 = zs + (k / Math.max(1, items.length)) * PER * 0.7, u = Math.min(1, Math.max(0, (e - t0) / 0.5));
+          const eu = u * u * (3 - 2 * u);
+          g.visible = u > 0; g.scale.set(1, Math.max(0.001, eu), 1); g.position.y = (1 - eu) * 1.5;
+        });
+        if (e >= zs && e < zs + PER) {
+          const zz = zinfo[z];
+          document.getElementById("bnow").innerHTML = `<b style="color:${zz.color}">Placing: ${zz.label}</b><span style="color:#c9d1d9">${WHY[z] || ""}</span>`;
+        }
+        if (e >= zs + PER * 0.8) document.querySelector(`#blist li[data-z="${z}"]`).classList.add("done");
+      });
+      const end = T0 + order.length * PER + 0.6;
+      if (e >= end && !done) {
+        done = true; controls.autoRotate = false; rover.visible = true;
+        document.getElementById("bnow").innerHTML = `<b style="color:#3fb950">Design A complete</b><span style="color:#c9d1d9">${spec.elements.length} stations in ${order.length} color-coded zones, a sign at every station. Next: the disability agents audit it.</span>`;
+        document.getElementById("bgo").textContent = "↻ Replay";
+      }
+    },
+  };
 }
 
 // ---------- director: plays a tour.json timeline frame by frame ----------
@@ -2941,6 +3011,212 @@ function director(tour) {
     renderer.setAnimationLoop(() => window.renderAt(((performance.now() - t0) / 1000) % tour.duration));
   }
 }
+
+
+// ---------- shared panel + helpers for the #agents and #fix modes ----------
+function modePanel(title, sub) {
+  const css = document.createElement("style");
+  css.textContent = `#mp{position:fixed;right:16px;top:16px;bottom:16px;width:min(400px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px;padding:16px 18px;background:rgba(16,22,30,.93);border:1px solid #30363d;border-radius:12px;color:#e6edf3;font:14px/1.4 Inter,-apple-system,Helvetica,Arial,sans-serif;z-index:6}
+    #mp h2{margin:0;font-size:17px} #mp .sub{color:#8b949e} #mp .row{display:flex;flex-wrap:wrap;gap:6px}
+    #mp button{font:inherit;font-weight:650;font-size:13.5px;padding:8px 11px;border-radius:8px;border:1px solid #30363d;background:#21262d;color:#e6edf3;cursor:pointer}
+    #mp button.primary{background:#1f6feb;border-color:#1f6feb;width:100%;font-size:15px;padding:11px}
+    #mp .now{padding:10px 12px;border-radius:10px;background:#0d1117;border:1px solid #30363d;min-height:58px}
+    #mp .log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:6px;padding-right:4px}
+    #mp .item{padding:8px 10px;border-radius:8px;background:#0d1117;border:1px solid #21262d;font-size:13px}
+    #mp .item b{display:block;font-size:13.5px} #mp .sev{font-size:10.5px;font-weight:800;letter-spacing:.06em;padding:1px 6px;border-radius:4px;color:#fff;margin-right:6px}
+    #mp .blocking{background:#d1242f} #mp .major{background:#bc4c00} #mp .minor{background:#9a6700}
+    #mp .fix{color:#7ee787} #mp .muted{color:#8b949e} #mp .score{font-size:30px;font-weight:800;letter-spacing:-.02em}`;
+  document.head.append(css);
+  for (const id of ["views", "legend"]) document.getElementById(id).style.display = "none";
+  document.body.insertAdjacentHTML("beforeend", `<div id="mp"><h2>${title}</h2><div class="sub">${sub}</div><div id="mctl"></div><div class="now" id="mnow"></div><div class="log" id="mlog"></div></div>`);
+  return { ctl: document.getElementById("mctl"), now: document.getElementById("mnow"), log: document.getElementById("mlog") };
+}
+const SEVC = { blocking: 0xd1242f, major: 0xe8710a, minor: 0xd4a72c };
+function pin(loc, color, label) {
+  const g = new THREE.Group(); g.position.copy(P(loc[0], loc[1], 0)); scene.add(g);
+  const m = new THREE.MeshBasicMaterial({ color });
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 2.2, 8), m); stem.position.y = 1.1; g.add(stem);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 12), m); head.position.y = 2.3; g.add(head);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.28, 0.36, 32), new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.8 }));
+  ring.rotation.x = -Math.PI / 2; ring.position.y = 0.02; g.add(ring);
+  if (label) { const s = signSprite(label, "#ffffff", "#" + new THREE.Color(color).getHexString(), 0.22); s.position.y = 2.75; g.add(s); }
+  g.userData.setColor = c => { m.color.set(c); ring.material.color.set(c); };
+  return g;
+}
+function flash(id, color, on) {
+  const g = groups[id]; if (!g) return;
+  g.traverse(o => {
+    if (!o.isMesh || !o.material?.emissive || o.userData.zoneFloor) return;
+    if (on) { if (!o.userData.mat0) { o.userData.mat0 = o.material; o.material = o.material.clone(); } o.material.emissive.set(color); o.material.emissiveIntensity = 0.6; }
+    else if (o.userData.mat0) { o.material = o.userData.mat0; delete o.userData.mat0; }
+  });
+}
+function agentFigure(color, seated) {
+  const g = new THREE.Group(), m = new THREE.MeshStandardMaterial({ color, roughness: 0.5 }), skin = new THREE.MeshStandardMaterial({ color: 0xc68e6a });
+  if (seated) {
+    for (const z of [-0.3, 0.3]) { const w = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.035, 10, 28), new THREE.MeshStandardMaterial({ color: 0x24292f })); w.position.set(0, 0.3, z); g.add(w); }
+    limb(new THREE.Vector3(0, 0.5, 0), new THREE.Vector3(0, 1.0, 0), 0.17, m, g); sphere(0.13, skin, 0, 1.22, 0, g);
+  } else { limb(new THREE.Vector3(0, 0.1, 0), new THREE.Vector3(0, 1.35, 0), 0.17, m, g); sphere(0.13, skin, 0, 1.6, 0, g); }
+  g.scale.setScalar(1.8); g.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(g); return g;
+}
+function pathLen(p) { let L = 0; for (let i = 1; i < p.length; i++) L += Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); return L; }
+function pathAt(p, d) {
+  let acc = 0;
+  for (let i = 1; i < p.length; i++) {
+    const L = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]);
+    if (acc + L >= d || i === p.length - 1) { const u = L ? Math.min(1, (d - acc) / L) : 0; return [p[i - 1][0] + (p[i][0] - p[i - 1][0]) * u, p[i - 1][1] + (p[i][1] - p[i - 1][1]) * u, Math.atan2(p[i][1] - p[i - 1][1], p[i][0] - p[i - 1][0])]; }
+    acc += L;
+  }
+  return [p[0][0], p[0][1], 0];
+}
+function fitCam() { const [p, t] = views.Overview; camera.position.copy(P(...p)); controls.target.copy(P(...t)); }
+
+// ---------- #agents: each disability agent walks the lab and finds problems ----------
+function agentsMode() {
+  const ui = modePanel("Disability agents", "Each agent walks real routes from the entrance and checks its cited criteria.");
+  const SPEED = 3.2, STOP = 2.2;
+  let run = null, trail = null, fig = null;
+  const pins = [];
+  ui.ctl.innerHTML = `<div class="row">${AUDIT.agents.map((a, i) => `<button data-i="${i}" style="border-color:${a.color}"><span style="color:${a.color}">●</span> ${a.name}</button>`).join("")}<button data-i="all">▶ All agents</button></div>`;
+  ui.now.innerHTML = `<span class="muted">Pick an agent to watch it walk the lab.</span>`;
+  function clear() { for (const p of pins) scene.remove(p); pins.length = 0; if (trail) scene.remove(trail); if (fig) scene.remove(fig); trail = fig = null; ui.log.innerHTML = ""; }
+  function startAgent(list) {
+    clear();
+    const a = AUDIT.agents[list[0]];
+    fig = agentFigure(a.color, a.id === "wheelchair");
+    { const tag = signSprite(a.name, "#ffffff", a.color, 0.18); tag.position.y = 1.55; fig.add(tag); }
+    const pts = [];
+    const tg = new THREE.BufferGeometry(); trail = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: a.color })); scene.add(trail);
+    ui.now.innerHTML = `<b style="color:${a.color}">${a.name}</b><div class="muted">Checks: ${a.criteria.map(c => c.split(":")[0]).join(" · ")}</div>`;
+    run = { list, a, leg: 0, d: 0, phase: "walk", t: 0, pts, tg };
+  }
+  ui.ctl.querySelectorAll("button").forEach(b => b.onclick = () => {
+    const v = b.dataset.i; startAgent(v === "all" ? AUDIT.agents.map((_, i) => i) : [Number(v)]);
+  });
+  let last = null;
+  return {
+    tick(t) {
+      const dt = last === null ? 0 : Math.min(0.12, t - last); last = t;
+      if (!run) return;
+      const { a } = run, leg = a.legs[run.leg];
+      if (!leg) {
+        if (run.phase !== "end") {
+          run.phase = "end";
+          ui.log.insertAdjacentHTML("afterbegin", `<div class="item" style="border-color:${a.color}"><b>${a.name}: ${a.failed} problems in ${a.checks} checks</b><span class="muted">Showing the ${a.legs.length} most severe.</span></div>`);
+          const next = run.list.slice(1);
+          if (next.length) setTimeout(() => startAgent(next), 1500);
+        }
+        return;
+      }
+      if (run.phase === "walk") {
+        run.d += SPEED * dt;
+        const L = pathLen(leg.path);
+        const [x, y, h] = pathAt(leg.path, Math.min(run.d, L));
+        fig.position.copy(P(x, y, 0)); fig.rotation.y = h;
+        run.pts.push(P(x, y, 0.05)); if (run.pts.length > 1) run.tg.setFromPoints(run.pts);
+        
+        if (run.d >= L) {
+          run.phase = "stop"; run.t = 0;
+          const k = run.leg + 1;
+          pins.push(pin(leg.location, SEVC[leg.severity], String(k)));
+          if (leg.element_id) flash(leg.element_id, 0xff2d2d, true);
+          ui.now.innerHTML = `<b style="color:${a.color}">${a.name} · finding ${k} of ${a.legs.length}</b><div><span class="sev ${leg.severity}">${leg.severity.toUpperCase()}</span>${leg.title}</div>`;
+          ui.log.insertAdjacentHTML("afterbegin", `<div class="item"><b><span class="sev ${leg.severity}">${k}</span>${leg.title}</b>${leg.detail}<div class="muted">${leg.citation}</div>${leg.fix ? `<div class="fix">Fix: ${leg.fix}</div>` : ""}</div>`);
+        }
+      } else if (run.phase === "stop") {
+        run.t += dt;
+        if (run.t >= STOP) { if (leg.element_id) flash(leg.element_id, 0, false); run.leg++; run.d = 0; run.phase = "walk"; }
+      }
+    },
+  };
+}
+
+// ---------- #fix: the remediation agent changes the design, driven by the findings ----------
+function fixMode() {
+  const ui = modePanel("Remediation agent", "Fixes the design from the agents' findings, checks each change, and re-audits.");
+  const B = specB ? Object.fromEntries(specB.elements.map(e => [e.id, e])) : {};
+  const bFailed = new Set((AUDIT.b_failed || []).map(([a, t]) => a + "|" + t));
+  const pinObjs = AUDIT.pins.map(p => ({ ...p, obj: pin(p.location, SEVC[p.severity]), fixed: false }));
+  const resolve = test => { for (const p of pinObjs) if (!p.fixed && test(p) && !bFailed.has(p.agent + "|" + p.title)) { p.fixed = true; p.obj.userData.setColor(0x2da44e); } };
+  const labelOf = id => (groups[id]?.userData.el.label || id).split(" (")[0];
+  // Build the step list from the real change log and the A -> B geometry.
+  const steps = [];
+  if (groups.industrial && !B.industrial) steps.push({ text: "Industrial arm moved to its own fenced bay (crush gap can't be met here)", id: "industrial", kind: "remove" });
+  for (const [id, g] of Object.entries(groups)) {
+    const b = B[id]; if (!b) continue;
+    const to = P(b.center[0], b.center[1], 0);
+    if (to.distanceTo(g.position) > 0.04) steps.push({ text: `Moved ${labelOf(id)} ${(to.distanceTo(g.position)).toFixed(2)} m to open a 36″ aisle`, id, kind: "move", to, rot: THREE.MathUtils.degToRad(b.rotation_deg) });
+  }
+  const human = c => c.change
+    .replace(/: attenuation_db -> 15\.0/, ": acoustic enclosure, −15 dB").replace(/: screen_height -> 1\.5/, ": 1.5 m privacy screen")
+    .replace(/sign text_height -> 0\.05/, "sign letters enlarged to 50 mm").replace(/sign tactile -> True.*/, "tactile + braille room sign");
+  for (const c of AUDIT.changes || []) {
+    if (/^Moved |sign fg|sign bg|^Dropped|Zone palette|quiet room/.test(c.change)) continue;
+    const id = Object.keys(groups).find(k => c.change.startsWith(groups[k].userData.el.label) || c.change.includes(" on " + groups[k].userData.el.label) || c.change.includes(groups[k].userData.el.label + ":"));
+    steps.push({ text: human(c), id, kind: "flash", agent: c.agent });
+  }
+  steps.push({ text: "Color-blind-safe palette; zone names and symbols on every sign", kind: "palette" });
+  if (Object.keys(B).some(k => !groups[k])) steps.push({ text: "Added a quiet room for stepping away from noise and motion", kind: "add" });
+  const sa = AUDIT.score_a, sb = AUDIT.score_b ?? sa;
+  ui.ctl.innerHTML = `<div style="display:flex;align-items:baseline;gap:10px"><span class="score" id="msc">${sa.toFixed(0)}%</span><span class="muted" id="mpins"></span></div><button class="primary" id="mgo">▶ Apply the agents' fixes</button>`;
+  const upd = () => { const open = pinObjs.filter(p => !p.fixed).length; document.getElementById("mpins").textContent = `${open} open problems · ${pinObjs.length - open} fixed`; };
+  upd();
+  ui.now.innerHTML = `<b>Design A</b><div class="muted">${pinObjs.length} problems pinned by the four agents. ${steps.length} fixes queued.</div>`;
+  let run = null, last = null;
+  const home = Object.fromEntries(Object.entries(groups).map(([id, g]) => [id, { p: g.position.clone(), r: g.rotation.y }]));
+  document.getElementById("mgo").onclick = () => {
+    for (const [id, g] of Object.entries(groups)) { g.position.copy(home[id].p); g.rotation.y = home[id].r; g.scale.setScalar(1); g.visible = true; }
+    for (const g of Object.values(groupsB)) g.visible = false;
+    for (const p of pinObjs) { p.fixed = false; p.obj.userData.setColor(SEVC[p.severity]); }
+    ui.log.innerHTML = ""; run = { i: 0, t: 0 }; fitCam(); controls.autoRotate = true; controls.autoRotateSpeed = 0.4;
+  };
+  return {
+    tick(t) {
+      const dt = last === null ? 0 : Math.min(0.05, t - last); last = t;
+      if (!run) return;
+      const st = steps[run.i];
+      if (!st) {
+        if (!run.done) {
+          run.done = true; controls.autoRotate = false; resolve(() => true); upd();
+          document.getElementById("msc").textContent = sb.toFixed(0) + "%";
+          ui.now.innerHTML = `<b style="color:#3fb950">Design B</b><div class="muted">Score ${sa.toFixed(0)}% → ${sb.toFixed(0)}%. ${pinObjs.filter(p => !p.fixed).length} minor issues left, none blocking.</div>`;
+          document.getElementById("mgo").textContent = "↻ Replay";
+        }
+        return;
+      }
+      const DUR = st.kind === "move" ? 1.1 : st.kind === "palette" || st.kind === "add" ? 1.6 : 0.8;
+      if (run.t === 0) {
+        ui.now.innerHTML = `<b>Fix ${run.i + 1} of ${steps.length}</b><div>${st.text}</div>`;
+        ui.log.insertAdjacentHTML("afterbegin", `<div class="item"><b class="fix">✓ ${st.text}</b></div>`);
+        if (st.id) flash(st.id, 0x2da44e, true);
+        if (st.kind === "move") st.from = groups[st.id].position.clone(), st.r0 = groups[st.id].rotation.y;
+      }
+      run.t += dt;
+      const u = Math.min(1, run.t / DUR), e = u * u * (3 - 2 * u);
+      if (st.kind === "move") { const g = groups[st.id]; g.position.lerpVectors(st.from, st.to, e); g.rotation.y = st.r0 + (st.rot - st.r0) * e; }
+      if (st.kind === "remove") groups[st.id].scale.setScalar(Math.max(0.001, 1 - e));
+      if (st.kind === "palette" && u >= 0.5 && !st.swapped) {
+        st.swapped = true;
+        for (const [id, g] of Object.entries(groups)) { g.visible = false; flash(id, 0, false); }
+        for (const g of Object.values(groupsB)) g.visible = true;
+        for (const k of Object.keys(groupsB)) if (!groups[k]) groupsB[k].visible = false;  // the quiet room comes next
+      }
+      if (st.kind === "add") for (const k of Object.keys(groupsB)) if (!groups[k]) { const g = groupsB[k]; g.visible = true; g.scale.set(1, Math.max(0.001, e), 1); }
+      if (u >= 1) {
+        if (st.id && st.kind !== "remove") flash(st.id, 0, false);
+        if (st.kind === "remove") groups[st.id].visible = false;
+        resolve(p => (st.id && p.element_id === st.id) || (st.kind === "palette" && p.agent === "low_vision") || (st.kind === "add" && p.title.startsWith("Quiet")));
+        upd();
+        document.getElementById("msc").textContent = (sa + (sb - sa) * ((run.i + 1) / steps.length)).toFixed(0) + "%";
+        run.i++; run.t = 0;
+      }
+    },
+  };
+}
+
+build = !TOUR && /build/.test(location.hash) ? buildMode()
+  : !TOUR && AUDIT && /agents/.test(location.hash) ? agentsMode()
+  : !TOUR && AUDIT && /fix/.test(location.hash) ? fixMode() : null;
 
 window.__twin = { scene, camera, controls, P, views, renderer };
 </script>

@@ -284,6 +284,16 @@ def _rot2(a: float) -> np.ndarray:
 
 # Rerun playback --------------------------------------------------------------------------------------------
 
+def _rot_jpeg(path) -> bytes:
+    """A JPEG frame rotated 90 degrees clockwise, re-encoded."""
+    import io
+
+    from PIL import Image
+    buf = io.BytesIO()
+    Image.open(path).transpose(Image.Transpose.ROTATE_270).save(buf, format="JPEG", quality=88)
+    return buf.getvalue()
+
+
 def to_rerun(frames: list[RGBDFrame], points: np.ndarray, colors: np.ndarray, out: str | Path,
              roomplan_path: str | Path | None = None, alignment: Alignment | None = None, stride: int = 1) -> None:
     """Writes an .rrd: the fused room, the RoomPlan walls, and the camera moving through it with RGB and depth."""
@@ -316,6 +326,9 @@ def to_rerun(frames: list[RGBDFrame], points: np.ndarray, colors: np.ndarray, ou
         rr.log("world/camera/image", rr.Pinhole(focal_length=[fx, fy], principal_point=[cx, cy],
                                                 resolution=list(f.image_size), camera_xyz=rr.ViewCoordinates.RUB,
                                                 image_plane_distance=0.4))
-        rr.log("world/camera/image/rgb", rr.EncodedImage(path=f.color))
-        rr.log("depth", rr.DepthImage(f.depth(), meter=1.0, colormap="turbo"))
+        # The iPhone sensor is landscape but the walkthrough was filmed upright: the 2D panels show the frames
+        # rotated 90 degrees clockwise. The 3D frustum keeps the sensor-oriented pinhole (no image), so the
+        # projection stays correct.
+        rr.log("upright/rgb", rr.EncodedImage(contents=_rot_jpeg(f.color), media_type="image/jpeg"))
+        rr.log("upright/depth", rr.DepthImage(np.ascontiguousarray(np.rot90(f.depth(), k=-1)), meter=1.0, colormap="turbo"))
         rr.log("world/trajectory", rr.LineStrips3D([np.array(trail)], colors=[[230, 113, 10]], radii=0.015))

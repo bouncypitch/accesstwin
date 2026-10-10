@@ -48,6 +48,7 @@
 <script id="spec" type="application/json">/*SPEC*/</script>
 <script id="tour" type="application/json">/*TOUR*/</script>
 <script id="specB" type="application/json">/*SPECB*/</script>
+<script id="audit" type="application/json">/*AUDIT*/</script>
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -582,7 +583,7 @@ if (specB) {
   for (const s of signs.slice(nSigns)) s.userData.designB = true;
 }
 // A delivery AMR runs laps of the main aisle between the desks and the arena.
-{ const rover = amr(scene, 0, 0); const tote = box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
+const rover = amr(scene, 0, 0); { box(0.5, 0.25, 0.4, mat("tote", 0x1f6feb), 0, 0.36, 0, rover);
   animated.push({ obj: rover, kind: "route", pts: [[1.8, 4.6], [6.6, 4.6], [6.6, 1.9], [12.6, 1.9], [12.6, 3.3], [6.6, 3.3], [6.6, 4.6]].map(([x, y]) => P(x, y, 0)), speed: 0.6 }); }
 // The per-element zone planes live in their groups; drop the stray clones.
 zoneFloors.clear();
